@@ -155,6 +155,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../session_1/03_practice_activity_SOLUTIONS.html">
  <span class="dropdown-text">03 · Practice activity (solutions)</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/CHANGELOG.html">
+ <span class="dropdown-text">Changelog · local → remote compute</span></a>
+  </li>  
     </ul>
   </li>
 </ul>
@@ -240,6 +244,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">03 · Practice activity (solutions)</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/CHANGELOG.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Changelog · local → remote compute</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -259,17 +269,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#file-size-is-not-memory-size" id="toc-file-size-is-not-memory-size" class="nav-link" data-scroll-target="#file-size-is-not-memory-size">File size is not memory size</a></li>
   </ul></li>
   <li><a href="#the-vocabulary-of-aws" id="toc-the-vocabulary-of-aws" class="nav-link" data-scroll-target="#the-vocabulary-of-aws">3. The vocabulary of AWS</a></li>
-  <li><a href="#reading-from-s3-without-an-account" id="toc-reading-from-s3-without-an-account" class="nav-link" data-scroll-target="#reading-from-s3-without-an-account">4. Reading from S3 without an account</a>
+  <li><a href="#where-does-the-code-run" id="toc-where-does-the-code-run" class="nav-link" data-scroll-target="#where-does-the-code-run">4. Where does the code run?</a>
+  <ul class="collapse">
+  <li><a href="#the-runs-on-convention" id="toc-the-runs-on-convention" class="nav-link" data-scroll-target="#the-runs-on-convention">The <code># RUNS ON:</code> convention</a></li>
+  <li><a href="#how-much-machine-the-ability-you-are-renting" id="toc-how-much-machine-the-ability-you-are-renting" class="nav-link" data-scroll-target="#how-much-machine-the-ability-you-are-renting">How much machine: the ability you are renting</a></li>
+  <li><a href="#opening-a-sagemaker-studio-jupyterlab-space-aws-academy-learner-lab" id="toc-opening-a-sagemaker-studio-jupyterlab-space-aws-academy-learner-lab" class="nav-link" data-scroll-target="#opening-a-sagemaker-studio-jupyterlab-space-aws-academy-learner-lab">Opening a SageMaker Studio JupyterLab space (AWS Academy Learner Lab)</a></li>
+  </ul></li>
+  <li><a href="#reading-from-s3-without-an-account" id="toc-reading-from-s3-without-an-account" class="nav-link" data-scroll-target="#reading-from-s3-without-an-account">5. Reading from S3 without an account</a>
   <ul class="collapse">
   <li><a href="#listing-not-downloading" id="toc-listing-not-downloading" class="nav-link" data-scroll-target="#listing-not-downloading">Listing, not downloading</a></li>
   <li><a href="#reading-a-size-without-reading-the-file" id="toc-reading-a-size-without-reading-the-file" class="nav-link" data-scroll-target="#reading-a-size-without-reading-the-file">Reading a size without reading the file</a></li>
   <li><a href="#reading-a-slice-of-a-file" id="toc-reading-a-slice-of-a-file" class="nav-link" data-scroll-target="#reading-a-slice-of-a-file">Reading a <em>slice</em> of a file</a></li>
   </ul></li>
-  <li><a href="#extraction-strategy-filter-at-the-source" id="toc-extraction-strategy-filter-at-the-source" class="nav-link" data-scroll-target="#extraction-strategy-filter-at-the-source">5. Extraction strategy: filter at the source</a>
+  <li><a href="#extraction-strategy-filter-at-the-source" id="toc-extraction-strategy-filter-at-the-source" class="nav-link" data-scroll-target="#extraction-strategy-filter-at-the-source">6. Extraction strategy: filter at the source</a>
   <ul class="collapse">
+  <li><a href="#the-fourth-lever-let-the-fleet-do-the-filtering" id="toc-the-fourth-lever-let-the-fleet-do-the-filtering" class="nav-link" data-scroll-target="#the-fourth-lever-let-the-fleet-do-the-filtering">The fourth lever: let the fleet do the filtering</a></li>
   <li><a href="#the-units-trap" id="toc-the-units-trap" class="nav-link" data-scroll-target="#the-units-trap">The units trap</a></li>
   </ul></li>
-  <li><a href="#where-this-goes-next" id="toc-where-this-goes-next" class="nav-link" data-scroll-target="#where-this-goes-next">6. Where this goes next</a></li>
+  <li><a href="#cost-space-and-ability-what-you-are-actually-renting" id="toc-cost-space-and-ability-what-you-are-actually-renting" class="nav-link" data-scroll-target="#cost-space-and-ability-what-you-are-actually-renting">7. Cost, space, and ability: what you are actually renting</a>
+  <ul class="collapse">
+  <li><a href="#space-storing-data" id="toc-space-storing-data" class="nav-link" data-scroll-target="#space-storing-data">Space: storing data</a></li>
+  <li><a href="#ability-renting-compute" id="toc-ability-renting-compute" class="nav-link" data-scroll-target="#ability-renting-compute">Ability: renting compute</a></li>
+  <li><a href="#open-is-not-running" id="toc-open-is-not-running" class="nav-link" data-scroll-target="#open-is-not-running">Open is not running</a></li>
+  <li><a href="#the-teardown-habit" id="toc-the-teardown-habit" class="nav-link" data-scroll-target="#the-teardown-habit">The teardown habit</a></li>
+  </ul></li>
+  <li><a href="#before-class-what-to-bring" id="toc-before-class-what-to-bring" class="nav-link" data-scroll-target="#before-class-what-to-bring">Before class: what to bring</a></li>
   <li><a href="#reading-check" id="toc-reading-check" class="nav-link" data-scroll-target="#reading-check">Reading check</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
@@ -298,16 +322,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p><strong>GSB 5544 · Computing and Machine Learning for Business Analytics</strong></p>
-<p><em>Read before class. Run the code as you go; the practice activity assumes you have.</em></p>
+<p><em>Read before class and run the code as you go, on your laptop. In class you will run the same code on a machine you rent from AWS and put the two side by side. The practice activity assumes you have done both.</em></p>
 <hr>
 <section id="why-this-matters-for-a-business-analyst" class="level2">
 <h2 class="anchored" data-anchor-id="why-this-matters-for-a-business-analyst">Why this matters for a business analyst</h2>
 <p>Every dataset you have used in this course so far arrived as a file you opened. That is not how data arrives in practice. The sales history, the clickstream, the sensor log, the claims table: they live somewhere else, they are usually larger than your machine, and someone has to decide <em>what to bring over</em> before any modeling begins.</p>
-<p>That decision is an extraction problem, and it is the first place a business analyst runs into infrastructure. This reading gives you the three things you need to make that decision well:</p>
+<p>There is a second decision hiding behind the first one: <em>where should the code run?</em> Until now the answer was always “on my laptop,” because that was the only computer you had. In the cloud, <strong>storage and compute are both things you rent.</strong> The data sits in a bucket. The computer that reads it can be your laptop, a rented machine sitting in the same building as the bucket, or a fleet of machines that runs one SQL statement and hands you back only the rows that matched.</p>
+<p>Every cloud decision comes down to three questions, and you will ask them repeatedly in this module:</p>
+<ul>
+<li><strong>Space.</strong> How much data is there, and where does it live?</li>
+<li><strong>Ability.</strong> How much computer do I need to work on it, and for how long?</li>
+<li><strong>Cost.</strong> What does that space and ability cost per hour, per gigabyte, per query?</li>
+</ul>
+<p>This reading gives you four things:</p>
 <ol type="1">
-<li>A way to measure what your own machine can hold.</li>
+<li>A way to measure what a machine can hold, so you can compare your laptop to a rented one.</li>
 <li>The vocabulary to describe the size of data and the parts of a cloud system.</li>
 <li>A working pattern for reading only what you need from a large remote dataset.</li>
+<li>A way to run the same notebook on a machine next to the data, and to know what it costs.</li>
 </ol>
 <p>We will use weather data as the example. Weather is one of the most common external covariates in business analytics: it drives beverage and apparel demand, energy load, insurance claims, delivery times, and foot traffic. It is also a dataset that is far too large to open on a laptop, which is exactly the point.</p>
 <hr>
@@ -315,17 +347,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-your-machine-actually-has" class="level2">
 <h2 class="anchored" data-anchor-id="what-your-machine-actually-has">1. What your machine actually has</h2>
 <p>Your laptop has an amount of memory (RAM) installed, and a smaller amount that is <em>available right now</em>. The available number is the one that determines whether a dataset loads. Measure it:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> psutil</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>vm <span class="op">=</span> psutil.virtual_memory()</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>du <span class="op">=</span> psutil.disk_usage(<span class="st">"/"</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Physical cores : </span><span class="sc">{</span>psutil<span class="sc">.</span>cpu_count(logical<span class="op">=</span><span class="va">False</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Logical cores  : </span><span class="sc">{</span>psutil<span class="sc">.</span>cpu_count(logical<span class="op">=</span><span class="va">True</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total RAM      : </span><span class="sc">{</span>vm<span class="sc">.</span>total <span class="op">/</span> <span class="fl">1e9</span><span class="sc">:.1f}</span><span class="ss"> GB"</span>)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Available RAM  : </span><span class="sc">{</span>vm<span class="sc">.</span>available <span class="op">/</span> <span class="fl">1e9</span><span class="sc">:.1f}</span><span class="ss"> GB"</span>)   <span class="co"># the number that matters</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Free disk      : </span><span class="sc">{</span>du<span class="sc">.</span>free <span class="op">/</span> <span class="fl">1e9</span><span class="sc">:.1f}</span><span class="ss"> GB"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Write your available RAM down. You will compare it to a file size later.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> psutil</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>vm <span class="op">=</span> psutil.virtual_memory()</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>du <span class="op">=</span> psutil.disk_usage(<span class="st">"/"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Physical cores : </span><span class="sc">{</span>psutil<span class="sc">.</span>cpu_count(logical<span class="op">=</span><span class="va">False</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Logical cores  : </span><span class="sc">{</span>psutil<span class="sc">.</span>cpu_count(logical<span class="op">=</span><span class="va">True</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total RAM      : </span><span class="sc">{</span>vm<span class="sc">.</span>total <span class="op">/</span> <span class="fl">1e9</span><span class="sc">:.1f}</span><span class="ss"> GB"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Available RAM  : </span><span class="sc">{</span>vm<span class="sc">.</span>available <span class="op">/</span> <span class="fl">1e9</span><span class="sc">:.1f}</span><span class="ss"> GB"</span>)   <span class="co"># the number that matters</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Free disk      : </span><span class="sc">{</span>du<span class="sc">.</span>free <span class="op">/</span> <span class="fl">1e9</span><span class="sc">:.1f}</span><span class="ss"> GB"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Write all five numbers down.</strong> In class you will run this exact cell a second time inside a rented AWS machine and put the two columns next to each other. The lesson of that comparison is the lesson of the whole module: <em>the machine running your code is a choice, and you can change it.</em></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>Laptop (now)</th>
+<th>SageMaker (in class)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Physical cores</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Logical cores</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Total RAM (GB)</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Available RAM (GB)</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Free disk (GB)</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <p>Two things people get wrong here:</p>
 <ul>
 <li><strong>Total is not available.</strong> A 16 GB machine running a browser, Slack, and a notebook server often has 3–5 GB actually free.</li>
@@ -389,27 +458,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>Two conventions coexist. Storage vendors and cloud consoles mostly use base 1000 (1 KB = 1,000 B). Operating systems and memory often use base 1024 (1 KiB = 1,024 B). This is why a “1 TB” drive shows as 931 GB in your file browser. Neither is wrong; you just need to know which one you are reading.</p>
 <p>A helper you will use constantly:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> human(n, base<span class="op">=</span><span class="dv">1000</span>):</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Turn a byte count into a readable string."""</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> unit <span class="kw">in</span> [<span class="st">"B"</span>, <span class="st">"KB"</span>, <span class="st">"MB"</span>, <span class="st">"GB"</span>, <span class="st">"TB"</span>, <span class="st">"PB"</span>]:</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n <span class="op">&lt;</span> base:</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>n<span class="sc">:,.1f}</span><span class="ss"> </span><span class="sc">{</span>unit<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        n <span class="op">/=</span> base</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>n<span class="sc">:,.1f}</span><span class="ss"> EB"</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>human(<span class="dv">1_500_000</span>)        <span class="co"># '1.5 MB'</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>human(<span class="dv">1_336_457_184</span>)    <span class="co"># '1.3 GB'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> human(n, base<span class="op">=</span><span class="dv">1000</span>):</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Turn a byte count into a readable string."""</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> unit <span class="kw">in</span> [<span class="st">"B"</span>, <span class="st">"KB"</span>, <span class="st">"MB"</span>, <span class="st">"GB"</span>, <span class="st">"TB"</span>, <span class="st">"PB"</span>]:</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n <span class="op">&lt;</span> base:</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>n<span class="sc">:,.1f}</span><span class="ss"> </span><span class="sc">{</span>unit<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        n <span class="op">/=</span> base</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>n<span class="sc">:,.1f}</span><span class="ss"> EB"</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>human(<span class="dv">1_500_000</span>)        <span class="co"># '1.5 MB'</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>human(<span class="dv">1_336_457_184</span>)    <span class="co"># '1.3 GB'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="file-size-is-not-memory-size" class="level3">
 <h3 class="anchored" data-anchor-id="file-size-is-not-memory-size">File size is not memory size</h3>
 <p>A CSV that is 800 MB on disk will not be 800 MB in pandas. Text columns are stored as Python objects, each with overhead, and pandas commonly needs 2–5× the on-disk size to hold a mostly-text CSV. Check what a DataFrame really costs with:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df.memory_usage(deep<span class="op">=</span><span class="va">True</span>).<span class="bu">sum</span>()   <span class="co"># deep=True, or string columns are undercounted</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>So the question “does this fit?” is really: <em>is (file size × a multiplier) less than my available RAM?</em> When the answer is no, you do not need a bigger laptop. You need a smaller extraction.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df.memory_usage(deep<span class="op">=</span><span class="va">True</span>).<span class="bu">sum</span>()   <span class="co"># deep=True, or string columns are undercounted</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>So the question “does this fit?” is really: <em>is (file size × a multiplier) less than my available RAM?</em> When the answer is no, you have two choices, and this module teaches both. You can make a <strong>smaller extraction</strong>, or you can rent a <strong>bigger machine</strong>. Usually you do the first before the second, because the first is free.</p>
 <hr>
 </section>
 </section>
 <section id="the-vocabulary-of-aws" class="level2">
 <h2 class="anchored" data-anchor-id="the-vocabulary-of-aws">3. The vocabulary of AWS</h2>
-<p>Amazon Web Services is the largest cloud provider, and its vocabulary has become the industry’s vocabulary. Nine terms cover most of what you will read in documentation and error messages.</p>
+<p>Amazon Web Services is the largest cloud provider, and its vocabulary has become the industry’s vocabulary. Eleven terms cover most of what you will read in documentation, pricing pages, and error messages.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -460,6 +531,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>What “compute” means as distinct from “storage”</td>
 </tr>
 <tr class="even">
+<td><strong>Instance type</strong></td>
+<td>The size of a rented computer: cores, RAM, and a price per hour. <code>ml.t3.medium</code> is 2 cores, 4 GB, about $0.05 per hour</td>
+<td>Why “run it in the cloud” is not one thing; you choose how much machine</td>
+</tr>
+<tr class="odd">
+<td><strong>Athena</strong></td>
+<td>A SQL engine that runs a query across many machines directly against files in S3 and bills per byte scanned</td>
+<td>How a <code>WHERE</code> clause can run on AWS’s fleet instead of on your machine</td>
+</tr>
+<tr class="even">
 <td><strong>IAM</strong></td>
 <td>Identity and Access Management. Who may do what</td>
 <td>Why code gets <code>AccessDenied</code> even on public data</td>
@@ -471,45 +552,145 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>The single most important idea underneath all nine: <strong>storage and compute are separate.</strong> Data sits in S3. Computers (your laptop, or a rented EC2 instance) reach into S3 for it. The data does not have to be where the computer is.</p>
+<p>The single most important idea underneath all eleven: <strong>storage and compute are separate, and both are rented.</strong> Data sits in S3. Computers reach into S3 for it. The computer can be your laptop, an instance you rent for the afternoon, or a fleet you rent for eight seconds. The data does not move; you decide what reaches for it.</p>
 <hr>
 </section>
+<section id="where-does-the-code-run" class="level2">
+<h2 class="anchored" data-anchor-id="where-does-the-code-run">4. Where does the code run?</h2>
+<p>Three definitions, then a walkthrough.</p>
+<p><strong>Kernel.</strong> The process that actually executes your notebook cells. When you press Shift-Enter, the browser sends the cell to a kernel and the kernel sends back the output. The browser and the kernel do not have to be on the same computer. So far in this course they have been.</p>
+<p><strong>Instance.</strong> A rented computer with a fixed number of cores and a fixed amount of RAM, billed by the hour while it is running. When you run a notebook in Amazon SageMaker Studio, the kernel lives on an instance in an AWS data center, and your laptop becomes a browser tab.</p>
+<p><strong>Region co-location.</strong> Putting the instance in the same region as the bucket. The GHCN bucket is in <code>us-east-1</code>, so our instances are in <code>us-east-1</code>. Inside one region, S3 and the instance are connected by AWS’s own network: reads are fast and the data transfer is free. Across the public internet to your laptop, the same read is slower and, past a free allowance, AWS charges for every gigabyte that leaves. Same code, same file, different bill.</p>
+<section id="the-runs-on-convention" class="level3">
+<h3 class="anchored" data-anchor-id="the-runs-on-convention">The <code># RUNS ON:</code> convention</h3>
+<p>From here on, <strong>every code cell in this module starts with a comment that says where it executes.</strong> There are exactly three values:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: Athena fleet (results land in S3)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The habit matters more than the syntax. An analyst who cannot say where a piece of code runs cannot say what it costs, how long it will take, or why it failed.</p>
+</section>
+<section id="how-much-machine-the-ability-you-are-renting" class="level3">
+<h3 class="anchored" data-anchor-id="how-much-machine-the-ability-you-are-renting">How much machine: the ability you are renting</h3>
+<p>An instance type is a menu item. Prices are approximate, for <code>us-east-1</code>, at the time of writing; the SageMaker pricing page has the current numbers.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Instance type</th>
+<th>Cores</th>
+<th>RAM</th>
+<th>Approx. price per hour</th>
+<th>Comparable to</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ml.t3.medium</code></td>
+<td>2</td>
+<td>4 GB</td>
+<td>$0.05</td>
+<td>A budget laptop; our default</td>
+</tr>
+<tr class="even">
+<td><code>ml.t3.xlarge</code></td>
+<td>4</td>
+<td>16 GB</td>
+<td>$0.20</td>
+<td>A good laptop</td>
+</tr>
+<tr class="odd">
+<td><code>ml.m5.4xlarge</code></td>
+<td>16</td>
+<td>64 GB</td>
+<td>$0.92</td>
+<td>A workstation</td>
+</tr>
+<tr class="even">
+<td><code>ml.m5.24xlarge</code></td>
+<td>96</td>
+<td>384 GB</td>
+<td>$5.53</td>
+<td>A server rack you would never buy for one project</td>
+</tr>
+</tbody>
+</table>
+<p>Read the table two ways. First, a bigger machine is one dropdown away and costs dollars per hour, not thousands up front. Second, the small one is enough for almost everything in this module, because the reading pattern in section 6 keeps the data small. Rent ability when extraction is not enough, not instead of it.</p>
+</section>
+<section id="opening-a-sagemaker-studio-jupyterlab-space-aws-academy-learner-lab" class="level3">
+<h3 class="anchored" data-anchor-id="opening-a-sagemaker-studio-jupyterlab-space-aws-academy-learner-lab">Opening a SageMaker Studio JupyterLab space (AWS Academy Learner Lab)</h3>
+<p>This module assumes you reach AWS through the <strong>AWS Academy Learner Lab</strong> linked from Canvas. The lab gives you a temporary AWS account with credentials already set up and a fixed budget. Nothing here requires a credit card. The console changes its labels from time to time; follow the on-screen names if they differ slightly from these.</p>
+<ol type="1">
+<li><strong>Start the lab.</strong> In the Learner Lab page, click <strong>Start Lab</strong> and wait for the circle next to “AWS” to turn green. Note two things at the top of the page: the <strong>session timer</strong> (the lab shuts itself down after a few hours) and the <strong>budget</strong> remaining. Everything you run in this module spends from that budget.</li>
+<li><strong>Open the console.</strong> Click the green <strong>AWS</strong> link. Confirm the region shown in the top-right corner is <strong>N. Virginia (<code>us-east-1</code>)</strong>. If it is not, change it. This is co-location; see above.</li>
+<li><strong>Open SageMaker.</strong> In the search bar type <em>SageMaker AI</em> and open it. In the left menu choose <strong>Studio</strong>. If no domain exists yet, choose <strong>Set up for single user (Quick setup)</strong> and wait; this takes several minutes the first time and only happens once per lab account. If asked for an execution role, pick the existing <strong>LabRole</strong>.</li>
+<li><strong>Open Studio, then JupyterLab.</strong> Click <strong>Open Studio</strong>. In Studio’s home page choose <strong>JupyterLab</strong>, then <strong>Create JupyterLab space</strong>. Name it <code>gsb5544</code>. Leave the storage at the default.</li>
+<li><strong>Choose the instance and run the space.</strong> Set the instance to <strong><code>ml.t3.medium</code></strong> and the image to the default <strong>SageMaker Distribution</strong>. Click <strong>Run space</strong>. When the status changes to <em>Running</em>, click <strong>Open JupyterLab</strong>. The clock on the $0.05 per hour started when the status changed to <em>Running</em>.</li>
+<li><strong>Upload the two notebooks</strong> for this session (the file-upload arrow in the left file browser) and open the topics-of-practice notebook.</li>
+<li><strong>Run the <code>psutil</code> cell first</strong>, before anything else. Fill in the right-hand column of the table in section 1.</li>
+<li><strong>When you are done for the day, stop the space.</strong> In Studio’s JupyterLab spaces list, click <strong>Stop</strong>. Then click <strong>End Lab</strong> on the Learner Lab page. A stopped space costs only a few cents a month for its storage. A running space costs the same whether or not you are typing. The practice activity ends with a graded shutdown check for exactly this reason.</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled" title="If you are using a personal AWS account instead">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>If you are using a personal AWS account instead
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Do step 3 onward in the same way, but two things come first. Create a <strong>budget alarm</strong> (Billing → Budgets → Create budget, a monthly cost budget of $10 with an email alert at 80%) before you create anything else, so a forgotten space cannot surprise you. And when SageMaker asks for an execution role, let it create a new one. Everything in this module costs under a dollar if you stop the space when you finish; the alarm is there for the day you forget.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
 <section id="reading-from-s3-without-an-account" class="level2">
-<h2 class="anchored" data-anchor-id="reading-from-s3-without-an-account">4. Reading from S3 without an account</h2>
-<p>Many large public datasets are hosted on S3 through the <a href="https://registry.opendata.aws/">Registry of Open Data on AWS</a>. They can be read <em>anonymously</em>: no account, no credit card, no credentials. The request is simply not signed.</p>
-<p>Install what you need (once):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install boto3 s3fs psutil pandas matplotlib</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<h2 class="anchored" data-anchor-id="reading-from-s3-without-an-account">5. Reading from S3 without an account</h2>
+<p>Many large public datasets are hosted on S3 through the <a href="https://registry.opendata.aws/">Registry of Open Data on AWS</a>. They can be read <em>anonymously</em>: no account, no credit card, no credentials. The request is simply not signed. This works identically from your laptop and from inside SageMaker; only the network in between changes.</p>
+<p>Install what you need on your laptop (once). Inside SageMaker the default image already has all of these.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install boto3 s3fs psutil pandas matplotlib</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>boto3</code> is the official AWS library for Python. Create an unsigned client:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> boto3</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> botocore <span class="im">import</span> UNSIGNED</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> botocore.config <span class="im">import</span> Config</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>s3 <span class="op">=</span> boto3.client(<span class="st">"s3"</span>, region_name<span class="op">=</span><span class="st">"us-east-1"</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                  config<span class="op">=</span>Config(signature_version<span class="op">=</span>UNSIGNED))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> boto3</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> botocore <span class="im">import</span> UNSIGNED</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> botocore.config <span class="im">import</span> Config</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>s3 <span class="op">=</span> boto3.client(<span class="st">"s3"</span>, region_name<span class="op">=</span><span class="st">"us-east-1"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                  config<span class="op">=</span>Config(signature_version<span class="op">=</span>UNSIGNED))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Our dataset is NOAA’s <strong>Global Historical Climatology Network – Daily (GHCN-D)</strong>: daily observations from tens of thousands of weather stations worldwide, some going back to the 1760s. It lives in the bucket <code>noaa-ghcn-pds</code>.</p>
 <section id="listing-not-downloading" class="level3">
 <h3 class="anchored" data-anchor-id="listing-not-downloading">Listing, not downloading</h3>
 <p>The first thing to do with any bucket is look at what is in it. <code>Delimiter="/"</code> asks S3 to group keys by their first path segment, which is how you see the “folders”:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>BUCKET <span class="op">=</span> <span class="st">"noaa-ghcn-pds"</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> s3.list_objects_v2(Bucket<span class="op">=</span>BUCKET, Delimiter<span class="op">=</span><span class="st">"/"</span>)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([p[<span class="st">"Prefix"</span>] <span class="cf">for</span> p <span class="kw">in</span> resp.get(<span class="st">"CommonPrefixes"</span>, [])])</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ['csv.gz/', 'csv/', 'parquet/']</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([o[<span class="st">"Key"</span>] <span class="cf">for</span> o <span class="kw">in</span> resp.get(<span class="st">"Contents"</span>, [])][:<span class="dv">6</span>])</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ['ghcnd-countries.txt', 'ghcnd-inventory.txt', 'ghcnd-states.txt', 'ghcnd-stations.txt', ...]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>BUCKET <span class="op">=</span> <span class="st">"noaa-ghcn-pds"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> s3.list_objects_v2(Bucket<span class="op">=</span>BUCKET, Delimiter<span class="op">=</span><span class="st">"/"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([p[<span class="st">"Prefix"</span>] <span class="cf">for</span> p <span class="kw">in</span> resp.get(<span class="st">"CommonPrefixes"</span>, [])])</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ['csv.gz/', 'csv/', 'parquet/']</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([o[<span class="st">"Key"</span>] <span class="cf">for</span> o <span class="kw">in</span> resp.get(<span class="st">"Contents"</span>, [])][:<span class="dv">6</span>])</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># ['ghcnd-countries.txt', 'ghcnd-inventory.txt', 'ghcnd-states.txt', 'ghcnd-stations.txt', ...]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The <code>csv/</code> prefix contains two layouts of the same data:</p>
 <ul>
 <li><code>csv/by_year/YYYY.csv</code> — every station, one year per file</li>
 <li><code>csv/by_station/STATIONID.csv</code> — one station, every year in one file</li>
 </ul>
+<p>The <code>parquet/</code> prefix contains the same data a third time, in a columnar format that SQL engines can read selectively. Its keys look like <code>parquet/by_year/YEAR=2024/ELEMENT=TMAX/…parquet</code>. That <code>YEAR=</code>/<code>ELEMENT=</code> pattern is not decoration; section 6 shows what it buys you.</p>
 </section>
 <section id="reading-a-size-without-reading-the-file" class="level3">
 <h3 class="anchored" data-anchor-id="reading-a-size-without-reading-the-file">Reading a size without reading the file</h3>
 <p>Every object carries its size as metadata. You can read it for free:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> s3.list_objects_v2(Bucket<span class="op">=</span>BUCKET, Prefix<span class="op">=</span><span class="st">"csv/by_year/202"</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> obj <span class="kw">in</span> resp[<span class="st">"Contents"</span>]:</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>obj[<span class="st">'Key'</span>]<span class="sc">:&lt;28}</span><span class="ss"> </span><span class="sc">{</span>human(obj[<span class="st">'Size'</span>])<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> s3.list_objects_v2(Bucket<span class="op">=</span>BUCKET, Prefix<span class="op">=</span><span class="st">"csv/by_year/202"</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> obj <span class="kw">in</span> resp[<span class="st">"Contents"</span>]:</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>obj[<span class="st">'Key'</span>]<span class="sc">:&lt;28}</span><span class="ss"> </span><span class="sc">{</span>human(obj[<span class="st">'Size'</span>])<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>csv/by_year/2020.csv         1.3 GB
 csv/by_year/2021.csv         1.4 GB
 csv/by_year/2022.csv         1.4 GB
@@ -517,80 +698,235 @@ csv/by_year/2023.csv         1.4 GB
 csv/by_year/2024.csv         1.3 GB
 csv/by_year/2025.csv         1.3 GB
 csv/by_year/2026.csv         818.8 MB</code></pre>
-<p>Compare that to your available RAM from section 1, and remember the multiplier. One year of GHCN is a file most laptops cannot open with a plain <code>pd.read_csv</code>.</p>
+<p>Compare that to your available RAM from section 1, and remember the multiplier. One year of GHCN is a file most laptops cannot open with a plain <code>pd.read_csv</code>. Notice that an <code>ml.t3.medium</code>, with 4 GB, cannot open it either. Renting a machine did not change the arithmetic; only extraction or a much larger instance does.</p>
 <p>For a single object, <code>head_object</code> returns the metadata alone:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>meta <span class="op">=</span> s3.head_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span><span class="st">"csv/by_year/2024.csv"</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>meta[<span class="st">"ContentLength"</span>], meta[<span class="st">"LastModified"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>meta <span class="op">=</span> s3.head_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span><span class="st">"csv/by_year/2024.csv"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>meta[<span class="st">"ContentLength"</span>], meta[<span class="st">"LastModified"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="reading-a-slice-of-a-file" class="level3">
 <h3 class="anchored" data-anchor-id="reading-a-slice-of-a-file">Reading a <em>slice</em> of a file</h3>
 <p>S3 supports HTTP range requests, so you can read the first few hundred bytes of a gigabyte file to see its shape:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span><span class="st">"csv/by_year/2024.csv"</span>, Range<span class="op">=</span><span class="st">"bytes=0-299"</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(obj[<span class="st">"Body"</span>].read().decode())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Use this to check whether a file has a header row before you read it. If the first line begins with <code>ID,</code>, it does.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span><span class="st">"csv/by_year/2024.csv"</span>, Range<span class="op">=</span><span class="st">"bytes=0-299"</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(obj[<span class="st">"Body"</span>].read().decode())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Use this to check whether a file has a header row before you read it. If the first line begins with <code>ID,</code>, it does. Never assume either way; the check costs 300 bytes.</p>
 <hr>
 </section>
 </section>
 <section id="extraction-strategy-filter-at-the-source" class="level2">
-<h2 class="anchored" data-anchor-id="extraction-strategy-filter-at-the-source">5. Extraction strategy: filter at the source</h2>
+<h2 class="anchored" data-anchor-id="extraction-strategy-filter-at-the-source">6. Extraction strategy: filter at the source</h2>
 <p>When data does not fit, there are three levers, and they all express one principle: <strong>move the filter to the data instead of moving the data to the filter.</strong></p>
 <p><strong>Lever 1: pick the right object.</strong> GHCN offers the same data by year (1.3 GB, all stations) and by station (a few MB, all years). If you need one location, read the station file. Choosing the object is the cheapest filter there is.</p>
 <p><strong>Lever 2: read fewer columns.</strong> <code>usecols</code> tells pandas to discard columns while parsing, so they never take memory.</p>
 <p><strong>Lever 3: read fewer rows at a time.</strong> <code>chunksize</code> returns an iterator of DataFrames; you filter each chunk and keep only what survives.</p>
 <p>Here is the pattern, reading one station directly from S3. The GHCN CSV columns are, in order: station ID, date (YYYYMMDD), element code, value, and four flag columns.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>COLS <span class="op">=</span> [<span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"element"</span>, <span class="st">"value"</span>, <span class="st">"m_flag"</span>, <span class="st">"q_flag"</span>, <span class="st">"s_flag"</span>, <span class="st">"obs_time"</span>]</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>STATION <span class="op">=</span> <span class="st">"USC00047851"</span>          <span class="co"># SAN LUIS OBISPO POLY, CA — records since 1893</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> <span class="ss">f"csv/by_station/</span><span class="sc">{</span>STATION<span class="sc">}</span><span class="ss">.csv"</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Does the file have a header row? Read 100 bytes and look.</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>first <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key, Range<span class="op">=</span><span class="st">"bytes=0-99"</span>)[<span class="st">"Body"</span>].read().decode()</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>has_header <span class="op">=</span> first.upper().startswith(<span class="st">"ID,"</span>)</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key)</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    obj[<span class="st">"Body"</span>],</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    header<span class="op">=</span><span class="dv">0</span> <span class="cf">if</span> has_header <span class="cf">else</span> <span class="va">None</span>,</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    names<span class="op">=</span>COLS,</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    usecols<span class="op">=</span>[<span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"element"</span>, <span class="st">"value"</span>],     <span class="co"># lever 2</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    dtype<span class="op">=</span>{<span class="st">"id"</span>: <span class="st">"string"</span>, <span class="st">"element"</span>: <span class="st">"string"</span>},</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>df.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>For a by-year file, add lever 3 and keep only the rows you want as they stream past:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> <span class="st">"csv/by_year/2024.csv"</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>first <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key, Range<span class="op">=</span><span class="st">"bytes=0-99"</span>)[<span class="st">"Body"</span>].read().decode()</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>has_header <span class="op">=</span> first.upper().startswith(<span class="st">"ID,"</span>)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>chunks <span class="op">=</span> pd.read_csv(</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"s3://</span><span class="sc">{</span>BUCKET<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>key<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    storage_options<span class="op">=</span>{<span class="st">"anon"</span>: <span class="va">True</span>},                 <span class="co"># unsigned, via s3fs</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    header<span class="op">=</span><span class="dv">0</span> <span class="cf">if</span> has_header <span class="cf">else</span> <span class="va">None</span>,</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    names<span class="op">=</span>COLS,</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    usecols<span class="op">=</span>[<span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"element"</span>, <span class="st">"value"</span>],</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    chunksize<span class="op">=</span><span class="dv">1_000_000</span>,                            <span class="co"># lever 3</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>keep <span class="op">=</span> pd.concat(c[c[<span class="st">"id"</span>] <span class="op">==</span> STATION] <span class="cf">for</span> c <span class="kw">in</span> chunks)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>COLS <span class="op">=</span> [<span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"element"</span>, <span class="st">"value"</span>, <span class="st">"m_flag"</span>, <span class="st">"q_flag"</span>, <span class="st">"s_flag"</span>, <span class="st">"obs_time"</span>]</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>STATION <span class="op">=</span> <span class="st">"USC00047851"</span>          <span class="co"># SAN LUIS OBISPO POLY, CA — records since 1893</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> <span class="ss">f"csv/by_station/</span><span class="sc">{</span>STATION<span class="sc">}</span><span class="ss">.csv"</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Does the file have a header row? Read 100 bytes and look.</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>first <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key, Range<span class="op">=</span><span class="st">"bytes=0-99"</span>)[<span class="st">"Body"</span>].read().decode()</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>has_header <span class="op">=</span> first.upper().startswith(<span class="st">"ID,"</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    obj[<span class="st">"Body"</span>],</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    header<span class="op">=</span><span class="dv">0</span> <span class="cf">if</span> has_header <span class="cf">else</span> <span class="va">None</span>,</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    names<span class="op">=</span>COLS,</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    usecols<span class="op">=</span>[<span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"element"</span>, <span class="st">"value"</span>],     <span class="co"># lever 2</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    dtype<span class="op">=</span>{<span class="st">"id"</span>: <span class="st">"string"</span>, <span class="st">"element"</span>: <span class="st">"string"</span>},</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>df.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>For a by-year file, add lever 3 and keep only the rows you want as they stream past. <strong>Time this one and write the number down.</strong> It is the laptop leg of a three-way race you will finish in class, and it is the slow leg, so run it now while you read the rest of this page. Expect several minutes; if your connection is very slow, note how long you waited before giving up, and bring that number instead.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> <span class="st">"csv/by_year/2024.csv"</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>first <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key, Range<span class="op">=</span><span class="st">"bytes=0-99"</span>)[<span class="st">"Body"</span>].read().decode()</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>has_header <span class="op">=</span> first.upper().startswith(<span class="st">"ID,"</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>chunks <span class="op">=</span> pd.read_csv(</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"s3://</span><span class="sc">{</span>BUCKET<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>key<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    storage_options<span class="op">=</span>{<span class="st">"anon"</span>: <span class="va">True</span>},                 <span class="co"># unsigned, via s3fs</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    header<span class="op">=</span><span class="dv">0</span> <span class="cf">if</span> has_header <span class="cf">else</span> <span class="va">None</span>,</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    names<span class="op">=</span>COLS,</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    usecols<span class="op">=</span>[<span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"element"</span>, <span class="st">"value"</span>],</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    chunksize<span class="op">=</span><span class="dv">1_000_000</span>,                            <span class="co"># lever 3</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>keep <span class="op">=</span> pd.concat(c[c[<span class="st">"id"</span>] <span class="op">==</span> STATION] <span class="cf">for</span> c <span class="kw">in</span> chunks)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>LAPTOP_SECONDS <span class="op">=</span> time.perf_counter() <span class="op">-</span> t0</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(keep)<span class="sc">:,}</span><span class="ss"> rows for </span><span class="sc">{</span>STATION<span class="sc">}</span><span class="ss"> in </span><span class="sc">{</span>LAPTOP_SECONDS<span class="sc">:,.0f}</span><span class="ss"> s"</span>)   <span class="co"># write this down</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Both produce the same rows for that station. One reads 6.7 MB; the other reads 1.3 GB and throws almost all of it away. Lever 1 was the one that mattered.</p>
+<section id="the-fourth-lever-let-the-fleet-do-the-filtering" class="level3">
+<h3 class="anchored" data-anchor-id="the-fourth-lever-let-the-fleet-do-the-filtering">The fourth lever: let the fleet do the filtering</h3>
+<p>There is one more place a filter can run: on AWS’s own machines, before anything reaches yours at all. <strong>Amazon Athena</strong> takes a SQL statement, runs it across many machines directly against the Parquet files in S3, writes the result to a bucket you own, and charges you for the bytes it had to scan. A <code>WHERE</code> clause becomes the extraction.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- RUNS ON: Athena fleet (results land in S3)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">id</span>, <span class="ot">"date"</span>, data_value</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   ghcn</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  <span class="dt">year</span> <span class="op">=</span> <span class="dv">2024</span> <span class="kw">AND</span> element <span class="op">=</span> <span class="st">'TMAX'</span> <span class="kw">AND</span> <span class="kw">id</span> <span class="op">=</span> <span class="st">'USC00047851'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Two things make this cheap. Parquet is columnar, so Athena reads only the columns named. And the <code>YEAR=2024/ELEMENT=TMAX/</code> layout of the keys means Athena opens only that one slice of the bucket and never touches the other 270 years or the other 100-odd element codes. In class you will run this query from the notebook with <code>boto3</code>, read the bytes-scanned statistic, and compare it to the 1.3 GB CSV. Levers 1 to 3 shrink what <em>your</em> machine reads. Lever 4 shrinks what <em>any</em> machine reads.</p>
+</section>
 <section id="the-units-trap" class="level3">
 <h3 class="anchored" data-anchor-id="the-units-trap">The units trap</h3>
 <p>GHCN stores temperatures in <strong>tenths of a degree Celsius</strong> and precipitation in <strong>tenths of a millimeter</strong>. A <code>TMAX</code> value of <code>266</code> means 26.6 °C. Divide by 10 before you do anything else, or your first chart will show 300-degree days. Data arrives with conventions attached; reading the documentation is part of extraction.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>].astype(<span class="bu">str</span>), <span class="bu">format</span><span class="op">=</span><span class="st">"%Y%m</span><span class="sc">%d</span><span class="st">"</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>tmax <span class="op">=</span> df[df[<span class="st">"element"</span>] <span class="op">==</span> <span class="st">"TMAX"</span>].copy()</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>tmax[<span class="st">"tmax_c"</span>] <span class="op">=</span> tmax[<span class="st">"value"</span>] <span class="op">/</span> <span class="dv">10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>].astype(<span class="bu">str</span>), <span class="bu">format</span><span class="op">=</span><span class="st">"%Y%m</span><span class="sc">%d</span><span class="st">"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>tmax <span class="op">=</span> df[df[<span class="st">"element"</span>] <span class="op">==</span> <span class="st">"TMAX"</span>].copy()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>tmax[<span class="st">"tmax_c"</span>] <span class="op">=</span> tmax[<span class="st">"value"</span>] <span class="op">/</span> <span class="dv">10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <hr>
 </section>
 </section>
-<section id="where-this-goes-next" class="level2">
-<h2 class="anchored" data-anchor-id="where-this-goes-next">6. Where this goes next</h2>
-<p>In class you will:</p>
+<section id="cost-space-and-ability-what-you-are-actually-renting" class="level2">
+<h2 class="anchored" data-anchor-id="cost-space-and-ability-what-you-are-actually-renting">7. Cost, space, and ability: what you are actually renting</h2>
+<p>Cost is part of the job, not a footnote. A model that costs more to refresh than the decision it informs is a bad model. Here is what the three things in this module cost, approximately, in <code>us-east-1</code> at the time of writing. Check the pricing pages in the references for current numbers.</p>
+<section id="space-storing-data" class="level3">
+<h3 class="anchored" data-anchor-id="space-storing-data">Space: storing data</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>What</th>
+<th>Approx. price</th>
+<th>What it means for you</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>S3 Standard storage</td>
+<td>$0.023 per GB per month</td>
+<td>1 GB of query results for a month: about 2 cents. The 100+ GB GHCN bucket is paid for by the AWS Open Data program, not by you</td>
+</tr>
+<tr class="even">
+<td>S3 requests</td>
+<td>$0.005 per 1,000 writes/lists, $0.0004 per 1,000 reads</td>
+<td>Every <code>list_objects_v2</code>, <code>head_object</code>, and <code>get_object</code> in this module together: well under a cent</td>
+</tr>
+<tr class="odd">
+<td>Data transfer S3 → your laptop</td>
+<td>First 100 GB per month free, then $0.09 per GB</td>
+<td>Reading the 1.3 GB by-year file at home twenty times a month starts to cost real money</td>
+</tr>
+<tr class="even">
+<td>Data transfer S3 → SageMaker, same region</td>
+<td>Free</td>
+<td>The reason for co-location</td>
+</tr>
+<tr class="odd">
+<td>SageMaker space storage (EBS)</td>
+<td>$0.10 per GB per month</td>
+<td>A stopped space with the default 5 GB volume: about 50 cents a month</td>
+</tr>
+</tbody>
+</table>
+<p>There is no practical ceiling on space. A single S3 object can be 5 TB; a bucket can hold as many objects as you pay for. Space is almost never the constraint. Ability and cost are.</p>
+</section>
+<section id="ability-renting-compute" class="level3">
+<h3 class="anchored" data-anchor-id="ability-renting-compute">Ability: renting compute</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>What</th>
+<th>Approx. price</th>
+<th>What it means for you</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ml.t3.medium</code> (2 cores, 4 GB)</td>
+<td>$0.05 per hour</td>
+<td>A three-hour class session: 15 cents</td>
+</tr>
+<tr class="even">
+<td><code>ml.m5.4xlarge</code> (16 cores, 64 GB)</td>
+<td>$0.92 per hour</td>
+<td>Enough to open a whole by-year CSV in pandas. An hour of it costs less than a coffee</td>
+</tr>
+<tr class="odd">
+<td>Athena</td>
+<td>$5 per TB scanned, 10 MB minimum per query. DDL statements and failed queries are free</td>
+<td>The largest query in this module scans about 600 MB: a third of a cent</td>
+</tr>
+</tbody>
+</table>
+<p>The point of the second table: ability is rented in hours, not bought in years. If a job needs 64 GB of RAM once a quarter, you rent 64 GB for that hour. Your laptop is not the ceiling on what you can analyze; it is just the machine you happen to be typing on.</p>
+</section>
+<section id="open-is-not-running" class="level3">
+<h3 class="anchored" data-anchor-id="open-is-not-running">Open is not running</h3>
+<p>This is the single most expensive misunderstanding in cloud computing, so read it twice.</p>
 <ul>
-<li>Measure your own machine and put the class’s numbers side by side.</li>
-<li>Read sizes from the GHCN bucket and decide, with arithmetic, what fits.</li>
-<li>Extract one station’s history, transform it, and plot it.</li>
-<li>Compare two markets’ weather histories the way an analyst would before building a demand model.</li>
+<li>A notebook that is <strong>open in your browser</strong> costs nothing. It is a text file being displayed.</li>
+<li>A JupyterLab space whose status is <strong>Running</strong> costs its hourly price every hour, whether or not a notebook is open, whether or not you are typing, whether or not you have closed the browser tab.</li>
+<li>A space whose status is <strong>Stopped</strong> costs only its storage, a few cents a month.</li>
 </ul>
-<p>Everything in the practice activity uses only what is on this page.</p>
+<p>Two worked examples with the <code>ml.t3.medium</code> price:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Scenario</th>
+<th>Hours</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Class session, then Stop</td>
+<td>3</td>
+<td>$0.15</td>
+</tr>
+<tr class="even">
+<td>Forgot to stop it Friday, noticed Monday</td>
+<td>64</td>
+<td>$3.20</td>
+</tr>
+<tr class="odd">
+<td>Forgot for a month</td>
+<td>720</td>
+<td>$36.00</td>
+</tr>
+<tr class="even">
+<td>Same month, <code>ml.m5.4xlarge</code></td>
+<td>720</td>
+<td>$662.40</td>
+</tr>
+</tbody>
+</table>
+<p>In the Learner Lab, the budget at the top of the page is what stands between you and the last row. When it reaches zero the lab account is disabled, and the material you have not downloaded goes with it. In a personal account, the budget alarm from section 4 is what stands between you and it.</p>
+</section>
+<section id="the-teardown-habit" class="level3">
+<h3 class="anchored" data-anchor-id="the-teardown-habit">The teardown habit</h3>
+<p>Every session on a rented machine ends the same way, in this order, and the practice activity grades it:</p>
+<ol type="1">
+<li>Empty the results bucket you created for Athena, so no stray gigabytes accumulate.</li>
+<li>Stop the JupyterLab space and watch the status change to <em>Stopped</em>.</li>
+<li>Look at the budget or the billing page and confirm the number is what you expected.</li>
+<li>End the lab.</li>
+</ol>
+<p>Analysts who do this by reflex are trusted with cloud accounts. Analysts who do not, are not.</p>
+<hr>
+</section>
+</section>
+<section id="before-class-what-to-bring" class="level2">
+<h2 class="anchored" data-anchor-id="before-class-what-to-bring">Before class: what to bring</h2>
+<ul>
+<li>The five laptop numbers from section 1, filled into the left column of the table.</li>
+<li><code>LAPTOP_SECONDS</code> from section 6, or how long you waited before giving up.</li>
+<li>Your Learner Lab started at least once, so the SageMaker domain from step 3 of section 4 already exists and you are not waiting on it in class.</li>
+</ul>
 <hr>
 </section>
 <section id="reading-check" class="level2">
@@ -602,6 +938,7 @@ csv/by_year/2026.csv         818.8 MB</code></pre>
 <li>Why can <code>list_objects_v2</code> tell you a file’s size without downloading it?</li>
 <li>You need every temperature reading for Phoenix since 1990. Which object do you read: <code>csv/by_year/*.csv</code> or <code>csv/by_station/USW00023183.csv</code>? Why?</li>
 <li>A <code>TMAX</code> value in the file is <code>412</code>. What is the temperature in Celsius? In Fahrenheit?</li>
+<li>Why does it matter that the notebook and the bucket are in the same region? Name one effect on speed and one on cost.</li>
 </ol>
 <hr>
 </section>
@@ -612,7 +949,13 @@ csv/by_year/2026.csv         818.8 MB</code></pre>
 <li>GHCN-D by-year file format (column order and units): https://www.ncei.noaa.gov/pub/data/ghcn/daily/readme-by_year.txt</li>
 <li>GHCN-D full readme (element codes, flags): https://www.ncei.noaa.gov/pub/data/ghcn/daily/readme.txt</li>
 <li>boto3 S3 client reference: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html</li>
+<li>boto3 Athena client reference: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/athena.html</li>
 <li>pandas <code>read_csv</code> (<code>usecols</code>, <code>chunksize</code>, <code>storage_options</code>): https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html</li>
+<li>SageMaker Studio JupyterLab spaces: https://docs.aws.amazon.com/sagemaker/latest/dg/studio-updated-jl.html</li>
+<li>SageMaker pricing (instance types): https://aws.amazon.com/sagemaker/pricing/</li>
+<li>Athena pricing: https://aws.amazon.com/athena/pricing/</li>
+<li>Athena partition projection: https://docs.aws.amazon.com/athena/latest/ug/partition-projection.html</li>
+<li>S3 pricing: https://aws.amazon.com/s3/pricing/</li>
 </ul>
 
 

@@ -154,6 +154,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="./session_1/03_practice_activity_SOLUTIONS.html">
  <span class="dropdown-text">03 · Practice activity (solutions)</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./session_1/CHANGELOG.html">
+ <span class="dropdown-text">Changelog · local → remote compute</span></a>
+  </li>  
     </ul>
   </li>
 </ul>
@@ -239,6 +243,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">03 · Practice activity (solutions)</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./session_1/CHANGELOG.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Changelog · local → remote compute</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -252,6 +262,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#status-at-a-glance" id="toc-status-at-a-glance" class="nav-link active" data-scroll-target="#status-at-a-glance">Status at a glance</a></li>
+  <li><a href="#what-session-1-teaches-about-aws-space-ability-and-cost" id="toc-what-session-1-teaches-about-aws-space-ability-and-cost" class="nav-link" data-scroll-target="#what-session-1-teaches-about-aws-space-ability-and-cost">What Session 1 teaches about AWS: space, ability, and cost</a></li>
   <li><a href="#how-a-session-is-structured" id="toc-how-a-session-is-structured" class="nav-link" data-scroll-target="#how-a-session-is-structured">How a session is structured</a></li>
   <li><a href="#session-1-data-bigger-than-your-laptop" id="toc-session-1-data-bigger-than-your-laptop" class="nav-link" data-scroll-target="#session-1-data-bigger-than-your-laptop">Session 1 · Data Bigger Than Your Laptop</a>
   <ul class="collapse">
@@ -259,7 +270,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">Dataset</a></li>
   <li><a href="#what-students-will-do-in-order" id="toc-what-students-will-do-in-order" class="nav-link" data-scroll-target="#what-students-will-do-in-order">What students will do, in order</a></li>
   <li><a href="#session-1-documents" id="toc-session-1-documents" class="nav-link" data-scroll-target="#session-1-documents">Session 1 documents</a></li>
-  <li><a href="#what-students-need-installed" id="toc-what-students-need-installed" class="nav-link" data-scroll-target="#what-students-need-installed">What students need installed</a></li>
+  <li><a href="#what-students-need" id="toc-what-students-need" class="nav-link" data-scroll-target="#what-students-need">What students need</a></li>
   </ul></li>
   <li><a href="#for-collaborators" id="toc-for-collaborators" class="nav-link" data-scroll-target="#for-collaborators">For collaborators</a></li>
   </ul>
@@ -289,28 +300,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>This site holds the AWS-focused sessions being developed for GSB 5544. It exists so collaborators can see, in one place, <strong>what has been built so far</strong> and <strong>what students will actually do</strong> in each session. Every document is rendered here as a web page and is also available as a downloadable notebook or as a one-click Google Colab link.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="No AWS account is needed">
+<div class="callout callout-style-default callout-note callout-titled" title="How students reach AWS">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>No AWS account is needed
+<span class="screen-reader-only">Note</span>How students reach AWS
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Every session uses public datasets from the <a href="https://registry.opendata.aws/">Registry of Open Data on AWS</a>. Students read from S3 anonymously with <code>boto3</code>, so there is nothing to sign up for and nothing that can generate a bill.</p>
+<p>Session 1 assumes the <strong>AWS Academy Learner Lab</strong>: a temporary account with credentials pre-set and a fixed budget, no credit card. Data comes from the public <code>noaa-ghcn-pds</code> bucket on the <a href="https://registry.opendata.aws/">Registry of Open Data on AWS</a>. Compute is a SageMaker Studio JupyterLab space on an <code>ml.t3.medium</code> and Athena queries, both in <code>us-east-1</code>. A full session costs a student roughly 20 to 30 cents if they stop the space when they finish, and stopping it is graded.</p>
 </div>
 </div>
 <section id="status-at-a-glance" class="level2">
 <h2 class="anchored" data-anchor-id="status-at-a-glance">Status at a glance</h2>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Session</th>
@@ -322,8 +327,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td>1</td>
-<td>Data Bigger Than Your Laptop: measuring capacity, S3 vocabulary, and extracting only what you need from NOAA weather data</td>
-<td><strong>Complete draft</strong>, ready for review</td>
+<td>Data Bigger Than Your Laptop: measuring capacity, S3 vocabulary, extracting only what you need, and running the work on rented AWS compute</td>
+<td><strong>Complete draft, revised 2026-09-26</strong> to move computation onto AWS (SageMaker Studio + Athena). Needs one dry run in the Learner Lab before class; see the <a href="./session_1/CHANGELOG.html">changelog</a></td>
 <td>Pre-class reading, topics-of-practice notebook, practice activity, solutions for both</td>
 </tr>
 <tr class="even">
@@ -335,14 +340,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
+<section id="what-session-1-teaches-about-aws-space-ability-and-cost" class="level2">
+<h2 class="anchored" data-anchor-id="what-session-1-teaches-about-aws-space-ability-and-cost">What Session 1 teaches about AWS: space, ability, and cost</h2>
+<p>The module is organized around three questions an analyst asks of any cloud, and it answers each one with numbers the students produce themselves.</p>
+<ul>
+<li><strong>Space.</strong> Storage is separate from compute and has no practical ceiling. Students read the size of a 1.3 GB file without downloading it, total a decade of files against their own RAM, and learn what S3 storage, requests, and data transfer cost per gigabyte. They see that transfer inside a region is free and transfer to a laptop is not, which is why the notebook runs next to the bucket.</li>
+<li><strong>Ability.</strong> Compute is rented by the hour in sizes you choose. Students run the same <code>psutil</code> cell on their laptop and inside a rented <code>ml.t3.medium</code>, put the two side by side, and see an instance-type table from 2 cores and 4 GB at $0.05 per hour up to 96 cores and 384 GB at about $5.50 per hour. They then hand a <code>WHERE</code> clause to Athena’s fleet and watch it scan a fraction of the file in seconds.</li>
+<li><strong>Cost.</strong> Every code cell says where it runs. The reading has a section on what the instance costs per hour, what Athena charges per terabyte scanned, and the difference between a notebook that is open and a space that is running, with worked examples (a class session: 15 cents; a forgotten month: $36). The practice activity ends with a graded cost audit and a verified teardown.</li>
+</ul>
+</section>
 <section id="how-a-session-is-structured" class="level2">
 <h2 class="anchored" data-anchor-id="how-a-session-is-structured">How a session is structured</h2>
 <p>Each session follows the same three-part pattern, so students always know what to expect.</p>
 <ol type="1">
-<li><strong>Pre-class reading</strong> (<code>01_*.md</code>). A self-contained explainer with runnable code snippets. Students read it and run the code before class. It ends with a short reading check.</li>
-<li><strong>Topics of practice</strong> (<code>02_*.ipynb</code>). An in-class, fill-in-the-blank walkthrough of every function introduced in the reading. Blanks are marked <code>____</code>. The instructor version has the blanks filled in.</li>
-<li><strong>Practice activity</strong> (<code>03_*.ipynb</code>). A business scenario with numbered questions and empty code cells. Students work through it in class or as homework. The solutions version has every cell completed.</li>
+<li><strong>Pre-class reading</strong> (<code>01_*.md</code>). A self-contained explainer with runnable code snippets. Students read it and run the code on their laptop before class, write down their machine’s numbers and one timing, and start the Learner Lab once so the SageMaker domain exists. It ends with a short reading check.</li>
+<li><strong>Topics of practice</strong> (<code>02_*.ipynb</code>). An in-class, fill-in-the-blank walkthrough of every function introduced in the reading, run inside SageMaker Studio. Blanks are marked <code>____</code>. The instructor version has the blanks filled in.</li>
+<li><strong>Practice activity</strong> (<code>03_*.ipynb</code>). A business scenario with numbered questions and empty code cells, also run inside SageMaker Studio. Students work through it in class or as homework. The solutions version has every cell completed.</li>
 </ol>
+<p>Every code cell in both notebooks begins with one of three lines: <code># RUNS ON: laptop</code>, <code># RUNS ON: SageMaker ml.t3.medium (us-east-1)</code>, or <code># RUNS ON: Athena fleet (results land in S3)</code>. The build script refuses to generate a notebook where any cell lacks one.</p>
 <p>The two notebooks are generated from a single source file, <code>build_notebooks.py</code>, so the student and solutions versions never drift apart. Editing the source and re-running the script regenerates all four notebooks.</p>
 </section>
 <section id="session-1-data-bigger-than-your-laptop" class="level2">
@@ -351,31 +366,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="what-students-will-learn">What students will learn</h3>
 <p>By the end of Session 1, students can:</p>
 <ul>
-<li>Measure how much RAM their own machine actually has available, and explain why “total” is not “available” and why disk is not memory.</li>
+<li>Measure how much RAM a machine actually has available, and explain why “total” is not “available” and why disk is not memory.</li>
 <li>Read and reason in the units of data (KB through PB) and estimate whether a file will fit in pandas before trying to load it.</li>
-<li>Use the core AWS vocabulary: region, S3, bucket, object, key, prefix, and anonymous (unsigned) access.</li>
+<li>Use the core AWS vocabulary: region, S3, bucket, object, key, prefix, EC2, instance type, Athena, IAM, and anonymous (unsigned) access.</li>
+<li>Explain where a notebook’s code runs (kernel, instance, region co-location) and open a SageMaker Studio JupyterLab space in the Learner Lab.</li>
 <li>Connect to a public S3 bucket without an account, list objects, read an object’s size from metadata alone, and peek at a file with a byte-range request.</li>
-<li>Extract a single station’s full history rather than a whole year of global data, filter it at the source, transform it, and plot it.</li>
+<li>Extract a single station’s full history rather than a whole year of global data, filter it at the source, transform it, and plot it, on a rented machine in the same region as the data.</li>
+<li>Run a SQL <code>WHERE</code> clause on Athena’s fleet against Parquet files in S3, read the bytes-scanned statistic, and compare it to reading the CSV.</li>
+<li>Estimate what a session cost, empty their results bucket, stop the space, and prove it.</li>
 </ul>
 </section>
 <section id="dataset" class="level3">
 <h3 class="anchored" data-anchor-id="dataset">Dataset</h3>
-<p>All exercises use the <strong>NOAA GHCN-Daily</strong> dataset in the public <code>noaa-ghcn-pds</code> bucket. The by-year files are multi-gigabyte and will not fit on a laptop, which is the point. The by-station files are small enough to pull and analyze.</p>
+<p>All exercises use the <strong>NOAA GHCN-Daily</strong> dataset in the public <code>noaa-ghcn-pds</code> bucket. The by-year CSV files are multi-gigabyte and will not fit on a laptop or on the rented instance, which is the point. The by-station files are small enough to pull and analyze. The same data also exists as Parquet partitioned by <code>YEAR=</code> and <code>ELEMENT=</code>, which is what Athena reads.</p>
 </section>
 <section id="what-students-will-do-in-order" class="level3">
 <h3 class="anchored" data-anchor-id="what-students-will-do-in-order">What students will do, in order</h3>
-<p><strong>Before class: the pre-class reading.</strong> Students work through six sections and answer a five-question reading check:</p>
+<p><strong>Before class: the pre-class reading.</strong> Students work through seven sections on their laptop, write down five machine numbers and one timing, start the Learner Lab once, and answer a six-question reading check:</p>
 <ol type="1">
 <li>What your machine actually has</li>
 <li>The units of data</li>
 <li>The vocabulary of AWS</li>
+<li>Where does the code run? (kernel, instance, co-location, opening a SageMaker Studio space)</li>
 <li>Reading from S3 without an account</li>
-<li>Extraction strategy: filter at the source</li>
-<li>Where this goes next</li>
+<li>Extraction strategy: filter at the source, plus the fourth lever (Athena)</li>
+<li>Cost, space, and ability: what you are actually renting</li>
 </ol>
-<p><strong>In class: the topics-of-practice notebook.</strong> A guided, fill-in-the-blank tour of the same material, one function at a time:</p>
+<p><strong>In class: the topics-of-practice notebook</strong>, run inside SageMaker Studio. A guided, fill-in-the-blank tour, one block at a time:</p>
 <ul>
-<li>A. What your machine actually has</li>
+<li>A. Two machines, side by side (laptop numbers versus the rented instance)</li>
 <li>B. The units of data</li>
 <li>C. The vocabulary of AWS</li>
 <li>D. Connect without an account</li>
@@ -384,13 +403,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>G. Extract one station, not one year</li>
 <li>H. Transform</li>
 <li>I. Bring the visual</li>
+<li>J. Ask Athena for the same station (results bucket, table over the Parquet files, query, bytes scanned)</li>
+<li>K. Stop the meter (empty the bucket, stop the space, end the lab)</li>
 </ul>
-<p><strong>In class or as homework: the practice activity.</strong> Students play an inventory planner for a beverage distributor with two markets, San Luis Obispo and Phoenix, and need each market’s weather history before anyone builds a demand model. Eleven questions across four sets:</p>
+<p><strong>In class or as homework: the practice activity</strong>, run inside SageMaker Studio. Students play an inventory planner for a beverage distributor with two markets, San Luis Obispo and Phoenix, and need each market’s weather history before anyone builds a demand model. Thirteen questions across five sets:</p>
 <ul>
-<li><strong>Set 1 · Capacity.</strong> Measure the machine, estimate how many rows fit, and total a decade of by-year files against available RAM.</li>
+<li><strong>Set 1 · Capacity.</strong> Report both machines in one table, estimate how many rows fit, and total a decade of by-year files against available RAM.</li>
 <li><strong>Set 2 · Vocabulary in action.</strong> List prefixes, explain why a “folder” is not a folder, and read file metadata without downloading.</li>
 <li><strong>Set 3 · Extraction.</strong> Write a reusable <code>load_station()</code> function, pull both markets, count hot days per year, and compute monthly rainfall.</li>
-<li><strong>Set 4 · Visualize and interpret.</strong> Chart both markets, write the business read, and (stretch) do it the wrong way on purpose to see why extraction strategy matters.</li>
+<li><strong>Set 4 · Visualize and interpret.</strong> Chart both markets and write the business read, including which compute tier the planner would choose for a weekly refresh.</li>
+<li><strong>Set 5 · Where the work runs.</strong> Time the same extraction three ways (laptop, SageMaker, Athena), compute hot days straight from the fleet and compare bytes scanned, then a graded cost audit and teardown with evidence that the space is stopped.</li>
 </ul>
 </section>
 <section id="session-1-documents" class="level3">
@@ -429,7 +451,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td>03 · Practice activity (student)</td>
-<td>Scenario with 11 questions</td>
+<td>Scenario with 13 questions</td>
 <td><a href="./session_1/03_practice_activity.html">View</a></td>
 <td><a href="./session_1/03_practice_activity.html" download="03_practice_activity.ipynb">Download</a></td>
 <td><a href="https://colab.research.google.com/github/gato365/aws-gsb-5544-sessions/blob/main/session_1/03_practice_activity.ipynb">Open</a></td>
@@ -442,6 +464,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td><a href="https://colab.research.google.com/github/gato365/aws-gsb-5544-sessions/blob/main/session_1/03_practice_activity_SOLUTIONS.ipynb">Open</a></td>
 </tr>
 <tr class="even">
+<td>Changelog</td>
+<td>Every change made in the local-to-remote conversion, and the assumptions to review</td>
+<td><a href="./session_1/CHANGELOG.html">View</a></td>
+<td><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/CHANGELOG.md">Markdown source</a></td>
+<td></td>
+</tr>
+<tr class="odd">
 <td>Build script</td>
 <td>Generates the four notebooks from one source</td>
 <td></td>
@@ -450,11 +479,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
+<p>The Colab links are for reading and light editing. The notebooks are meant to run inside SageMaker Studio, where the AWS credentials for Athena and the results bucket are already present; the Colab links will run the unsigned S3 blocks but not the Athena blocks.</p>
 </section>
-<section id="what-students-need-installed" class="level3">
-<h3 class="anchored" data-anchor-id="what-students-need-installed">What students need installed</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install psutil boto3 pandas matplotlib</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Colab already has all four. Locally, any Python 3.9+ with Jupyter works.</p>
+<section id="what-students-need" class="level3">
+<h3 class="anchored" data-anchor-id="what-students-need">What students need</h3>
+<ul>
+<li>On their laptop, for the pre-class reading:</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install psutil boto3 s3fs pandas matplotlib</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Access to the AWS Academy Learner Lab from Canvas. Inside SageMaker Studio the default image already has every library; the setup cell installs <code>s3fs</code> in case it is missing.</li>
+</ul>
 </section>
 </section>
 <section id="for-collaborators" class="level2">
@@ -462,6 +497,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><strong>Source repository:</strong> <a href="https://github.com/gato365/aws-gsb-5544-sessions">github.com/gato365/aws-gsb-5544-sessions</a></li>
 <li><strong>This site:</strong> <a href="https://gato365.github.io/aws-gsb-5544-sessions/">gato365.github.io/aws-gsb-5544-sessions</a></li>
+<li><strong>Start with the <a href="./session_1/CHANGELOG.html">changelog</a>.</strong> It lists every section and cell that changed in the remote-compute revision, and the assumptions that need a decision: Learner Lab versus personal accounts, the prices quoted, and a dry run of the Athena and SageMaker cells in the actual lab.</li>
 <li>Every page has a “Source” link in the top right that opens the file on GitHub.</li>
 <li>To propose changes, open an issue or a pull request on the repository. To rebuild the site after editing, run <code>quarto render</code> at the repository root and commit the <code>docs/</code> folder.</li>
 </ul>

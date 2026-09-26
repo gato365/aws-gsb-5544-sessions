@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/03_practice_activity_SOLUTIONS.html</loc>
-    <lastmod>2026-09-26T19:14:03.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/02_topics_of_practice_SOLUTIONS.html</loc>
-    <lastmod>2026-09-26T19:14:03.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/01_preclass_reading.html</loc>
-    <lastmod>2026-09-26T19:23:32.518Z</lastmod>
-  </url>
-  <url>
-    <loc>https://gato365.github.io/aws-gsb-5544-sessions/index.html</loc>
-    <lastmod>2026-09-26T19:22:18.291Z</lastmod>
-  </url>
-  <url>
-    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/02_topics_of_practice.html</loc>
-    <lastmod>2026-09-26T19:14:03.000Z</lastmod>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/CHANGELOG.html</loc>
+    <lastmod>2026-09-26T19:47:54.867Z</lastmod>
   </url>
   <url>
     <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/03_practice_activity.html</loc>
-    <lastmod>2026-09-26T19:14:03.000Z</lastmod>
+    <lastmod>2026-09-26T19:46:13.104Z</lastmod>
+  </url>
+  <url>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/02_topics_of_practice.html</loc>
+    <lastmod>2026-09-26T19:46:13.097Z</lastmod>
+  </url>
+  <url>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/index.html</loc>
+    <lastmod>2026-09-26T19:48:56.717Z</lastmod>
+  </url>
+  <url>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/01_preclass_reading.html</loc>
+    <lastmod>2026-09-26T19:40:25.658Z</lastmod>
+  </url>
+  <url>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/02_topics_of_practice_SOLUTIONS.html</loc>
+    <lastmod>2026-09-26T19:46:13.102Z</lastmod>
+  </url>
+  <url>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/03_practice_activity_SOLUTIONS.html</loc>
+    <lastmod>2026-09-26T19:46:13.109Z</lastmod>
   </url>
 </urlset>

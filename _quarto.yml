@@ -5,6 +5,7 @@ project:
     - index.qmd
     - session_1/01_preclass_reading.md
     - session_1/*.ipynb
+    - session_1/CHANGELOG.md
   resources:
     - "session_1/*.ipynb"
     - "session_1/build_notebooks.py"
@@ -35,6 +36,8 @@ website:
             href: session_1/03_practice_activity.ipynb
           - text: "03 · Practice activity (solutions)"
             href: session_1/03_practice_activity_SOLUTIONS.ipynb
+          - text: "Changelog · local → remote compute"
+            href: session_1/CHANGELOG.md
     right:
       - icon: github
         href: https://github.com/gato365/aws-gsb-5544-sessions
@@ -55,6 +58,8 @@ website:
             href: session_1/03_practice_activity.ipynb
           - text: "03 · Practice activity (solutions)"
             href: session_1/03_practice_activity_SOLUTIONS.ipynb
+          - text: "Changelog · local → remote compute"
+            href: session_1/CHANGELOG.md
   page-footer:
     left: "GSB 5544 · Computing and Machine Learning for Business Analytics"
     right: "Built with Quarto · Hosted on GitHub Pages"

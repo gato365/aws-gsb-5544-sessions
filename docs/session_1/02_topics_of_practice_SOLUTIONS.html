@@ -155,6 +155,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../session_1/03_practice_activity_SOLUTIONS.html">
  <span class="dropdown-text">03 · Practice activity (solutions)</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/CHANGELOG.html">
+ <span class="dropdown-text">Changelog · local → remote compute</span></a>
+  </li>  
     </ul>
   </li>
 </ul>
@@ -240,6 +244,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">03 · Practice activity (solutions)</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/CHANGELOG.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Changelog · local → remote compute</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -252,7 +262,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#a.-what-your-machine-actually-has" id="toc-a.-what-your-machine-actually-has" class="nav-link active" data-scroll-target="#a.-what-your-machine-actually-has">A. What your machine actually has</a></li>
+  <li><a href="#a.-two-machines-side-by-side" id="toc-a.-two-machines-side-by-side" class="nav-link active" data-scroll-target="#a.-two-machines-side-by-side">A. Two machines, side by side</a></li>
   <li><a href="#b.-the-units-of-data" id="toc-b.-the-units-of-data" class="nav-link" data-scroll-target="#b.-the-units-of-data">B. The units of data</a></li>
   <li><a href="#c.-the-vocabulary-of-aws" id="toc-c.-the-vocabulary-of-aws" class="nav-link" data-scroll-target="#c.-the-vocabulary-of-aws">C. The vocabulary of AWS</a></li>
   <li><a href="#d.-connect-without-an-account" id="toc-d.-connect-without-an-account" class="nav-link" data-scroll-target="#d.-connect-without-an-account">D. Connect without an account</a></li>
@@ -261,7 +271,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#g.-extract-one-station-not-one-year" id="toc-g.-extract-one-station-not-one-year" class="nav-link" data-scroll-target="#g.-extract-one-station-not-one-year">G. Extract one station, not one year</a></li>
   <li><a href="#h.-transform" id="toc-h.-transform" class="nav-link" data-scroll-target="#h.-transform">H. Transform</a></li>
   <li><a href="#i.-bring-the-visual" id="toc-i.-bring-the-visual" class="nav-link" data-scroll-target="#i.-bring-the-visual">I. Bring the visual</a></li>
-  <li><a href="#before-you-leave" id="toc-before-you-leave" class="nav-link" data-scroll-target="#before-you-leave">Before you leave</a></li>
+  <li><a href="#j.-ask-athena-for-the-same-station" id="toc-j.-ask-athena-for-the-same-station" class="nav-link" data-scroll-target="#j.-ask-athena-for-the-same-station">J. Ask Athena for the same station</a></li>
+  <li><a href="#k.-stop-the-meter" id="toc-k.-stop-the-meter" class="nav-link" data-scroll-target="#k.-stop-the-meter">K. Stop the meter</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/02_topics_of_practice_SOLUTIONS.ipynb" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
     </div>
@@ -289,203 +300,374 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p><strong>GSB 5544 · Computing and Machine Learning for Business Analytics</strong></p>
 <p>This notebook walks through the main functions from the pre-class reading, one short block at a time. Each block names the section of the reading it draws on. Replace every <code>____</code> with the right code and run the cell.</p>
-<p>You need: <code>psutil</code>, <code>boto3</code>, <code>s3fs</code>, <code>pandas</code>, <code>matplotlib</code>. No AWS account is required.</p>
-<div id="0b8da519" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> psutil</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> boto3</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> botocore <span class="im">import</span> UNSIGNED</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> botocore.config <span class="im">import</span> Config</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>BUCKET <span class="op">=</span> <span class="st">"noaa-ghcn-pds"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Run this notebook inside your SageMaker Studio JupyterLab space</strong> (reading, §4), not on your laptop. Every code cell begins with a <code># RUNS ON:</code> line that says where it executes. Read it before you press Shift-Enter; the point of today is to notice where the work happens.</p>
+<p>Bring the five laptop numbers you wrote down from the reading, §1. Block A needs them.</p>
+<div id="5d449c89" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q s3fs             <span class="co"># harmless if already present</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> psutil</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> boto3</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> botocore <span class="im">import</span> UNSIGNED</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> botocore.config <span class="im">import</span> Config</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>BUCKET <span class="op">=</span> <span class="st">"noaa-ghcn-pds"</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>REGION <span class="op">=</span> <span class="st">"us-east-1"</span>             <span class="co"># the bucket's region; this instance is in it too</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="a.-what-your-machine-actually-has" class="level2">
-<h2 class="anchored" data-anchor-id="a.-what-your-machine-actually-has">A. What your machine actually has</h2>
-<p><em>From the reading, §1.</em> Total RAM is not available RAM. The available number decides whether a file loads.</p>
-<p>Fill in the two calls that report memory and the attribute that gives the memory available <strong>right now</strong>.</p>
-<div id="445b2b63" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>vm <span class="op">=</span> psutil.virtual_memory()</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>du <span class="op">=</span> psutil.disk_usage(<span class="st">"/"</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Physical cores : </span><span class="sc">{</span>psutil<span class="sc">.</span>cpu_count(logical<span class="op">=</span><span class="va">False</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total RAM      : </span><span class="sc">{</span>vm<span class="sc">.</span>total <span class="op">/</span> <span class="fl">1e9</span><span class="sc">:.1f}</span><span class="ss"> GB"</span>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Available RAM  : </span><span class="sc">{</span>vm<span class="sc">.</span>available <span class="op">/</span> <span class="fl">1e9</span><span class="sc">:.1f}</span><span class="ss"> GB"</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Free disk      : </span><span class="sc">{</span>du<span class="sc">.</span>free <span class="op">/</span> <span class="fl">1e9</span><span class="sc">:.1f}</span><span class="ss"> GB"</span>)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>MY_RAM <span class="op">=</span> vm.available          <span class="co"># keep this; we compare file sizes against it below</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="a.-two-machines-side-by-side" class="level2">
+<h2 class="anchored" data-anchor-id="a.-two-machines-side-by-side">A. Two machines, side by side</h2>
+<p><em>From the reading, §1 and §4.</em> You ran the <code>psutil</code> cell on your laptop before class. Now run it again: this kernel lives on a rented <code>ml.t3.medium</code> in <code>us-east-1</code>, and your laptop is a browser tab.</p>
+<p>Fill in the call that reports memory and the attribute that gives the memory available <strong>right now</strong>.</p>
+<div id="0f53d32e" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>vm <span class="op">=</span> psutil.virtual_memory()</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>du <span class="op">=</span> psutil.disk_usage(<span class="st">"/"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>sagemaker <span class="op">=</span> {</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"physical cores"</span>:     psutil.cpu_count(logical<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"logical cores"</span>:      psutil.cpu_count(logical<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"total RAM (GB)"</span>:     <span class="bu">round</span>(vm.total <span class="op">/</span> <span class="fl">1e9</span>, <span class="dv">1</span>),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"available RAM (GB)"</span>: <span class="bu">round</span>(vm.available <span class="op">/</span> <span class="fl">1e9</span>, <span class="dv">1</span>),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"free disk (GB)"</span>:     <span class="bu">round</span>(du.free <span class="op">/</span> <span class="fl">1e9</span>, <span class="dv">1</span>),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>MY_RAM <span class="op">=</span> vm.available          <span class="co"># available RAM of the machine running THIS cell; we compare file sizes against it below</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>sagemaker</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now paste your laptop’s numbers into the dictionary and build the comparison. Fill in the dictionary that holds this machine’s numbers.</p>
+<div id="e50a222e" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>laptop <span class="op">=</span> {                        <span class="co"># &lt;- replace every value with the number you wrote down from the reading, §1</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"physical cores"</span>:     <span class="dv">0</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"logical cores"</span>:      <span class="dv">0</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"total RAM (GB)"</span>:     <span class="fl">0.0</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"available RAM (GB)"</span>: <span class="fl">0.0</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"free disk (GB)"</span>:     <span class="fl">0.0</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>compare <span class="op">=</span> pd.DataFrame({<span class="st">"laptop"</span>: laptop, <span class="st">"SageMaker ml.t3.medium"</span>: sagemaker})</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>compare[<span class="st">"SageMaker ÷ laptop"</span>] <span class="op">=</span> (compare[<span class="st">"SageMaker ml.t3.medium"</span>] <span class="op">/</span> compare[<span class="st">"laptop"</span>]).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>compare</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Check yourself.</strong> The rented machine is probably <em>smaller</em> than your laptop. So why rent it at all? Answer in one sentence, as a comment.</p>
+<div id="9dec2691" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Because it sits in the same region as the data: reads are fast and free, and it is the same machine for everyone. What changed is location, not size; size is one dropdown away if we need it.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="b.-the-units-of-data" class="level2">
 <h2 class="anchored" data-anchor-id="b.-the-units-of-data">B. The units of data</h2>
 <p><em>From the reading, §2.</em> Byte counts are unreadable past a few million. Write the helper that turns them into KB / MB / GB and so on, using base 1000.</p>
 <p>Fill in the list of units in ascending order and the line that steps <code>n</code> down one unit.</p>
-<div id="2883ad12" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> human(n, base<span class="op">=</span><span class="dv">1000</span>):</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> unit <span class="kw">in</span> [<span class="st">"B"</span>, <span class="st">"KB"</span>, <span class="st">"MB"</span>, <span class="st">"GB"</span>, <span class="st">"TB"</span>, <span class="st">"PB"</span>]:</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n <span class="op">&lt;</span> base:</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>n<span class="sc">:,.1f}</span><span class="ss"> </span><span class="sc">{</span>unit<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        n <span class="op">/=</span> base</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>n<span class="sc">:,.1f}</span><span class="ss"> EB"</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(human(<span class="dv">1_500_000</span>))          <span class="co"># expect 1.5 MB</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(human(<span class="dv">1_336_457_184</span>))      <span class="co"># expect 1.3 GB</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(human(MY_RAM))             <span class="co"># your available RAM, readable</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="b71caf1b" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> human(n, base<span class="op">=</span><span class="dv">1000</span>):</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> unit <span class="kw">in</span> [<span class="st">"B"</span>, <span class="st">"KB"</span>, <span class="st">"MB"</span>, <span class="st">"GB"</span>, <span class="st">"TB"</span>, <span class="st">"PB"</span>]:</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n <span class="op">&lt;</span> base:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>n<span class="sc">:,.1f}</span><span class="ss"> </span><span class="sc">{</span>unit<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        n <span class="op">/=</span> base</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>n<span class="sc">:,.1f}</span><span class="ss"> EB"</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(human(<span class="dv">1_500_000</span>))          <span class="co"># expect 1.5 MB</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(human(<span class="dv">1_336_457_184</span>))      <span class="co"># expect 1.3 GB</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(human(MY_RAM))             <span class="co"># this machine's available RAM, readable</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Check yourself.</strong> A “1 TB” drive shows as 931 GB in your file browser. Which base does the drive maker use, and which does the operating system use? Write your answer in the cell below as a comment.</p>
-<div id="bb6dbdde" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Drive maker uses base 1000; the OS uses base 1024.</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 1e12 / 1024**3 = 931.3 GiB, which the OS labels "GB".</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="0d2acfc9" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Drive maker uses base 1000; the OS uses base 1024.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 1e12 / 1024**3 = 931.3 GiB, which the OS labels "GB".</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="c.-the-vocabulary-of-aws" class="level2">
 <h2 class="anchored" data-anchor-id="c.-the-vocabulary-of-aws">C. The vocabulary of AWS</h2>
 <p><em>From the reading, §3.</em> Fill in the term that each definition describes. The cell checks your answers.</p>
-<div id="0dac3ca3" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>vocab <span class="op">=</span> {</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"A named container for objects; its name is globally unique"</span>:     <span class="st">"bucket"</span>,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"One stored item plus its metadata such as size"</span>:                  <span class="st">"object"</span>,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"The full name of an object inside its bucket"</span>:                    <span class="st">"key"</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"The start of a key, used to list everything 'under' something"</span>:   <span class="st">"prefix"</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"A geographic cluster of data centers such as us-east-1"</span>:          <span class="st">"region"</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"A rented virtual computer"</span>:                                       <span class="st">"EC2"</span>,</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"The service that decides who may do what"</span>:                        <span class="st">"IAM"</span>,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>expected <span class="op">=</span> {<span class="st">"bucket"</span>, <span class="st">"object"</span>, <span class="st">"key"</span>, <span class="st">"prefix"</span>, <span class="st">"region"</span>, <span class="st">"ec2"</span>, <span class="st">"iam"</span>}</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>given <span class="op">=</span> {v.strip().lower() <span class="cf">for</span> v <span class="kw">in</span> vocab.values()}</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"All correct"</span> <span class="cf">if</span> given <span class="op">==</span> expected <span class="cf">else</span> <span class="ss">f"Check: </span><span class="sc">{</span>expected <span class="op">-</span> given<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="75d260e4" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>vocab <span class="op">=</span> {</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"A named container for objects; its name is globally unique"</span>:            <span class="st">"bucket"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"One stored item plus its metadata such as size"</span>:                         <span class="st">"object"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"The full name of an object inside its bucket"</span>:                           <span class="st">"key"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"The start of a key, used to list everything 'under' something"</span>:          <span class="st">"prefix"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"A geographic cluster of data centers such as us-east-1"</span>:                 <span class="st">"region"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"A rented virtual computer"</span>:                                              <span class="st">"EC2"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"The size of a rented computer: cores, RAM, and a price per hour"</span>:        <span class="st">"instance type"</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"A SQL engine that scans files in S3 across many machines, billed per byte"</span>: <span class="st">"Athena"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"The service that decides who may do what"</span>:                               <span class="st">"IAM"</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>expected <span class="op">=</span> {<span class="st">"bucket"</span>, <span class="st">"object"</span>, <span class="st">"key"</span>, <span class="st">"prefix"</span>, <span class="st">"region"</span>, <span class="st">"ec2"</span>, <span class="st">"instance type"</span>, <span class="st">"athena"</span>, <span class="st">"iam"</span>}</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>given <span class="op">=</span> {v.strip().lower() <span class="cf">for</span> v <span class="kw">in</span> vocab.values()}</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"All correct"</span> <span class="cf">if</span> given <span class="op">==</span> expected <span class="cf">else</span> <span class="ss">f"Check: </span><span class="sc">{</span>expected <span class="op">-</span> given<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="d.-connect-without-an-account" class="level2">
 <h2 class="anchored" data-anchor-id="d.-connect-without-an-account">D. Connect without an account</h2>
-<p><em>From the reading, §4.</em> Public datasets on S3 can be read with an <strong>unsigned</strong> request. Build the client, then list the top-level “folders” of the GHCN bucket.</p>
+<p><em>From the reading, §5.</em> Public datasets on S3 can be read with an <strong>unsigned</strong> request. Build the client, then list the top-level “folders” of the GHCN bucket.</p>
+<p>This machine <em>has</em> AWS credentials (it is inside your lab account), but an unsigned request does not use them. The public bucket does not care who is asking.</p>
 <p>Fill in the signature setting that makes the request anonymous, and the delimiter that makes S3 group keys like folders.</p>
-<div id="68b51c36" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>s3 <span class="op">=</span> boto3.client(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"s3"</span>,</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    region_name<span class="op">=</span><span class="st">"us-east-1"</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    config<span class="op">=</span>Config(signature_version<span class="op">=</span>UNSIGNED),</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> s3.list_objects_v2(Bucket<span class="op">=</span>BUCKET, Delimiter<span class="op">=</span><span class="st">"/"</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Prefixes :"</span>, [p[<span class="st">"Prefix"</span>] <span class="cf">for</span> p <span class="kw">in</span> resp.get(<span class="st">"CommonPrefixes"</span>, [])])</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Files    :"</span>, [o[<span class="st">"Key"</span>] <span class="cf">for</span> o <span class="kw">in</span> resp.get(<span class="st">"Contents"</span>, [])][:<span class="dv">6</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="d171f812" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>s3 <span class="op">=</span> boto3.client(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"s3"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    region_name<span class="op">=</span>REGION,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    config<span class="op">=</span>Config(signature_version<span class="op">=</span>UNSIGNED),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> s3.list_objects_v2(Bucket<span class="op">=</span>BUCKET, Delimiter<span class="op">=</span><span class="st">"/"</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Prefixes :"</span>, [p[<span class="st">"Prefix"</span>] <span class="cf">for</span> p <span class="kw">in</span> resp.get(<span class="st">"CommonPrefixes"</span>, [])])</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Files    :"</span>, [o[<span class="st">"Key"</span>] <span class="cf">for</span> o <span class="kw">in</span> resp.get(<span class="st">"Contents"</span>, [])][:<span class="dv">6</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Look at the output. <code>csv/</code> is not a folder. In one sentence, what is it? Type your answer as a comment.</p>
-<div id="b15d4e39" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># It is a prefix: the shared beginning of many object keys. S3 groups keys by it when asked, which looks like a folder.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="262d83d3" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># It is a prefix: the shared beginning of many object keys. S3 groups keys by it when asked, which looks like a folder.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="e.-read-a-size-without-reading-the-file" class="level2">
 <h2 class="anchored" data-anchor-id="e.-read-a-size-without-reading-the-file">E. Read a size without reading the file</h2>
-<p><em>From the reading, §4.</em> Every object carries its size as metadata. List the by-year files for the 2020s and print each size in readable units.</p>
+<p><em>From the reading, §5.</em> Every object carries its size as metadata. List the by-year files for the 2020s and print each size in readable units.</p>
 <p>Fill in the prefix that selects <code>csv/by_year/2020.csv</code> through <code>2026.csv</code>, and the field that holds an object’s size.</p>
-<div id="7cc51e6c" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> s3.list_objects_v2(Bucket<span class="op">=</span>BUCKET, Prefix<span class="op">=</span><span class="st">"csv/by_year/202"</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>sizes <span class="op">=</span> {}</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> obj <span class="kw">in</span> resp[<span class="st">"Contents"</span>]:</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    sizes[obj[<span class="st">"Key"</span>]] <span class="op">=</span> obj[<span class="st">"Size"</span>]</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>obj[<span class="st">'Key'</span>]<span class="sc">:&lt;28}</span><span class="ss"> </span><span class="sc">{</span>human(obj[<span class="st">'Size'</span>])<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="e6ed5d30" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> s3.list_objects_v2(Bucket<span class="op">=</span>BUCKET, Prefix<span class="op">=</span><span class="st">"csv/by_year/202"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>sizes <span class="op">=</span> {}</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> obj <span class="kw">in</span> resp[<span class="st">"Contents"</span>]:</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    sizes[obj[<span class="st">"Key"</span>]] <span class="op">=</span> obj[<span class="st">"Size"</span>]</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>obj[<span class="st">'Key'</span>]<span class="sc">:&lt;28}</span><span class="ss"> </span><span class="sc">{</span>human(obj[<span class="st">'Size'</span>])<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>BY_YEAR_2024_BYTES <span class="op">=</span> sizes[<span class="st">"csv/by_year/2024.csv"</span>]     <span class="co"># keep; block J compares against it</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Now the comparison that the whole reading builds toward. pandas typically needs about <strong>3×</strong> a text CSV’s size in memory. For each file, decide whether a plain <code>pd.read_csv</code> would fit in your available RAM.</p>
+<p>Now the comparison that the whole reading builds toward. pandas typically needs about <strong>3×</strong> a text CSV’s size in memory. For each file, decide whether a plain <code>pd.read_csv</code> would fit in <strong>this machine’s</strong> available RAM. (Renting a machine did not change the arithmetic.)</p>
 <p>Fill in the multiplier and the comparison.</p>
-<div id="eb2626c7" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>MULT <span class="op">=</span> <span class="dv">3</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, size <span class="kw">in</span> sizes.items():</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    need <span class="op">=</span> size <span class="op">*</span> MULT</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    fits <span class="op">=</span> need <span class="op">&lt;</span> MY_RAM</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>key<span class="sc">:&lt;28}</span><span class="ss"> needs ~</span><span class="sc">{</span>human(need)<span class="sc">:&gt;9}</span><span class="ss">   fits: </span><span class="sc">{</span>fits<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="f3a7572e" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>MULT <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, size <span class="kw">in</span> sizes.items():</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    need <span class="op">=</span> size <span class="op">*</span> MULT</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    fits <span class="op">=</span> need <span class="op">&lt;</span> MY_RAM</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>key<span class="sc">:&lt;28}</span><span class="ss"> needs ~</span><span class="sc">{</span>human(need)<span class="sc">:&gt;9}</span><span class="ss">   fits on this ml.t3.medium: </span><span class="sc">{</span>fits<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="f.-peek-at-a-file-with-a-range-request" class="level2">
 <h2 class="anchored" data-anchor-id="f.-peek-at-a-file-with-a-range-request">F. Peek at a file with a range request</h2>
-<p><em>From the reading, §4.</em> You can read the first few hundred bytes of a gigabyte file to see its shape. Do that for the 2024 by-year file and check whether it has a header row.</p>
+<p><em>From the reading, §5.</em> You can read the first few hundred bytes of a gigabyte file to see its shape. Do that for the 2024 by-year file and check whether it has a header row. Never assume either way.</p>
 <p>Fill in the <code>Range</code> header for the first 300 bytes.</p>
-<div id="c56fec89" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> <span class="st">"csv/by_year/2024.csv"</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key, Range<span class="op">=</span><span class="st">"bytes=0-299"</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>first <span class="op">=</span> obj[<span class="st">"Body"</span>].read().decode()</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(first)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>has_header <span class="op">=</span> first.upper().startswith(<span class="st">"ID,"</span>)</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Header row present:"</span>, has_header)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="f5043b55" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> <span class="st">"csv/by_year/2024.csv"</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key, Range<span class="op">=</span><span class="st">"bytes=0-299"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>first <span class="op">=</span> obj[<span class="st">"Body"</span>].read().decode()</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(first)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>has_header <span class="op">=</span> first.upper().startswith(<span class="st">"ID,"</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Header row present:"</span>, has_header)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="g.-extract-one-station-not-one-year" class="level2">
 <h2 class="anchored" data-anchor-id="g.-extract-one-station-not-one-year">G. Extract one station, not one year</h2>
-<p><em>From the reading, §5.</em> Lever 1 is picking the right object. The Cal Poly station (<code>USC00047851</code>, SAN LUIS OBISPO POLY) has records since 1893 in a single file of about 7 MB. Read it, keeping only the four columns you need.</p>
+<p><em>From the reading, §6.</em> Lever 1 is picking the right object. The Cal Poly station (<code>USC00047851</code>, SAN LUIS OBISPO POLY) has records since 1893 in a single file of about 7 MB. Read it, keeping only the four columns you need. The bytes travel from S3 to this instance over AWS’s own network; nothing reaches your laptop except the printed output.</p>
 <p>Fill in the station key, the header logic, and the <code>usecols</code> list.</p>
-<div id="a02711b0" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>COLS <span class="op">=</span> [<span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"element"</span>, <span class="st">"value"</span>, <span class="st">"m_flag"</span>, <span class="st">"q_flag"</span>, <span class="st">"s_flag"</span>, <span class="st">"obs_time"</span>]</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>STATION <span class="op">=</span> <span class="st">"USC00047851"</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> <span class="ss">f"csv/by_station/</span><span class="sc">{</span>STATION<span class="sc">}</span><span class="ss">.csv"</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># size first, always</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Size:"</span>, human(s3.head_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key)[<span class="st">"ContentLength"</span>]))</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># header check</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>first <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key, Range<span class="op">=</span><span class="st">"bytes=0-99"</span>)[<span class="st">"Body"</span>].read().decode()</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>has_header <span class="op">=</span> first.upper().startswith(<span class="st">"ID,"</span>)</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key)[<span class="st">"Body"</span>].read()</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    io.BytesIO(raw),</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    header<span class="op">=</span><span class="dv">0</span> <span class="cf">if</span> has_header <span class="cf">else</span> <span class="va">None</span>,</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    names<span class="op">=</span>COLS,</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    usecols<span class="op">=</span>[<span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"element"</span>, <span class="st">"value"</span>],</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    dtype<span class="op">=</span>{<span class="st">"id"</span>: <span class="st">"string"</span>, <span class="st">"element"</span>: <span class="st">"string"</span>},</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"In memory:"</span>, human(df.memory_usage(deep<span class="op">=</span><span class="va">True</span>).<span class="bu">sum</span>()))</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="30ea0070" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>COLS <span class="op">=</span> [<span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"element"</span>, <span class="st">"value"</span>, <span class="st">"m_flag"</span>, <span class="st">"q_flag"</span>, <span class="st">"s_flag"</span>, <span class="st">"obs_time"</span>]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>STATION <span class="op">=</span> <span class="st">"USC00047851"</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> <span class="ss">f"csv/by_station/</span><span class="sc">{</span>STATION<span class="sc">}</span><span class="ss">.csv"</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># size first, always</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Size:"</span>, human(s3.head_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key)[<span class="st">"ContentLength"</span>]))</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co"># header check</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>first <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key, Range<span class="op">=</span><span class="st">"bytes=0-99"</span>)[<span class="st">"Body"</span>].read().decode()</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>has_header <span class="op">=</span> first.upper().startswith(<span class="st">"ID,"</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key)[<span class="st">"Body"</span>].read()</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    io.BytesIO(raw),</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    header<span class="op">=</span><span class="dv">0</span> <span class="cf">if</span> has_header <span class="cf">else</span> <span class="va">None</span>,</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    names<span class="op">=</span>COLS,</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    usecols<span class="op">=</span>[<span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"element"</span>, <span class="st">"value"</span>],</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    dtype<span class="op">=</span>{<span class="st">"id"</span>: <span class="st">"string"</span>, <span class="st">"element"</span>: <span class="st">"string"</span>},</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"In memory:"</span>, human(df.memory_usage(deep<span class="op">=</span><span class="va">True</span>).<span class="bu">sum</span>()))</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="h.-transform" class="level2">
 <h2 class="anchored" data-anchor-id="h.-transform">H. Transform</h2>
-<p><em>From the reading, §5, “The units trap”.</em> Dates are stored as <code>YYYYMMDD</code> integers and temperatures in tenths of a degree Celsius. Fix both, keep only daily maximum temperature, and compute a yearly mean.</p>
+<p><em>From the reading, §6, “The units trap”.</em> Dates are stored as <code>YYYYMMDD</code> integers and temperatures in tenths of a degree Celsius. Fix both, keep only daily maximum temperature, and compute a yearly mean.</p>
 <p>Fill in the date format string, the element code, the unit conversion, and the resampling rule for year-end.</p>
-<div id="6beae25f" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>].astype(<span class="bu">str</span>), <span class="bu">format</span><span class="op">=</span><span class="st">"%Y%m</span><span class="sc">%d</span><span class="st">"</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>tmax <span class="op">=</span> df[df[<span class="st">"element"</span>] <span class="op">==</span> <span class="st">"TMAX"</span>].copy()</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>tmax[<span class="st">"tmax_c"</span>] <span class="op">=</span> tmax[<span class="st">"value"</span>] <span class="op">/</span> <span class="dv">10</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>yearly <span class="op">=</span> (</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    tmax.set_index(<span class="st">"date"</span>)[<span class="st">"tmax_c"</span>]</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        .resample(<span class="st">"YE"</span>)          <span class="co"># "Y" on pandas &lt; 2.2</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>        .mean()</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(tmax)<span class="sc">:,}</span><span class="ss"> TMAX readings, </span><span class="sc">{</span>yearly<span class="sc">.</span>index<span class="sc">.</span><span class="bu">min</span>()<span class="sc">.</span>year<span class="sc">}</span><span class="ss">–</span><span class="sc">{</span>yearly<span class="sc">.</span>index<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>year<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>yearly.tail()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="36f950d4" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>].astype(<span class="bu">str</span>), <span class="bu">format</span><span class="op">=</span><span class="st">"%Y%m</span><span class="sc">%d</span><span class="st">"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>tmax <span class="op">=</span> df[df[<span class="st">"element"</span>] <span class="op">==</span> <span class="st">"TMAX"</span>].copy()</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>tmax[<span class="st">"tmax_c"</span>] <span class="op">=</span> tmax[<span class="st">"value"</span>] <span class="op">/</span> <span class="dv">10</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>yearly <span class="op">=</span> (</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    tmax.set_index(<span class="st">"date"</span>)[<span class="st">"tmax_c"</span>]</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        .resample(<span class="st">"YE"</span>)          <span class="co"># "Y" on pandas &lt; 2.2</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        .mean()</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(tmax)<span class="sc">:,}</span><span class="ss"> TMAX readings, </span><span class="sc">{</span>yearly<span class="sc">.</span>index<span class="sc">.</span><span class="bu">min</span>()<span class="sc">.</span>year<span class="sc">}</span><span class="ss">–</span><span class="sc">{</span>yearly<span class="sc">.</span>index<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>year<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>yearly.tail()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="i.-bring-the-visual" class="level2">
 <h2 class="anchored" data-anchor-id="i.-bring-the-visual">I. Bring the visual</h2>
-<p><em>From the reading, §6.</em> One picture that came from a bucket you never downloaded.</p>
+<p><em>From the reading, §7.</em> One picture that came from a bucket you never downloaded, drawn on a machine you do not own.</p>
 <p>Fill in the series to plot and the y-axis label with its unit.</p>
-<div id="64dd8017" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">4</span>))</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>ax.plot(yearly.index, yearly.values, linewidth<span class="op">=</span><span class="fl">1.2</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Mean daily maximum (°C)"</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="ss">f"</span><span class="sc">{</span>STATION<span class="sc">}</span><span class="ss">: yearly mean of daily maximum temperature"</span>)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>ax.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="415c5e04" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">4</span>))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>ax.plot(yearly.index, yearly.values, linewidth<span class="op">=</span><span class="fl">1.2</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Mean daily maximum (°C)"</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="ss">f"</span><span class="sc">{</span>STATION<span class="sc">}</span><span class="ss">: yearly mean of daily maximum temperature"</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>ax.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="before-you-leave" class="level2">
-<h2 class="anchored" data-anchor-id="before-you-leave">Before you leave</h2>
-<p>Write one sentence, as a comment, that answers: <em>why did reading the station file work when reading the year file would not have?</em></p>
-<div id="ae5941d4" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The station file holds only the rows I needed, about 7 MB. The year file holds every station on Earth, 1.3 GB, and I would have thrown almost all of it away. Choosing the object was the filter.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="j.-ask-athena-for-the-same-station" class="level2">
+<h2 class="anchored" data-anchor-id="j.-ask-athena-for-the-same-station">J. Ask Athena for the same station</h2>
+<p><em>From the reading, §6, “the fourth lever”.</em> So far every filter has run on the machine holding this kernel. Athena runs the filter on AWS’s fleet, against the Parquet copy of the data, and hands back only the matching rows. Three cells: a results bucket you own, a table definition, and the query.</p>
+<p><strong>Results bucket.</strong> Athena writes every result to S3, so you need a bucket of your own. These clients are <em>signed</em>: they act as you, because this bucket is yours, not public. Fill in the bucket name in the create call.</p>
+<div id="5e60cd31" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>sts     <span class="op">=</span> boto3.client(<span class="st">"sts"</span>,    region_name<span class="op">=</span>REGION)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>athena  <span class="op">=</span> boto3.client(<span class="st">"athena"</span>, region_name<span class="op">=</span>REGION)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>s3_mine <span class="op">=</span> boto3.client(<span class="st">"s3"</span>,     region_name<span class="op">=</span>REGION)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>ACCOUNT        <span class="op">=</span> sts.get_caller_identity()[<span class="st">"Account"</span>]</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>RESULTS_BUCKET <span class="op">=</span> <span class="ss">f"gsb5544-athena-</span><span class="sc">{</span>ACCOUNT<span class="sc">}</span><span class="ss">"</span>     <span class="co"># bucket names are global, so include your account id</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>RESULTS        <span class="op">=</span> <span class="ss">f"s3://</span><span class="sc">{</span>RESULTS_BUCKET<span class="sc">}</span><span class="ss">/athena/"</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>s3_mine.create_bucket(Bucket<span class="op">=</span>RESULTS_BUCKET)   <span class="co"># in us-east-1 no LocationConstraint is needed</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Results will land in"</span>, RESULTS)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>A helper and a table.</strong> <code>run_athena</code> starts a query, waits for it, and returns the query id plus Athena’s statistics, which include the bytes scanned. The table definition tells Athena where the Parquet files are and how the <code>YEAR=</code>/<code>ELEMENT=</code> key layout maps to columns; nothing is copied, and DDL statements are free. Note the backticks around <code>date</code>: it is a reserved word in SQL.</p>
+<p>Fill in the <code>boto3</code> call that starts a query.</p>
+<div id="82d3594c" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>ATHENA_BYTES <span class="op">=</span> <span class="dv">0</span>                                  <span class="co"># running total of everything scanned today; block K audits it</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_athena(sql, database<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Start a query, wait for it, return (query id, statistics)."""</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> ATHENA_BYTES</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    kwargs <span class="op">=</span> {<span class="st">"QueryString"</span>: sql, <span class="st">"ResultConfiguration"</span>: {<span class="st">"OutputLocation"</span>: RESULTS}}</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> database:</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>        kwargs[<span class="st">"QueryExecutionContext"</span>] <span class="op">=</span> {<span class="st">"Database"</span>: database}</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    qid <span class="op">=</span> athena.start_query_execution(<span class="op">**</span>kwargs)[<span class="st">"QueryExecutionId"</span>]</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>        q <span class="op">=</span> athena.get_query_execution(QueryExecutionId<span class="op">=</span>qid)[<span class="st">"QueryExecution"</span>]</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>        state <span class="op">=</span> q[<span class="st">"Status"</span>][<span class="st">"State"</span>]</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> state <span class="kw">in</span> (<span class="st">"SUCCEEDED"</span>, <span class="st">"FAILED"</span>, <span class="st">"CANCELLED"</span>):</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>        time.sleep(<span class="dv">1</span>)</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> state <span class="op">!=</span> <span class="st">"SUCCEEDED"</span>:</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">RuntimeError</span>(q[<span class="st">"Status"</span>].get(<span class="st">"StateChangeReason"</span>, state))</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    ATHENA_BYTES <span class="op">+=</span> q[<span class="st">"Statistics"</span>].get(<span class="st">"DataScannedInBytes"</span>, <span class="dv">0</span>)</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> qid, q[<span class="st">"Statistics"</span>]</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> athena_df(qid):</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Read a finished query's result CSV from the results bucket."""</span></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    obj <span class="op">=</span> s3_mine.get_object(Bucket<span class="op">=</span>RESULTS_BUCKET, Key<span class="op">=</span><span class="ss">f"athena/</span><span class="sc">{</span>qid<span class="sc">}</span><span class="ss">.csv"</span>)</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.read_csv(io.BytesIO(obj[<span class="st">"Body"</span>].read()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="07605a86" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: Athena fleet (results land in S3)</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>run_athena(<span class="st">"CREATE DATABASE IF NOT EXISTS gsb5544"</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>DDL <span class="op">=</span> <span class="st">'''</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="st">CREATE EXTERNAL TABLE IF NOT EXISTS gsb5544.ghcn (</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="st">    id         string,</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="st">    `date`     string,</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="st">    data_value bigint,</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="st">    m_flag     string,</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="st">    q_flag     string,</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="st">    s_flag     string,</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="st">    obs_time   string</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="st">)</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="st">PARTITIONED BY (year int, element string)</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="st">STORED AS PARQUET</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="st">LOCATION 's3://noaa-ghcn-pds/parquet/by_year/'</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="st">TBLPROPERTIES (</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="st">    'projection.enabled'        = 'true',</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="st">    'projection.year.type'      = 'integer',</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="st">    'projection.year.range'     = '1750,2030',</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="st">    'projection.element.type'   = 'enum',</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="st">    'projection.element.values' = 'TMAX,TMIN,PRCP,SNOW,SNWD,TAVG',</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="st">    'storage.location.template' = 's3://noaa-ghcn-pds/parquet/by_year/YEAR=$</span><span class="sc">{year}</span><span class="st">/ELEMENT=$</span><span class="sc">{element}</span><span class="st">/'</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="st">)</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="st">'''</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>run_athena(DDL, database<span class="op">=</span><span class="st">"gsb5544"</span>)</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Table gsb5544.ghcn is defined. Bytes scanned so far:"</span>, human(ATHENA_BYTES))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>The query.</strong> Ask for the same station you pulled in block G, but only 2024 and only <code>TMAX</code> and <code>PRCP</code>. The <code>WHERE</code> clause is the extraction. Fill in the year and the name of the statistic that reports bytes scanned.</p>
+<div id="7cffc403" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: Athena fleet (results land in S3)</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>SQL <span class="op">=</span> <span class="ss">f'''</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="ss">SELECT id, "date", data_value</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="ss">FROM   gsb5544.ghcn</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="ss">WHERE  year = 2024</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="ss">  AND  element IN ('TMAX', 'PRCP')</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="ss">  AND  id = '</span><span class="sc">{</span>STATION<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="ss">'''</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>qid, stats <span class="op">=</span> run_athena(SQL, database<span class="op">=</span><span class="st">"gsb5544"</span>)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>scanned <span class="op">=</span> stats[<span class="st">"DataScannedInBytes"</span>]</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>station_2024 <span class="op">=</span> athena_df(qid)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Rows returned : </span><span class="sc">{</span><span class="bu">len</span>(station_2024)<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Bytes scanned : </span><span class="sc">{</span>human(scanned)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Query time    : </span><span class="sc">{</span>stats[<span class="st">'TotalExecutionTimeInMillis'</span>] <span class="op">/</span> <span class="dv">1000</span><span class="sc">:.1f}</span><span class="ss"> s"</span>)</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Cost          : $</span><span class="sc">{</span><span class="bu">max</span>(scanned, <span class="dv">10_000_000</span>) <span class="op">/</span> <span class="fl">1e12</span> <span class="op">*</span> <span class="dv">5</span><span class="sc">:.4f}</span><span class="ss">   ($5 per TB, 10 MB minimum)"</span>)</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2024 CSV was  : </span><span class="sc">{</span>human(BY_YEAR_2024_BYTES)<span class="sc">}</span><span class="ss">  (</span><span class="sc">{</span>BY_YEAR_2024_BYTES <span class="op">/</span> scanned<span class="sc">:.0f}</span><span class="ss">× more bytes than Athena scanned)"</span>)</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>station_2024.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Athena scanned a fraction of the 1.3 GB by-year CSV from block E and returned only this station’s rows, in seconds. Which lever from the reading did the <code>YEAR=</code>/<code>ELEMENT=</code> key layout let Athena pull? One sentence, as a comment.</p>
+<div id="04cf5fca" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Lever 1, choose the right object: the partition layout let Athena open only the 2024 TMAX and PRCP files and skip every other year and element before reading a single row.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="k.-stop-the-meter" class="level2">
+<h2 class="anchored" data-anchor-id="k.-stop-the-meter">K. Stop the meter</h2>
+<p><em>From the reading, §7.</em> A session on a rented machine ends the same way every time. First, empty the results bucket from here. Fill in the call that lists the bucket and the call that deletes a batch of objects.</p>
+<div id="ab26d356" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>listing <span class="op">=</span> s3_mine.list_objects_v2(Bucket<span class="op">=</span>RESULTS_BUCKET)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>objects <span class="op">=</span> listing.get(<span class="st">"Contents"</span>, [])</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(objects)<span class="sc">}</span><span class="ss"> result objects, </span><span class="sc">{</span>human(<span class="bu">sum</span>(o[<span class="st">'Size'</span>] <span class="cf">for</span> o <span class="kw">in</span> objects))<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> objects:</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    s3_mine.delete_objects(Bucket<span class="op">=</span>RESULTS_BUCKET, Delete<span class="op">=</span>{<span class="st">"Objects"</span>: [{<span class="st">"Key"</span>: o[<span class="st">"Key"</span>]} <span class="cf">for</span> o <span class="kw">in</span> objects]})</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Bucket empty :"</span>, <span class="st">"Contents"</span> <span class="kw">not</span> <span class="kw">in</span> s3_mine.list_objects_v2(Bucket<span class="op">=</span>RESULTS_BUCKET))</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Athena today :"</span>, human(ATHENA_BYTES), <span class="ss">f"scanned, about $</span><span class="sc">{</span><span class="bu">max</span>(ATHENA_BYTES, <span class="dv">10_000_000</span>) <span class="op">/</span> <span class="fl">1e12</span> <span class="op">*</span> <span class="dv">5</span><span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Second, stop the instance. A cell cannot stop the machine it is running on without killing itself, so this part happens in the Studio window. In this order:</p>
+<ul class="task-list">
+<li><label><input type="checkbox">File → Save All. Download anything you want to keep.</label></li>
+<li><label><input type="checkbox">In Studio, open <strong>JupyterLab spaces</strong>, find <code>gsb5544</code>, click <strong>Stop</strong>, and wait until the status reads <em>Stopped</em>.</label></li>
+<li><label><input type="checkbox">Read the budget at the top of the Learner Lab page. Today should have cost well under a dollar.</label></li>
+<li><label><input type="checkbox">Click <strong>End Lab</strong>.</label></li>
+</ul>
+<p>Before you do, write one sentence, as a comment, that answers: <em>why did reading the station file work when reading the year file would not have, and what did Athena add on top of that?</em></p>
+<div id="499e4376" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The station file holds only the rows I needed, about 7 MB; the year file holds every station on Earth, 1.3 GB, and I would have thrown almost all of it away. Choosing the object was the filter. Athena moved that filter off my machine entirely: the fleet read the slice and I received only the answer.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 
