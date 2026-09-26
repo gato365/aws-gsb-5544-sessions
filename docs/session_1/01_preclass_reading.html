@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>preclass_reading – GSB 5544 · AWS Sessions</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../session_1/02_topics_of_practice.html" rel="next">
+<link href="../index.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b4acf84f37d6d68f6a15c6fe27913e81.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">GSB 5544 · AWS Sessions</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-session-1" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Session 1</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-session-1">    
+        <li>
+    <a class="dropdown-item" href="../session_1/01_preclass_reading.html">
+ <span class="dropdown-text">01 · Pre-class reading</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/02_topics_of_practice.html">
+ <span class="dropdown-text">02 · Topics of practice (student)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/02_topics_of_practice_SOLUTIONS.html">
+ <span class="dropdown-text">02 · Topics of practice (solutions)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/03_practice_activity.html">
+ <span class="dropdown-text">03 · Practice activity (student)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/03_practice_activity_SOLUTIONS.html">
+ <span class="dropdown-text">03 · Practice activity (solutions)</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/gato365/aws-gsb-5544-sessions"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../session_1/01_preclass_reading.html">Session 1 · Data Bigger Than Your Laptop</a></li><li class="breadcrumb-item"><a href="../session_1/01_preclass_reading.html">01 · Pre-class reading</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AWS Sessions for GSB 5544</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Session 1 · Data Bigger Than Your Laptop</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/01_preclass_reading.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">01 · Pre-class reading</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/02_topics_of_practice.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 · Topics of practice (student)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/02_topics_of_practice_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 · Topics of practice (solutions)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/03_practice_activity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 · Practice activity (student)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/03_practice_activity_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 · Practice activity (solutions)</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#pre-class-reading-data-bigger-than-your-laptop" id="toc-pre-class-reading-data-bigger-than-your-laptop" class="nav-link active" data-scroll-target="#pre-class-reading-data-bigger-than-your-laptop">Pre-Class Reading: Data Bigger Than Your Laptop</a>
+  <ul class="collapse">
+  <li><a href="#why-this-matters-for-a-business-analyst" id="toc-why-this-matters-for-a-business-analyst" class="nav-link" data-scroll-target="#why-this-matters-for-a-business-analyst">Why this matters for a business analyst</a></li>
+  <li><a href="#what-your-machine-actually-has" id="toc-what-your-machine-actually-has" class="nav-link" data-scroll-target="#what-your-machine-actually-has">1. What your machine actually has</a></li>
+  <li><a href="#the-units-of-data" id="toc-the-units-of-data" class="nav-link" data-scroll-target="#the-units-of-data">2. The units of data</a>
+  <ul class="collapse">
+  <li><a href="#file-size-is-not-memory-size" id="toc-file-size-is-not-memory-size" class="nav-link" data-scroll-target="#file-size-is-not-memory-size">File size is not memory size</a></li>
+  </ul></li>
+  <li><a href="#the-vocabulary-of-aws" id="toc-the-vocabulary-of-aws" class="nav-link" data-scroll-target="#the-vocabulary-of-aws">3. The vocabulary of AWS</a></li>
+  <li><a href="#reading-from-s3-without-an-account" id="toc-reading-from-s3-without-an-account" class="nav-link" data-scroll-target="#reading-from-s3-without-an-account">4. Reading from S3 without an account</a>
+  <ul class="collapse">
+  <li><a href="#listing-not-downloading" id="toc-listing-not-downloading" class="nav-link" data-scroll-target="#listing-not-downloading">Listing, not downloading</a></li>
+  <li><a href="#reading-a-size-without-reading-the-file" id="toc-reading-a-size-without-reading-the-file" class="nav-link" data-scroll-target="#reading-a-size-without-reading-the-file">Reading a size without reading the file</a></li>
+  <li><a href="#reading-a-slice-of-a-file" id="toc-reading-a-slice-of-a-file" class="nav-link" data-scroll-target="#reading-a-slice-of-a-file">Reading a <em>slice</em> of a file</a></li>
+  </ul></li>
+  <li><a href="#extraction-strategy-filter-at-the-source" id="toc-extraction-strategy-filter-at-the-source" class="nav-link" data-scroll-target="#extraction-strategy-filter-at-the-source">5. Extraction strategy: filter at the source</a>
+  <ul class="collapse">
+  <li><a href="#the-units-trap" id="toc-the-units-trap" class="nav-link" data-scroll-target="#the-units-trap">The units trap</a></li>
+  </ul></li>
+  <li><a href="#where-this-goes-next" id="toc-where-this-goes-next" class="nav-link" data-scroll-target="#where-this-goes-next">6. Where this goes next</a></li>
+  <li><a href="#reading-check" id="toc-reading-check" class="nav-link" data-scroll-target="#reading-check">Reading check</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/01_preclass_reading.md" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../session_1/01_preclass_reading.html">Session 1 · Data Bigger Than Your Laptop</a></li><li class="breadcrumb-item"><a href="../session_1/01_preclass_reading.html">01 · Pre-class reading</a></li></ol></nav></header>
+
+
+
+
+<section id="pre-class-reading-data-bigger-than-your-laptop" class="level1">
+<h1>Pre-Class Reading: Data Bigger Than Your Laptop</h1>
+<p><strong>GSB 5544 · Computing and Machine Learning for Business Analytics</strong></p>
+<p><em>Read before class. Run the code as you go; the practice activity assumes you have.</em></p>
+<hr>
+<section id="why-this-matters-for-a-business-analyst" class="level2">
+<h2 class="anchored" data-anchor-id="why-this-matters-for-a-business-analyst">Why this matters for a business analyst</h2>
+<p>Every dataset you have used in this course so far arrived as a file you opened. That is not how data arrives in practice. The sales history, the clickstream, the sensor log, the claims table: they live somewhere else, they are usually larger than your machine, and someone has to decide <em>what to bring over</em> before any modeling begins.</p>
+<p>That decision is an extraction problem, and it is the first place a business analyst runs into infrastructure. This reading gives you the three things you need to make that decision well:</p>
+<ol type="1">
+<li>A way to measure what your own machine can hold.</li>
+<li>The vocabulary to describe the size of data and the parts of a cloud system.</li>
+<li>A working pattern for reading only what you need from a large remote dataset.</li>
+</ol>
+<p>We will use weather data as the example. Weather is one of the most common external covariates in business analytics: it drives beverage and apparel demand, energy load, insurance claims, delivery times, and foot traffic. It is also a dataset that is far too large to open on a laptop, which is exactly the point.</p>
+<hr>
+</section>
+<section id="what-your-machine-actually-has" class="level2">
+<h2 class="anchored" data-anchor-id="what-your-machine-actually-has">1. What your machine actually has</h2>
+<p>Your laptop has an amount of memory (RAM) installed, and a smaller amount that is <em>available right now</em>. The available number is the one that determines whether a dataset loads. Measure it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> psutil</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>vm <span class="op">=</span> psutil.virtual_memory()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>du <span class="op">=</span> psutil.disk_usage(<span class="st">"/"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Physical cores : </span><span class="sc">{</span>psutil<span class="sc">.</span>cpu_count(logical<span class="op">=</span><span class="va">False</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Logical cores  : </span><span class="sc">{</span>psutil<span class="sc">.</span>cpu_count(logical<span class="op">=</span><span class="va">True</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total RAM      : </span><span class="sc">{</span>vm<span class="sc">.</span>total <span class="op">/</span> <span class="fl">1e9</span><span class="sc">:.1f}</span><span class="ss"> GB"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Available RAM  : </span><span class="sc">{</span>vm<span class="sc">.</span>available <span class="op">/</span> <span class="fl">1e9</span><span class="sc">:.1f}</span><span class="ss"> GB"</span>)   <span class="co"># the number that matters</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Free disk      : </span><span class="sc">{</span>du<span class="sc">.</span>free <span class="op">/</span> <span class="fl">1e9</span><span class="sc">:.1f}</span><span class="ss"> GB"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Write your available RAM down. You will compare it to a file size later.</p>
+<p>Two things people get wrong here:</p>
+<ul>
+<li><strong>Total is not available.</strong> A 16 GB machine running a browser, Slack, and a notebook server often has 3–5 GB actually free.</li>
+<li><strong>Disk is not memory.</strong> A 1 TB drive does not mean you can <em>analyze</em> 1 TB. pandas works in memory, and memory is the smaller number.</li>
+</ul>
+<hr>
+</section>
+<section id="the-units-of-data" class="level2">
+<h2 class="anchored" data-anchor-id="the-units-of-data">2. The units of data</h2>
+<p>You need to be fluent in these. Every size you will see in a cloud console, a bill, or an error message uses them.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Unit</th>
+<th>Bytes</th>
+<th>Something that size</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bit</td>
+<td>1/8 byte</td>
+<td>One yes/no</td>
+</tr>
+<tr class="even">
+<td>byte (B)</td>
+<td>1</td>
+<td>One character</td>
+</tr>
+<tr class="odd">
+<td>kilobyte (KB)</td>
+<td>1,000</td>
+<td>A paragraph</td>
+</tr>
+<tr class="even">
+<td>megabyte (MB)</td>
+<td>1,000,000</td>
+<td>A phone photo; a semester’s worth of survey data</td>
+</tr>
+<tr class="odd">
+<td>gigabyte (GB)</td>
+<td>1,000,000,000</td>
+<td>A year of daily weather readings, worldwide</td>
+</tr>
+<tr class="even">
+<td>terabyte (TB)</td>
+<td>1,000,000,000,000</td>
+<td>A large retailer’s transaction history</td>
+</tr>
+<tr class="odd">
+<td>petabyte (PB)</td>
+<td>1,000,000,000,000,000</td>
+<td>A web-scale crawl</td>
+</tr>
+</tbody>
+</table>
+<p>Two conventions coexist. Storage vendors and cloud consoles mostly use base 1000 (1 KB = 1,000 B). Operating systems and memory often use base 1024 (1 KiB = 1,024 B). This is why a “1 TB” drive shows as 931 GB in your file browser. Neither is wrong; you just need to know which one you are reading.</p>
+<p>A helper you will use constantly:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> human(n, base<span class="op">=</span><span class="dv">1000</span>):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Turn a byte count into a readable string."""</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> unit <span class="kw">in</span> [<span class="st">"B"</span>, <span class="st">"KB"</span>, <span class="st">"MB"</span>, <span class="st">"GB"</span>, <span class="st">"TB"</span>, <span class="st">"PB"</span>]:</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n <span class="op">&lt;</span> base:</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>n<span class="sc">:,.1f}</span><span class="ss"> </span><span class="sc">{</span>unit<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        n <span class="op">/=</span> base</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>n<span class="sc">:,.1f}</span><span class="ss"> EB"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>human(<span class="dv">1_500_000</span>)        <span class="co"># '1.5 MB'</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>human(<span class="dv">1_336_457_184</span>)    <span class="co"># '1.3 GB'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="file-size-is-not-memory-size" class="level3">
+<h3 class="anchored" data-anchor-id="file-size-is-not-memory-size">File size is not memory size</h3>
+<p>A CSV that is 800 MB on disk will not be 800 MB in pandas. Text columns are stored as Python objects, each with overhead, and pandas commonly needs 2–5× the on-disk size to hold a mostly-text CSV. Check what a DataFrame really costs with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df.memory_usage(deep<span class="op">=</span><span class="va">True</span>).<span class="bu">sum</span>()   <span class="co"># deep=True, or string columns are undercounted</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>So the question “does this fit?” is really: <em>is (file size × a multiplier) less than my available RAM?</em> When the answer is no, you do not need a bigger laptop. You need a smaller extraction.</p>
+<hr>
+</section>
+</section>
+<section id="the-vocabulary-of-aws" class="level2">
+<h2 class="anchored" data-anchor-id="the-vocabulary-of-aws">3. The vocabulary of AWS</h2>
+<p>Amazon Web Services is the largest cloud provider, and its vocabulary has become the industry’s vocabulary. Nine terms cover most of what you will read in documentation and error messages.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>What it is</th>
+<th>The confusion it prevents</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Region</strong></td>
+<td>A geographic cluster of data centers (<code>us-east-1</code>, <code>us-west-2</code>)</td>
+<td>Why a bucket “doesn’t exist”: you are looking in the wrong region</td>
+</tr>
+<tr class="even">
+<td><strong>S3</strong></td>
+<td>Simple Storage Service. Object storage, not a filesystem</td>
+<td>Why there are no real folders, only names that contain slashes</td>
+</tr>
+<tr class="odd">
+<td><strong>Bucket</strong></td>
+<td>A named container for objects. Names are globally unique across all of AWS</td>
+<td>Why <code>my-data</code> is already taken by a stranger</td>
+</tr>
+<tr class="even">
+<td><strong>Object</strong></td>
+<td>One stored item plus its metadata (size, last modified, type)</td>
+<td>Why you can read an object’s size without downloading it</td>
+</tr>
+<tr class="odd">
+<td><strong>Key</strong></td>
+<td>The object’s full name within the bucket, e.g.&nbsp;<code>csv/by_year/2024.csv</code></td>
+<td>Why that is one string, not three folders and a file</td>
+</tr>
+<tr class="even">
+<td><strong>Prefix</strong></td>
+<td>The start of a key, used to list “everything under” something</td>
+<td>How S3 fakes folders</td>
+</tr>
+<tr class="odd">
+<td><strong>EC2</strong></td>
+<td>Elastic Compute Cloud. A rented virtual computer</td>
+<td>What “compute” means as distinct from “storage”</td>
+</tr>
+<tr class="even">
+<td><strong>IAM</strong></td>
+<td>Identity and Access Management. Who may do what</td>
+<td>Why code gets <code>AccessDenied</code> even on public data</td>
+</tr>
+<tr class="odd">
+<td><strong>Credentials</strong></td>
+<td>The keys that identify you to AWS</td>
+<td>Why “unsigned” or “anonymous” requests exist, and when you need to sign one</td>
+</tr>
+</tbody>
+</table>
+<p>The single most important idea underneath all nine: <strong>storage and compute are separate.</strong> Data sits in S3. Computers (your laptop, or a rented EC2 instance) reach into S3 for it. The data does not have to be where the computer is.</p>
+<hr>
+</section>
+<section id="reading-from-s3-without-an-account" class="level2">
+<h2 class="anchored" data-anchor-id="reading-from-s3-without-an-account">4. Reading from S3 without an account</h2>
+<p>Many large public datasets are hosted on S3 through the <a href="https://registry.opendata.aws/">Registry of Open Data on AWS</a>. They can be read <em>anonymously</em>: no account, no credit card, no credentials. The request is simply not signed.</p>
+<p>Install what you need (once):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install boto3 s3fs psutil pandas matplotlib</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>boto3</code> is the official AWS library for Python. Create an unsigned client:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> boto3</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> botocore <span class="im">import</span> UNSIGNED</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> botocore.config <span class="im">import</span> Config</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>s3 <span class="op">=</span> boto3.client(<span class="st">"s3"</span>, region_name<span class="op">=</span><span class="st">"us-east-1"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                  config<span class="op">=</span>Config(signature_version<span class="op">=</span>UNSIGNED))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Our dataset is NOAA’s <strong>Global Historical Climatology Network – Daily (GHCN-D)</strong>: daily observations from tens of thousands of weather stations worldwide, some going back to the 1760s. It lives in the bucket <code>noaa-ghcn-pds</code>.</p>
+<section id="listing-not-downloading" class="level3">
+<h3 class="anchored" data-anchor-id="listing-not-downloading">Listing, not downloading</h3>
+<p>The first thing to do with any bucket is look at what is in it. <code>Delimiter="/"</code> asks S3 to group keys by their first path segment, which is how you see the “folders”:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>BUCKET <span class="op">=</span> <span class="st">"noaa-ghcn-pds"</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> s3.list_objects_v2(Bucket<span class="op">=</span>BUCKET, Delimiter<span class="op">=</span><span class="st">"/"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([p[<span class="st">"Prefix"</span>] <span class="cf">for</span> p <span class="kw">in</span> resp.get(<span class="st">"CommonPrefixes"</span>, [])])</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ['csv.gz/', 'csv/', 'parquet/']</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([o[<span class="st">"Key"</span>] <span class="cf">for</span> o <span class="kw">in</span> resp.get(<span class="st">"Contents"</span>, [])][:<span class="dv">6</span>])</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ['ghcnd-countries.txt', 'ghcnd-inventory.txt', 'ghcnd-states.txt', 'ghcnd-stations.txt', ...]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>csv/</code> prefix contains two layouts of the same data:</p>
+<ul>
+<li><code>csv/by_year/YYYY.csv</code> — every station, one year per file</li>
+<li><code>csv/by_station/STATIONID.csv</code> — one station, every year in one file</li>
+</ul>
+</section>
+<section id="reading-a-size-without-reading-the-file" class="level3">
+<h3 class="anchored" data-anchor-id="reading-a-size-without-reading-the-file">Reading a size without reading the file</h3>
+<p>Every object carries its size as metadata. You can read it for free:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> s3.list_objects_v2(Bucket<span class="op">=</span>BUCKET, Prefix<span class="op">=</span><span class="st">"csv/by_year/202"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> obj <span class="kw">in</span> resp[<span class="st">"Contents"</span>]:</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>obj[<span class="st">'Key'</span>]<span class="sc">:&lt;28}</span><span class="ss"> </span><span class="sc">{</span>human(obj[<span class="st">'Size'</span>])<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>csv/by_year/2020.csv         1.3 GB
+csv/by_year/2021.csv         1.4 GB
+csv/by_year/2022.csv         1.4 GB
+csv/by_year/2023.csv         1.4 GB
+csv/by_year/2024.csv         1.3 GB
+csv/by_year/2025.csv         1.3 GB
+csv/by_year/2026.csv         818.8 MB</code></pre>
+<p>Compare that to your available RAM from section 1, and remember the multiplier. One year of GHCN is a file most laptops cannot open with a plain <code>pd.read_csv</code>.</p>
+<p>For a single object, <code>head_object</code> returns the metadata alone:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>meta <span class="op">=</span> s3.head_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span><span class="st">"csv/by_year/2024.csv"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>meta[<span class="st">"ContentLength"</span>], meta[<span class="st">"LastModified"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="reading-a-slice-of-a-file" class="level3">
+<h3 class="anchored" data-anchor-id="reading-a-slice-of-a-file">Reading a <em>slice</em> of a file</h3>
+<p>S3 supports HTTP range requests, so you can read the first few hundred bytes of a gigabyte file to see its shape:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span><span class="st">"csv/by_year/2024.csv"</span>, Range<span class="op">=</span><span class="st">"bytes=0-299"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(obj[<span class="st">"Body"</span>].read().decode())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Use this to check whether a file has a header row before you read it. If the first line begins with <code>ID,</code>, it does.</p>
+<hr>
+</section>
+</section>
+<section id="extraction-strategy-filter-at-the-source" class="level2">
+<h2 class="anchored" data-anchor-id="extraction-strategy-filter-at-the-source">5. Extraction strategy: filter at the source</h2>
+<p>When data does not fit, there are three levers, and they all express one principle: <strong>move the filter to the data instead of moving the data to the filter.</strong></p>
+<p><strong>Lever 1: pick the right object.</strong> GHCN offers the same data by year (1.3 GB, all stations) and by station (a few MB, all years). If you need one location, read the station file. Choosing the object is the cheapest filter there is.</p>
+<p><strong>Lever 2: read fewer columns.</strong> <code>usecols</code> tells pandas to discard columns while parsing, so they never take memory.</p>
+<p><strong>Lever 3: read fewer rows at a time.</strong> <code>chunksize</code> returns an iterator of DataFrames; you filter each chunk and keep only what survives.</p>
+<p>Here is the pattern, reading one station directly from S3. The GHCN CSV columns are, in order: station ID, date (YYYYMMDD), element code, value, and four flag columns.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>COLS <span class="op">=</span> [<span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"element"</span>, <span class="st">"value"</span>, <span class="st">"m_flag"</span>, <span class="st">"q_flag"</span>, <span class="st">"s_flag"</span>, <span class="st">"obs_time"</span>]</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>STATION <span class="op">=</span> <span class="st">"USC00047851"</span>          <span class="co"># SAN LUIS OBISPO POLY, CA — records since 1893</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> <span class="ss">f"csv/by_station/</span><span class="sc">{</span>STATION<span class="sc">}</span><span class="ss">.csv"</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Does the file have a header row? Read 100 bytes and look.</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>first <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key, Range<span class="op">=</span><span class="st">"bytes=0-99"</span>)[<span class="st">"Body"</span>].read().decode()</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>has_header <span class="op">=</span> first.upper().startswith(<span class="st">"ID,"</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    obj[<span class="st">"Body"</span>],</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    header<span class="op">=</span><span class="dv">0</span> <span class="cf">if</span> has_header <span class="cf">else</span> <span class="va">None</span>,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    names<span class="op">=</span>COLS,</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    usecols<span class="op">=</span>[<span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"element"</span>, <span class="st">"value"</span>],     <span class="co"># lever 2</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    dtype<span class="op">=</span>{<span class="st">"id"</span>: <span class="st">"string"</span>, <span class="st">"element"</span>: <span class="st">"string"</span>},</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>df.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>For a by-year file, add lever 3 and keep only the rows you want as they stream past:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> <span class="st">"csv/by_year/2024.csv"</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>first <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key, Range<span class="op">=</span><span class="st">"bytes=0-99"</span>)[<span class="st">"Body"</span>].read().decode()</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>has_header <span class="op">=</span> first.upper().startswith(<span class="st">"ID,"</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>chunks <span class="op">=</span> pd.read_csv(</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"s3://</span><span class="sc">{</span>BUCKET<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>key<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    storage_options<span class="op">=</span>{<span class="st">"anon"</span>: <span class="va">True</span>},                 <span class="co"># unsigned, via s3fs</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    header<span class="op">=</span><span class="dv">0</span> <span class="cf">if</span> has_header <span class="cf">else</span> <span class="va">None</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    names<span class="op">=</span>COLS,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    usecols<span class="op">=</span>[<span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"element"</span>, <span class="st">"value"</span>],</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    chunksize<span class="op">=</span><span class="dv">1_000_000</span>,                            <span class="co"># lever 3</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>keep <span class="op">=</span> pd.concat(c[c[<span class="st">"id"</span>] <span class="op">==</span> STATION] <span class="cf">for</span> c <span class="kw">in</span> chunks)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Both produce the same rows for that station. One reads 6.7 MB; the other reads 1.3 GB and throws almost all of it away. Lever 1 was the one that mattered.</p>
+<section id="the-units-trap" class="level3">
+<h3 class="anchored" data-anchor-id="the-units-trap">The units trap</h3>
+<p>GHCN stores temperatures in <strong>tenths of a degree Celsius</strong> and precipitation in <strong>tenths of a millimeter</strong>. A <code>TMAX</code> value of <code>266</code> means 26.6 °C. Divide by 10 before you do anything else, or your first chart will show 300-degree days. Data arrives with conventions attached; reading the documentation is part of extraction.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>].astype(<span class="bu">str</span>), <span class="bu">format</span><span class="op">=</span><span class="st">"%Y%m</span><span class="sc">%d</span><span class="st">"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>tmax <span class="op">=</span> df[df[<span class="st">"element"</span>] <span class="op">==</span> <span class="st">"TMAX"</span>].copy()</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>tmax[<span class="st">"tmax_c"</span>] <span class="op">=</span> tmax[<span class="st">"value"</span>] <span class="op">/</span> <span class="dv">10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="where-this-goes-next" class="level2">
+<h2 class="anchored" data-anchor-id="where-this-goes-next">6. Where this goes next</h2>
+<p>In class you will:</p>
+<ul>
+<li>Measure your own machine and put the class’s numbers side by side.</li>
+<li>Read sizes from the GHCN bucket and decide, with arithmetic, what fits.</li>
+<li>Extract one station’s history, transform it, and plot it.</li>
+<li>Compare two markets’ weather histories the way an analyst would before building a demand model.</li>
+</ul>
+<p>Everything in the practice activity uses only what is on this page.</p>
+<hr>
+</section>
+<section id="reading-check" class="level2">
+<h2 class="anchored" data-anchor-id="reading-check">Reading check</h2>
+<p>Answer these for yourself before class. They are the first questions in the practice activity.</p>
+<ol type="1">
+<li>Your machine reports 16 GB total and 4.2 GB available. A CSV is 1.3 GB on disk. Will <code>pd.read_csv</code> on the whole file probably succeed? Show the arithmetic.</li>
+<li>What is the difference between a bucket, a key, and a prefix? Give one example of each from <code>noaa-ghcn-pds</code>.</li>
+<li>Why can <code>list_objects_v2</code> tell you a file’s size without downloading it?</li>
+<li>You need every temperature reading for Phoenix since 1990. Which object do you read: <code>csv/by_year/*.csv</code> or <code>csv/by_station/USW00023183.csv</code>? Why?</li>
+<li>A <code>TMAX</code> value in the file is <code>412</code>. What is the temperature in Celsius? In Fahrenheit?</li>
+</ol>
+<hr>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li>Registry of Open Data on AWS — NOAA GHCN-D: https://registry.opendata.aws/noaa-ghcn/</li>
+<li>GHCN-D by-year file format (column order and units): https://www.ncei.noaa.gov/pub/data/ghcn/daily/readme-by_year.txt</li>
+<li>GHCN-D full readme (element codes, flags): https://www.ncei.noaa.gov/pub/data/ghcn/daily/readme.txt</li>
+<li>boto3 S3 client reference: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html</li>
+<li>pandas <code>read_csv</code> (<code>usecols</code>, <code>chunksize</code>, <code>storage_options</code>): https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/gato365\.github\.io\/aws-gsb-5544-sessions\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../index.html" class="pagination-link" aria-label="AWS Sessions for GSB 5544">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">AWS Sessions for GSB 5544</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../session_1/02_topics_of_practice.html" class="pagination-link" aria-label="02 · Topics of practice (student)">
+        <span class="nav-page-text">02 · Topics of practice (student)</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>GSB 5544 · Computing and Machine Learning for Business Analytics</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/01_preclass_reading.md" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with Quarto · Hosted on GitHub Pages</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

@@ -1,0 +1,561 @@
+[
+  {
+    "objectID": "session_1/03_practice_activity_SOLUTIONS.html",
+    "href": "session_1/03_practice_activity_SOLUTIONS.html",
+    "title": "Practice Activity: Weather as a Business Covariate",
+    "section": "",
+    "text": "GSB 5544 · Computing and Machine Learning for Business Analytics\nYou manage inventory planning for a beverage distributor with two markets: San Luis Obispo, CA and Phoenix, AZ. Before anyone builds a demand model, you need each market’s weather history, and it lives in a bucket that is far larger than your laptop.\nEverything you need is in the pre-class reading. Each question has an empty code cell; some also ask for a short written answer in a markdown cell.\nStations\nRun the setup cell first.\nimport io\nimport time\nimport psutil\nimport boto3\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom botocore import UNSIGNED\nfrom botocore.config import Config\n\nBUCKET = \"noaa-ghcn-pds\"\nCOLS = [\"id\", \"date\", \"element\", \"value\", \"m_flag\", \"q_flag\", \"s_flag\", \"obs_time\"]\nSTATIONS = {\"San Luis Obispo\": \"USC00047851\", \"Phoenix\": \"USW00023183\"}\n\ns3 = boto3.client(\"s3\", region_name=\"us-east-1\", config=Config(signature_version=UNSIGNED))\n\n\ndef human(n, base=1000):\n    for unit in [\"B\", \"KB\", \"MB\", \"GB\", \"TB\", \"PB\"]:\n        if n &lt; base:\n            return f\"{n:,.1f} {unit}\"\n        n /= base\n    return f\"{n:,.1f} EB\"",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "03 · Practice activity (solutions)"
+    ]
+  },
+  {
+    "objectID": "session_1/03_practice_activity_SOLUTIONS.html#set-1-capacity",
+    "href": "session_1/03_practice_activity_SOLUTIONS.html#set-1-capacity",
+    "title": "Practice Activity: Weather as a Business Covariate",
+    "section": "Set 1 · Capacity",
+    "text": "Set 1 · Capacity\n\nQ1. Your machine\nReport physical cores, total RAM, available RAM, and free disk in GB. Store available RAM in bytes as MY_RAM.\n\nvm = psutil.virtual_memory()\ndu = psutil.disk_usage(\"/\")\nMY_RAM = vm.available\n\nprint(f\"Physical cores : {psutil.cpu_count(logical=False)}\")\nprint(f\"Total RAM      : {vm.total / 1e9:.1f} GB\")\nprint(f\"Available RAM  : {vm.available / 1e9:.1f} GB\")\nprint(f\"Free disk      : {du.free / 1e9:.1f} GB\")\n\n\n\nQ2. Rows that fit\nA GHCN row is roughly 50 bytes on disk, and a text-heavy CSV needs about 3× its disk size once loaded in pandas. How many raw rows could your available RAM hold? Print the number with thousands separators.\n\nBYTES_PER_ROW = 50\nMULT = 3\nrows_fit = MY_RAM // (BYTES_PER_ROW * MULT)\nprint(f\"About {rows_fit:,} rows fit in {human(MY_RAM)} of available RAM\")\n\n\n\nQ3. A decade of weather\nList the by-year files for 2016 through 2025 and compute their total size. Print the total in readable units, then print how many copies of your available RAM that is.\nHint: a Prefix of csv/by_year/201 returns 2010–2019; you will need two listings or a filter.\n\ntotal = 0\nfor prefix in [\"csv/by_year/201\", \"csv/by_year/202\"]:\n    resp = s3.list_objects_v2(Bucket=BUCKET, Prefix=prefix)\n    for obj in resp[\"Contents\"]:\n        year = int(obj[\"Key\"].split(\"/\")[-1][:4])\n        if 2016 &lt;= year &lt;= 2025:\n            total += obj[\"Size\"]\n            print(f\"{obj['Key']:&lt;28} {human(obj['Size'])}\")\n\nprint()\nprint(\"Total 2016–2025 :\", human(total))\nprint(\"Copies of my RAM:\", f\"{total / MY_RAM:.1f}×\")",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "03 · Practice activity (solutions)"
+    ]
+  },
+  {
+    "objectID": "session_1/03_practice_activity_SOLUTIONS.html#set-2-vocabulary-in-action",
+    "href": "session_1/03_practice_activity_SOLUTIONS.html#set-2-vocabulary-in-action",
+    "title": "Practice Activity: Weather as a Business Covariate",
+    "section": "Set 2 · Vocabulary in action",
+    "text": "Set 2 · Vocabulary in action\n\nQ4. What is under csv/?\nList the common prefixes directly under csv/ in the bucket. Then, in the markdown cell that follows, explain in one or two sentences why by_year/ is not a folder and what S3 is actually doing when it shows you one.\n\nresp = s3.list_objects_v2(Bucket=BUCKET, Prefix=\"csv/\", Delimiter=\"/\")\nprint([p[\"Prefix\"] for p in resp.get(\"CommonPrefixes\", [])])\n\nYour answer:\n\n\nQ5. Metadata only\nUsing a single call that does not download the file, print the size (readable) and the last-modified date of csv/by_year/2024.csv. Then print whether a plain pd.read_csv of it would fit in your RAM at 3×.\n\nmeta = s3.head_object(Bucket=BUCKET, Key=\"csv/by_year/2024.csv\")\nsize = meta[\"ContentLength\"]\nprint(\"Size         :\", human(size))\nprint(\"Last modified:\", meta[\"LastModified\"])\nprint(\"Fits at 3×?  :\", size * 3 &lt; MY_RAM)",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "03 · Practice activity (solutions)"
+    ]
+  },
+  {
+    "objectID": "session_1/03_practice_activity_SOLUTIONS.html#set-3-extraction",
+    "href": "session_1/03_practice_activity_SOLUTIONS.html#set-3-extraction",
+    "title": "Practice Activity: Weather as a Business Covariate",
+    "section": "Set 3 · Extraction",
+    "text": "Set 3 · Extraction\n\nQ6. Pull both markets\nWrite a function load_station(station_id) that:\n\nprints the object’s size before reading it,\nchecks whether the file has a header row using a range request,\nreads the file keeping only id, date, element, value,\nconverts date to a datetime,\nkeeps only TMAX and PRCP rows from 2015 onward,\nreturns the DataFrame.\n\nCall it for both stations and combine the results into one DataFrame called wx with a market column.\n\ndef load_station(station_id):\n    key = f\"csv/by_station/{station_id}.csv\"\n    print(station_id, \"size:\", human(s3.head_object(Bucket=BUCKET, Key=key)[\"ContentLength\"]))\n\n    first = s3.get_object(Bucket=BUCKET, Key=key, Range=\"bytes=0-99\")[\"Body\"].read().decode()\n    has_header = first.upper().startswith(\"ID,\")\n\n    raw = s3.get_object(Bucket=BUCKET, Key=key)[\"Body\"].read()\n    df = pd.read_csv(\n        io.BytesIO(raw),\n        header=0 if has_header else None,\n        names=COLS,\n        usecols=[\"id\", \"date\", \"element\", \"value\"],\n        dtype={\"id\": \"string\", \"element\": \"string\"},\n    )\n    df[\"date\"] = pd.to_datetime(df[\"date\"].astype(str), format=\"%Y%m%d\")\n    df = df[df[\"element\"].isin([\"TMAX\", \"PRCP\"]) & (df[\"date\"] &gt;= \"2015-01-01\")]\n    return df.reset_index(drop=True)\n\n\nframes = []\nfor market, sid in STATIONS.items():\n    d = load_station(sid)\n    d[\"market\"] = market\n    frames.append(d)\n\nwx = pd.concat(frames, ignore_index=True)\nprint(wx.shape)\nwx.groupby([\"market\", \"element\"]).size()\n\n\n\nQ7. Hot days per year\nTemperatures are stored in tenths of a degree Celsius. For each market and year, count the number of days with a daily maximum of 35 °C or higher (95 °F). Produce a table with years as rows and markets as columns.\n\ntmax = wx[wx[\"element\"] == \"TMAX\"].copy()\ntmax[\"tmax_c\"] = tmax[\"value\"] / 10\ntmax[\"year\"] = tmax[\"date\"].dt.year\n\nhot = (\n    tmax[tmax[\"tmax_c\"] &gt;= 35]\n    .groupby([\"year\", \"market\"]).size()\n    .unstack(\"market\")\n    .fillna(0).astype(int)\n)\nhot\n\n\n\nQ8. Monthly rainfall\nPrecipitation is stored in tenths of a millimeter. For each market, compute total precipitation per month in millimeters, then show the average for each calendar month across all years (so 12 rows per market). Which month is wettest in each market?\n\nprcp = wx[wx[\"element\"] == \"PRCP\"].copy()\nprcp[\"prcp_mm\"] = prcp[\"value\"] / 10\n\nmonthly_total = (\n    prcp.set_index(\"date\")\n        .groupby(\"market\")[\"prcp_mm\"]\n        .resample(\"ME\").sum()           # \"M\" on pandas &lt; 2.2\n        .reset_index()\n)\nmonthly_total[\"month\"] = monthly_total[\"date\"].dt.month\n\nclimatology = monthly_total.groupby([\"market\", \"month\"])[\"prcp_mm\"].mean().unstack(\"market\").round(1)\nprint(climatology)\nprint()\nprint(\"Wettest month:\", climatology.idxmax().to_dict())",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "03 · Practice activity (solutions)"
+    ]
+  },
+  {
+    "objectID": "session_1/03_practice_activity_SOLUTIONS.html#set-4-visualize-and-interpret",
+    "href": "session_1/03_practice_activity_SOLUTIONS.html#set-4-visualize-and-interpret",
+    "title": "Practice Activity: Weather as a Business Covariate",
+    "section": "Set 4 · Visualize and interpret",
+    "text": "Set 4 · Visualize and interpret\n\nQ9. One chart, two markets\nPlot hot days per year (from Q7) for both markets on a single line chart. Label the axes with units and give the chart a title that says what it shows.\n\nfig, ax = plt.subplots(figsize=(9, 4))\nfor market in hot.columns:\n    ax.plot(hot.index, hot[market], marker=\"o\", linewidth=1.3, label=market)\nax.set_xlabel(\"Year\")\nax.set_ylabel(\"Days with max temperature ≥ 35 °C\")\nax.set_title(\"Hot days per year, 2015 onward\")\nax.grid(alpha=0.3)\nax.legend()\nplt.tight_layout()\nplt.show()\n\n\n\nQ10. The business read\nIn four to six sentences, answer as the inventory planner:\n\nWhat does the chart imply about how differently the two markets should be stocked across the year?\nName two other datasets you would want to join to this weather history before trusting a demand model, and say where each one probably lives (your laptop, a company database, or a cloud bucket).\n\nYour answer:\n\n\nQ11. Stretch: the wrong way, on purpose\nExtract the same Phoenix rows for 2024 by reading csv/by_year/2024.csv in chunks of one million rows, filtering each chunk to the Phoenix station. Time it. Then compare the row count to what you get by filtering wx to Phoenix and 2024.\nIn the markdown cell after, explain which extraction is better and why, using the phrase “filter at the source.”\nThis reads 1.3 GB over the network. Expect several minutes. Skip if your connection is slow.\n\nkey = \"csv/by_year/2024.csv\"\nfirst = s3.get_object(Bucket=BUCKET, Key=key, Range=\"bytes=0-99\")[\"Body\"].read().decode()\nhas_header = first.upper().startswith(\"ID,\")\n\nt0 = time.perf_counter()\nchunks = pd.read_csv(\n    f\"s3://{BUCKET}/{key}\",\n    storage_options={\"anon\": True},\n    header=0 if has_header else None,\n    names=COLS,\n    usecols=[\"id\", \"date\", \"element\", \"value\"],\n    dtype={\"id\": \"string\", \"element\": \"string\"},\n    chunksize=1_000_000,\n)\nby_year = pd.concat(c[c[\"id\"] == STATIONS[\"Phoenix\"]] for c in chunks)\nby_year = by_year[by_year[\"element\"].isin([\"TMAX\", \"PRCP\"])]\nelapsed = time.perf_counter() - t0\n\nby_station = wx[(wx[\"market\"] == \"Phoenix\") & (wx[\"date\"].dt.year == 2024)]\n\nprint(f\"by_year   : {len(by_year):,} rows in {elapsed:,.0f} s (read {human(s3.head_object(Bucket=BUCKET, Key=key)['ContentLength'])})\")\nprint(f\"by_station: {len(by_station):,} rows (read {human(s3.head_object(Bucket=BUCKET, Key='csv/by_station/USW00023183.csv')['ContentLength'])})\")\n\nYour answer:\n\nSubmit this notebook with all cells run. Your written answers for Q4, Q10, and Q11 go in the markdown cells provided.",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "03 · Practice activity (solutions)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice_SOLUTIONS.html",
+    "href": "session_1/02_topics_of_practice_SOLUTIONS.html",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "",
+    "text": "GSB 5544 · Computing and Machine Learning for Business Analytics\nThis notebook walks through the main functions from the pre-class reading, one short block at a time. Each block names the section of the reading it draws on. Replace every ____ with the right code and run the cell.\nYou need: psutil, boto3, s3fs, pandas, matplotlib. No AWS account is required.\nimport io\nimport psutil\nimport boto3\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom botocore import UNSIGNED\nfrom botocore.config import Config\n\nBUCKET = \"noaa-ghcn-pds\"",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (solutions)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice_SOLUTIONS.html#a.-what-your-machine-actually-has",
+    "href": "session_1/02_topics_of_practice_SOLUTIONS.html#a.-what-your-machine-actually-has",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "A. What your machine actually has",
+    "text": "A. What your machine actually has\nFrom the reading, §1. Total RAM is not available RAM. The available number decides whether a file loads.\nFill in the two calls that report memory and the attribute that gives the memory available right now.\n\nvm = psutil.virtual_memory()\ndu = psutil.disk_usage(\"/\")\n\nprint(f\"Physical cores : {psutil.cpu_count(logical=False)}\")\nprint(f\"Total RAM      : {vm.total / 1e9:.1f} GB\")\nprint(f\"Available RAM  : {vm.available / 1e9:.1f} GB\")\nprint(f\"Free disk      : {du.free / 1e9:.1f} GB\")\n\nMY_RAM = vm.available          # keep this; we compare file sizes against it below",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (solutions)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice_SOLUTIONS.html#b.-the-units-of-data",
+    "href": "session_1/02_topics_of_practice_SOLUTIONS.html#b.-the-units-of-data",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "B. The units of data",
+    "text": "B. The units of data\nFrom the reading, §2. Byte counts are unreadable past a few million. Write the helper that turns them into KB / MB / GB and so on, using base 1000.\nFill in the list of units in ascending order and the line that steps n down one unit.\n\ndef human(n, base=1000):\n    for unit in [\"B\", \"KB\", \"MB\", \"GB\", \"TB\", \"PB\"]:\n        if n &lt; base:\n            return f\"{n:,.1f} {unit}\"\n        n /= base\n    return f\"{n:,.1f} EB\"\n\nprint(human(1_500_000))          # expect 1.5 MB\nprint(human(1_336_457_184))      # expect 1.3 GB\nprint(human(MY_RAM))             # your available RAM, readable\n\nCheck yourself. A “1 TB” drive shows as 931 GB in your file browser. Which base does the drive maker use, and which does the operating system use? Write your answer in the cell below as a comment.\n\n# Drive maker uses base 1000; the OS uses base 1024.\n# 1e12 / 1024**3 = 931.3 GiB, which the OS labels \"GB\".",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (solutions)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice_SOLUTIONS.html#c.-the-vocabulary-of-aws",
+    "href": "session_1/02_topics_of_practice_SOLUTIONS.html#c.-the-vocabulary-of-aws",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "C. The vocabulary of AWS",
+    "text": "C. The vocabulary of AWS\nFrom the reading, §3. Fill in the term that each definition describes. The cell checks your answers.\n\nvocab = {\n    \"A named container for objects; its name is globally unique\":     \"bucket\",\n    \"One stored item plus its metadata such as size\":                  \"object\",\n    \"The full name of an object inside its bucket\":                    \"key\",\n    \"The start of a key, used to list everything 'under' something\":   \"prefix\",\n    \"A geographic cluster of data centers such as us-east-1\":          \"region\",\n    \"A rented virtual computer\":                                       \"EC2\",\n    \"The service that decides who may do what\":                        \"IAM\",\n}\n\nexpected = {\"bucket\", \"object\", \"key\", \"prefix\", \"region\", \"ec2\", \"iam\"}\ngiven = {v.strip().lower() for v in vocab.values()}\nprint(\"All correct\" if given == expected else f\"Check: {expected - given}\")",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (solutions)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice_SOLUTIONS.html#d.-connect-without-an-account",
+    "href": "session_1/02_topics_of_practice_SOLUTIONS.html#d.-connect-without-an-account",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "D. Connect without an account",
+    "text": "D. Connect without an account\nFrom the reading, §4. Public datasets on S3 can be read with an unsigned request. Build the client, then list the top-level “folders” of the GHCN bucket.\nFill in the signature setting that makes the request anonymous, and the delimiter that makes S3 group keys like folders.\n\ns3 = boto3.client(\n    \"s3\",\n    region_name=\"us-east-1\",\n    config=Config(signature_version=UNSIGNED),\n)\n\nresp = s3.list_objects_v2(Bucket=BUCKET, Delimiter=\"/\")\n\nprint(\"Prefixes :\", [p[\"Prefix\"] for p in resp.get(\"CommonPrefixes\", [])])\nprint(\"Files    :\", [o[\"Key\"] for o in resp.get(\"Contents\", [])][:6])\n\nLook at the output. csv/ is not a folder. In one sentence, what is it? Type your answer as a comment.\n\n# It is a prefix: the shared beginning of many object keys. S3 groups keys by it when asked, which looks like a folder.",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (solutions)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice_SOLUTIONS.html#e.-read-a-size-without-reading-the-file",
+    "href": "session_1/02_topics_of_practice_SOLUTIONS.html#e.-read-a-size-without-reading-the-file",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "E. Read a size without reading the file",
+    "text": "E. Read a size without reading the file\nFrom the reading, §4. Every object carries its size as metadata. List the by-year files for the 2020s and print each size in readable units.\nFill in the prefix that selects csv/by_year/2020.csv through 2026.csv, and the field that holds an object’s size.\n\nresp = s3.list_objects_v2(Bucket=BUCKET, Prefix=\"csv/by_year/202\")\n\nsizes = {}\nfor obj in resp[\"Contents\"]:\n    sizes[obj[\"Key\"]] = obj[\"Size\"]\n    print(f\"{obj['Key']:&lt;28} {human(obj['Size'])}\")\n\nNow the comparison that the whole reading builds toward. pandas typically needs about 3× a text CSV’s size in memory. For each file, decide whether a plain pd.read_csv would fit in your available RAM.\nFill in the multiplier and the comparison.\n\nMULT = 3\n\nfor key, size in sizes.items():\n    need = size * MULT\n    fits = need &lt; MY_RAM\n    print(f\"{key:&lt;28} needs ~{human(need):&gt;9}   fits: {fits}\")",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (solutions)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice_SOLUTIONS.html#f.-peek-at-a-file-with-a-range-request",
+    "href": "session_1/02_topics_of_practice_SOLUTIONS.html#f.-peek-at-a-file-with-a-range-request",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "F. Peek at a file with a range request",
+    "text": "F. Peek at a file with a range request\nFrom the reading, §4. You can read the first few hundred bytes of a gigabyte file to see its shape. Do that for the 2024 by-year file and check whether it has a header row.\nFill in the Range header for the first 300 bytes.\n\nkey = \"csv/by_year/2024.csv\"\n\nobj = s3.get_object(Bucket=BUCKET, Key=key, Range=\"bytes=0-299\")\nfirst = obj[\"Body\"].read().decode()\nprint(first)\n\nhas_header = first.upper().startswith(\"ID,\")\nprint(\"Header row present:\", has_header)",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (solutions)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice_SOLUTIONS.html#g.-extract-one-station-not-one-year",
+    "href": "session_1/02_topics_of_practice_SOLUTIONS.html#g.-extract-one-station-not-one-year",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "G. Extract one station, not one year",
+    "text": "G. Extract one station, not one year\nFrom the reading, §5. Lever 1 is picking the right object. The Cal Poly station (USC00047851, SAN LUIS OBISPO POLY) has records since 1893 in a single file of about 7 MB. Read it, keeping only the four columns you need.\nFill in the station key, the header logic, and the usecols list.\n\nCOLS = [\"id\", \"date\", \"element\", \"value\", \"m_flag\", \"q_flag\", \"s_flag\", \"obs_time\"]\nSTATION = \"USC00047851\"\nkey = f\"csv/by_station/{STATION}.csv\"\n\n# size first, always\nprint(\"Size:\", human(s3.head_object(Bucket=BUCKET, Key=key)[\"ContentLength\"]))\n\n# header check\nfirst = s3.get_object(Bucket=BUCKET, Key=key, Range=\"bytes=0-99\")[\"Body\"].read().decode()\nhas_header = first.upper().startswith(\"ID,\")\n\nraw = s3.get_object(Bucket=BUCKET, Key=key)[\"Body\"].read()\ndf = pd.read_csv(\n    io.BytesIO(raw),\n    header=0 if has_header else None,\n    names=COLS,\n    usecols=[\"id\", \"date\", \"element\", \"value\"],\n    dtype={\"id\": \"string\", \"element\": \"string\"},\n)\n\nprint(df.shape)\nprint(\"In memory:\", human(df.memory_usage(deep=True).sum()))\ndf.head()",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (solutions)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice_SOLUTIONS.html#h.-transform",
+    "href": "session_1/02_topics_of_practice_SOLUTIONS.html#h.-transform",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "H. Transform",
+    "text": "H. Transform\nFrom the reading, §5, “The units trap”. Dates are stored as YYYYMMDD integers and temperatures in tenths of a degree Celsius. Fix both, keep only daily maximum temperature, and compute a yearly mean.\nFill in the date format string, the element code, the unit conversion, and the resampling rule for year-end.\n\ndf[\"date\"] = pd.to_datetime(df[\"date\"].astype(str), format=\"%Y%m%d\")\n\ntmax = df[df[\"element\"] == \"TMAX\"].copy()\ntmax[\"tmax_c\"] = tmax[\"value\"] / 10\n\nyearly = (\n    tmax.set_index(\"date\")[\"tmax_c\"]\n        .resample(\"YE\")          # \"Y\" on pandas &lt; 2.2\n        .mean()\n)\n\nprint(f\"{len(tmax):,} TMAX readings, {yearly.index.min().year}–{yearly.index.max().year}\")\nyearly.tail()",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (solutions)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice_SOLUTIONS.html#i.-bring-the-visual",
+    "href": "session_1/02_topics_of_practice_SOLUTIONS.html#i.-bring-the-visual",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "I. Bring the visual",
+    "text": "I. Bring the visual\nFrom the reading, §6. One picture that came from a bucket you never downloaded.\nFill in the series to plot and the y-axis label with its unit.\n\nfig, ax = plt.subplots(figsize=(9, 4))\nax.plot(yearly.index, yearly.values, linewidth=1.2)\nax.set_ylabel(\"Mean daily maximum (°C)\")\nax.set_title(f\"{STATION}: yearly mean of daily maximum temperature\")\nax.grid(alpha=0.3)\nplt.tight_layout()\nplt.show()",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (solutions)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice_SOLUTIONS.html#before-you-leave",
+    "href": "session_1/02_topics_of_practice_SOLUTIONS.html#before-you-leave",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "Before you leave",
+    "text": "Before you leave\nWrite one sentence, as a comment, that answers: why did reading the station file work when reading the year file would not have?\n\n# The station file holds only the rows I needed, about 7 MB. The year file holds every station on Earth, 1.3 GB, and I would have thrown almost all of it away. Choosing the object was the filter.",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (solutions)"
+    ]
+  },
+  {
+    "objectID": "session_1/01_preclass_reading.html",
+    "href": "session_1/01_preclass_reading.html",
+    "title": "Pre-Class Reading: Data Bigger Than Your Laptop",
+    "section": "",
+    "text": "GSB 5544 · Computing and Machine Learning for Business Analytics\nRead before class. Run the code as you go; the practice activity assumes you have.\n\n\n\nEvery dataset you have used in this course so far arrived as a file you opened. That is not how data arrives in practice. The sales history, the clickstream, the sensor log, the claims table: they live somewhere else, they are usually larger than your machine, and someone has to decide what to bring over before any modeling begins.\nThat decision is an extraction problem, and it is the first place a business analyst runs into infrastructure. This reading gives you the three things you need to make that decision well:\n\nA way to measure what your own machine can hold.\nThe vocabulary to describe the size of data and the parts of a cloud system.\nA working pattern for reading only what you need from a large remote dataset.\n\nWe will use weather data as the example. Weather is one of the most common external covariates in business analytics: it drives beverage and apparel demand, energy load, insurance claims, delivery times, and foot traffic. It is also a dataset that is far too large to open on a laptop, which is exactly the point.\n\n\n\n\nYour laptop has an amount of memory (RAM) installed, and a smaller amount that is available right now. The available number is the one that determines whether a dataset loads. Measure it:\nimport psutil\n\nvm = psutil.virtual_memory()\ndu = psutil.disk_usage(\"/\")\n\nprint(f\"Physical cores : {psutil.cpu_count(logical=False)}\")\nprint(f\"Logical cores  : {psutil.cpu_count(logical=True)}\")\nprint(f\"Total RAM      : {vm.total / 1e9:.1f} GB\")\nprint(f\"Available RAM  : {vm.available / 1e9:.1f} GB\")   # the number that matters\nprint(f\"Free disk      : {du.free / 1e9:.1f} GB\")\nWrite your available RAM down. You will compare it to a file size later.\nTwo things people get wrong here:\n\nTotal is not available. A 16 GB machine running a browser, Slack, and a notebook server often has 3–5 GB actually free.\nDisk is not memory. A 1 TB drive does not mean you can analyze 1 TB. pandas works in memory, and memory is the smaller number.\n\n\n\n\n\nYou need to be fluent in these. Every size you will see in a cloud console, a bill, or an error message uses them.\n\n\n\n\n\n\n\n\nUnit\nBytes\nSomething that size\n\n\n\n\nbit\n1/8 byte\nOne yes/no\n\n\nbyte (B)\n1\nOne character\n\n\nkilobyte (KB)\n1,000\nA paragraph\n\n\nmegabyte (MB)\n1,000,000\nA phone photo; a semester’s worth of survey data\n\n\ngigabyte (GB)\n1,000,000,000\nA year of daily weather readings, worldwide\n\n\nterabyte (TB)\n1,000,000,000,000\nA large retailer’s transaction history\n\n\npetabyte (PB)\n1,000,000,000,000,000\nA web-scale crawl\n\n\n\nTwo conventions coexist. Storage vendors and cloud consoles mostly use base 1000 (1 KB = 1,000 B). Operating systems and memory often use base 1024 (1 KiB = 1,024 B). This is why a “1 TB” drive shows as 931 GB in your file browser. Neither is wrong; you just need to know which one you are reading.\nA helper you will use constantly:\ndef human(n, base=1000):\n    \"\"\"Turn a byte count into a readable string.\"\"\"\n    for unit in [\"B\", \"KB\", \"MB\", \"GB\", \"TB\", \"PB\"]:\n        if n &lt; base:\n            return f\"{n:,.1f} {unit}\"\n        n /= base\n    return f\"{n:,.1f} EB\"\n\nhuman(1_500_000)        # '1.5 MB'\nhuman(1_336_457_184)    # '1.3 GB'\n\n\nA CSV that is 800 MB on disk will not be 800 MB in pandas. Text columns are stored as Python objects, each with overhead, and pandas commonly needs 2–5× the on-disk size to hold a mostly-text CSV. Check what a DataFrame really costs with:\ndf.memory_usage(deep=True).sum()   # deep=True, or string columns are undercounted\nSo the question “does this fit?” is really: is (file size × a multiplier) less than my available RAM? When the answer is no, you do not need a bigger laptop. You need a smaller extraction.\n\n\n\n\n\nAmazon Web Services is the largest cloud provider, and its vocabulary has become the industry’s vocabulary. Nine terms cover most of what you will read in documentation and error messages.\n\n\n\n\n\n\n\n\nTerm\nWhat it is\nThe confusion it prevents\n\n\n\n\nRegion\nA geographic cluster of data centers (us-east-1, us-west-2)\nWhy a bucket “doesn’t exist”: you are looking in the wrong region\n\n\nS3\nSimple Storage Service. Object storage, not a filesystem\nWhy there are no real folders, only names that contain slashes\n\n\nBucket\nA named container for objects. Names are globally unique across all of AWS\nWhy my-data is already taken by a stranger\n\n\nObject\nOne stored item plus its metadata (size, last modified, type)\nWhy you can read an object’s size without downloading it\n\n\nKey\nThe object’s full name within the bucket, e.g. csv/by_year/2024.csv\nWhy that is one string, not three folders and a file\n\n\nPrefix\nThe start of a key, used to list “everything under” something\nHow S3 fakes folders\n\n\nEC2\nElastic Compute Cloud. A rented virtual computer\nWhat “compute” means as distinct from “storage”\n\n\nIAM\nIdentity and Access Management. Who may do what\nWhy code gets AccessDenied even on public data\n\n\nCredentials\nThe keys that identify you to AWS\nWhy “unsigned” or “anonymous” requests exist, and when you need to sign one\n\n\n\nThe single most important idea underneath all nine: storage and compute are separate. Data sits in S3. Computers (your laptop, or a rented EC2 instance) reach into S3 for it. The data does not have to be where the computer is.\n\n\n\n\nMany large public datasets are hosted on S3 through the Registry of Open Data on AWS. They can be read anonymously: no account, no credit card, no credentials. The request is simply not signed.\nInstall what you need (once):\npip install boto3 s3fs psutil pandas matplotlib\nboto3 is the official AWS library for Python. Create an unsigned client:\nimport boto3\nfrom botocore import UNSIGNED\nfrom botocore.config import Config\n\ns3 = boto3.client(\"s3\", region_name=\"us-east-1\",\n                  config=Config(signature_version=UNSIGNED))\nOur dataset is NOAA’s Global Historical Climatology Network – Daily (GHCN-D): daily observations from tens of thousands of weather stations worldwide, some going back to the 1760s. It lives in the bucket noaa-ghcn-pds.\n\n\nThe first thing to do with any bucket is look at what is in it. Delimiter=\"/\" asks S3 to group keys by their first path segment, which is how you see the “folders”:\nBUCKET = \"noaa-ghcn-pds\"\n\nresp = s3.list_objects_v2(Bucket=BUCKET, Delimiter=\"/\")\nprint([p[\"Prefix\"] for p in resp.get(\"CommonPrefixes\", [])])\n# ['csv.gz/', 'csv/', 'parquet/']\n\nprint([o[\"Key\"] for o in resp.get(\"Contents\", [])][:6])\n# ['ghcnd-countries.txt', 'ghcnd-inventory.txt', 'ghcnd-states.txt', 'ghcnd-stations.txt', ...]\nThe csv/ prefix contains two layouts of the same data:\n\ncsv/by_year/YYYY.csv — every station, one year per file\ncsv/by_station/STATIONID.csv — one station, every year in one file\n\n\n\n\nEvery object carries its size as metadata. You can read it for free:\nresp = s3.list_objects_v2(Bucket=BUCKET, Prefix=\"csv/by_year/202\")\nfor obj in resp[\"Contents\"]:\n    print(f\"{obj['Key']:&lt;28} {human(obj['Size'])}\")\ncsv/by_year/2020.csv         1.3 GB\ncsv/by_year/2021.csv         1.4 GB\ncsv/by_year/2022.csv         1.4 GB\ncsv/by_year/2023.csv         1.4 GB\ncsv/by_year/2024.csv         1.3 GB\ncsv/by_year/2025.csv         1.3 GB\ncsv/by_year/2026.csv         818.8 MB\nCompare that to your available RAM from section 1, and remember the multiplier. One year of GHCN is a file most laptops cannot open with a plain pd.read_csv.\nFor a single object, head_object returns the metadata alone:\nmeta = s3.head_object(Bucket=BUCKET, Key=\"csv/by_year/2024.csv\")\nmeta[\"ContentLength\"], meta[\"LastModified\"]\n\n\n\nS3 supports HTTP range requests, so you can read the first few hundred bytes of a gigabyte file to see its shape:\nobj = s3.get_object(Bucket=BUCKET, Key=\"csv/by_year/2024.csv\", Range=\"bytes=0-299\")\nprint(obj[\"Body\"].read().decode())\nUse this to check whether a file has a header row before you read it. If the first line begins with ID,, it does.\n\n\n\n\n\nWhen data does not fit, there are three levers, and they all express one principle: move the filter to the data instead of moving the data to the filter.\nLever 1: pick the right object. GHCN offers the same data by year (1.3 GB, all stations) and by station (a few MB, all years). If you need one location, read the station file. Choosing the object is the cheapest filter there is.\nLever 2: read fewer columns. usecols tells pandas to discard columns while parsing, so they never take memory.\nLever 3: read fewer rows at a time. chunksize returns an iterator of DataFrames; you filter each chunk and keep only what survives.\nHere is the pattern, reading one station directly from S3. The GHCN CSV columns are, in order: station ID, date (YYYYMMDD), element code, value, and four flag columns.\nimport pandas as pd\n\nCOLS = [\"id\", \"date\", \"element\", \"value\", \"m_flag\", \"q_flag\", \"s_flag\", \"obs_time\"]\nSTATION = \"USC00047851\"          # SAN LUIS OBISPO POLY, CA — records since 1893\nkey = f\"csv/by_station/{STATION}.csv\"\n\n# Does the file have a header row? Read 100 bytes and look.\nfirst = s3.get_object(Bucket=BUCKET, Key=key, Range=\"bytes=0-99\")[\"Body\"].read().decode()\nhas_header = first.upper().startswith(\"ID,\")\n\nobj = s3.get_object(Bucket=BUCKET, Key=key)\ndf = pd.read_csv(\n    obj[\"Body\"],\n    header=0 if has_header else None,\n    names=COLS,\n    usecols=[\"id\", \"date\", \"element\", \"value\"],     # lever 2\n    dtype={\"id\": \"string\", \"element\": \"string\"},\n)\ndf.shape\nFor a by-year file, add lever 3 and keep only the rows you want as they stream past:\nkey = \"csv/by_year/2024.csv\"\nfirst = s3.get_object(Bucket=BUCKET, Key=key, Range=\"bytes=0-99\")[\"Body\"].read().decode()\nhas_header = first.upper().startswith(\"ID,\")\n\nchunks = pd.read_csv(\n    f\"s3://{BUCKET}/{key}\",\n    storage_options={\"anon\": True},                 # unsigned, via s3fs\n    header=0 if has_header else None,\n    names=COLS,\n    usecols=[\"id\", \"date\", \"element\", \"value\"],\n    chunksize=1_000_000,                            # lever 3\n)\nkeep = pd.concat(c[c[\"id\"] == STATION] for c in chunks)\nBoth produce the same rows for that station. One reads 6.7 MB; the other reads 1.3 GB and throws almost all of it away. Lever 1 was the one that mattered.\n\n\nGHCN stores temperatures in tenths of a degree Celsius and precipitation in tenths of a millimeter. A TMAX value of 266 means 26.6 °C. Divide by 10 before you do anything else, or your first chart will show 300-degree days. Data arrives with conventions attached; reading the documentation is part of extraction.\ndf[\"date\"] = pd.to_datetime(df[\"date\"].astype(str), format=\"%Y%m%d\")\ntmax = df[df[\"element\"] == \"TMAX\"].copy()\ntmax[\"tmax_c\"] = tmax[\"value\"] / 10\n\n\n\n\n\nIn class you will:\n\nMeasure your own machine and put the class’s numbers side by side.\nRead sizes from the GHCN bucket and decide, with arithmetic, what fits.\nExtract one station’s history, transform it, and plot it.\nCompare two markets’ weather histories the way an analyst would before building a demand model.\n\nEverything in the practice activity uses only what is on this page.\n\n\n\n\nAnswer these for yourself before class. They are the first questions in the practice activity.\n\nYour machine reports 16 GB total and 4.2 GB available. A CSV is 1.3 GB on disk. Will pd.read_csv on the whole file probably succeed? Show the arithmetic.\nWhat is the difference between a bucket, a key, and a prefix? Give one example of each from noaa-ghcn-pds.\nWhy can list_objects_v2 tell you a file’s size without downloading it?\nYou need every temperature reading for Phoenix since 1990. Which object do you read: csv/by_year/*.csv or csv/by_station/USW00023183.csv? Why?\nA TMAX value in the file is 412. What is the temperature in Celsius? In Fahrenheit?\n\n\n\n\n\n\nRegistry of Open Data on AWS — NOAA GHCN-D: https://registry.opendata.aws/noaa-ghcn/\nGHCN-D by-year file format (column order and units): https://www.ncei.noaa.gov/pub/data/ghcn/daily/readme-by_year.txt\nGHCN-D full readme (element codes, flags): https://www.ncei.noaa.gov/pub/data/ghcn/daily/readme.txt\nboto3 S3 client reference: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html\npandas read_csv (usecols, chunksize, storage_options): https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "01 · Pre-class reading"
+    ]
+  },
+  {
+    "objectID": "session_1/01_preclass_reading.html#why-this-matters-for-a-business-analyst",
+    "href": "session_1/01_preclass_reading.html#why-this-matters-for-a-business-analyst",
+    "title": "Pre-Class Reading: Data Bigger Than Your Laptop",
+    "section": "",
+    "text": "Every dataset you have used in this course so far arrived as a file you opened. That is not how data arrives in practice. The sales history, the clickstream, the sensor log, the claims table: they live somewhere else, they are usually larger than your machine, and someone has to decide what to bring over before any modeling begins.\nThat decision is an extraction problem, and it is the first place a business analyst runs into infrastructure. This reading gives you the three things you need to make that decision well:\n\nA way to measure what your own machine can hold.\nThe vocabulary to describe the size of data and the parts of a cloud system.\nA working pattern for reading only what you need from a large remote dataset.\n\nWe will use weather data as the example. Weather is one of the most common external covariates in business analytics: it drives beverage and apparel demand, energy load, insurance claims, delivery times, and foot traffic. It is also a dataset that is far too large to open on a laptop, which is exactly the point.",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "01 · Pre-class reading"
+    ]
+  },
+  {
+    "objectID": "session_1/01_preclass_reading.html#what-your-machine-actually-has",
+    "href": "session_1/01_preclass_reading.html#what-your-machine-actually-has",
+    "title": "Pre-Class Reading: Data Bigger Than Your Laptop",
+    "section": "",
+    "text": "Your laptop has an amount of memory (RAM) installed, and a smaller amount that is available right now. The available number is the one that determines whether a dataset loads. Measure it:\nimport psutil\n\nvm = psutil.virtual_memory()\ndu = psutil.disk_usage(\"/\")\n\nprint(f\"Physical cores : {psutil.cpu_count(logical=False)}\")\nprint(f\"Logical cores  : {psutil.cpu_count(logical=True)}\")\nprint(f\"Total RAM      : {vm.total / 1e9:.1f} GB\")\nprint(f\"Available RAM  : {vm.available / 1e9:.1f} GB\")   # the number that matters\nprint(f\"Free disk      : {du.free / 1e9:.1f} GB\")\nWrite your available RAM down. You will compare it to a file size later.\nTwo things people get wrong here:\n\nTotal is not available. A 16 GB machine running a browser, Slack, and a notebook server often has 3–5 GB actually free.\nDisk is not memory. A 1 TB drive does not mean you can analyze 1 TB. pandas works in memory, and memory is the smaller number.",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "01 · Pre-class reading"
+    ]
+  },
+  {
+    "objectID": "session_1/01_preclass_reading.html#the-units-of-data",
+    "href": "session_1/01_preclass_reading.html#the-units-of-data",
+    "title": "Pre-Class Reading: Data Bigger Than Your Laptop",
+    "section": "",
+    "text": "You need to be fluent in these. Every size you will see in a cloud console, a bill, or an error message uses them.\n\n\n\n\n\n\n\n\nUnit\nBytes\nSomething that size\n\n\n\n\nbit\n1/8 byte\nOne yes/no\n\n\nbyte (B)\n1\nOne character\n\n\nkilobyte (KB)\n1,000\nA paragraph\n\n\nmegabyte (MB)\n1,000,000\nA phone photo; a semester’s worth of survey data\n\n\ngigabyte (GB)\n1,000,000,000\nA year of daily weather readings, worldwide\n\n\nterabyte (TB)\n1,000,000,000,000\nA large retailer’s transaction history\n\n\npetabyte (PB)\n1,000,000,000,000,000\nA web-scale crawl\n\n\n\nTwo conventions coexist. Storage vendors and cloud consoles mostly use base 1000 (1 KB = 1,000 B). Operating systems and memory often use base 1024 (1 KiB = 1,024 B). This is why a “1 TB” drive shows as 931 GB in your file browser. Neither is wrong; you just need to know which one you are reading.\nA helper you will use constantly:\ndef human(n, base=1000):\n    \"\"\"Turn a byte count into a readable string.\"\"\"\n    for unit in [\"B\", \"KB\", \"MB\", \"GB\", \"TB\", \"PB\"]:\n        if n &lt; base:\n            return f\"{n:,.1f} {unit}\"\n        n /= base\n    return f\"{n:,.1f} EB\"\n\nhuman(1_500_000)        # '1.5 MB'\nhuman(1_336_457_184)    # '1.3 GB'\n\n\nA CSV that is 800 MB on disk will not be 800 MB in pandas. Text columns are stored as Python objects, each with overhead, and pandas commonly needs 2–5× the on-disk size to hold a mostly-text CSV. Check what a DataFrame really costs with:\ndf.memory_usage(deep=True).sum()   # deep=True, or string columns are undercounted\nSo the question “does this fit?” is really: is (file size × a multiplier) less than my available RAM? When the answer is no, you do not need a bigger laptop. You need a smaller extraction.",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "01 · Pre-class reading"
+    ]
+  },
+  {
+    "objectID": "session_1/01_preclass_reading.html#the-vocabulary-of-aws",
+    "href": "session_1/01_preclass_reading.html#the-vocabulary-of-aws",
+    "title": "Pre-Class Reading: Data Bigger Than Your Laptop",
+    "section": "",
+    "text": "Amazon Web Services is the largest cloud provider, and its vocabulary has become the industry’s vocabulary. Nine terms cover most of what you will read in documentation and error messages.\n\n\n\n\n\n\n\n\nTerm\nWhat it is\nThe confusion it prevents\n\n\n\n\nRegion\nA geographic cluster of data centers (us-east-1, us-west-2)\nWhy a bucket “doesn’t exist”: you are looking in the wrong region\n\n\nS3\nSimple Storage Service. Object storage, not a filesystem\nWhy there are no real folders, only names that contain slashes\n\n\nBucket\nA named container for objects. Names are globally unique across all of AWS\nWhy my-data is already taken by a stranger\n\n\nObject\nOne stored item plus its metadata (size, last modified, type)\nWhy you can read an object’s size without downloading it\n\n\nKey\nThe object’s full name within the bucket, e.g. csv/by_year/2024.csv\nWhy that is one string, not three folders and a file\n\n\nPrefix\nThe start of a key, used to list “everything under” something\nHow S3 fakes folders\n\n\nEC2\nElastic Compute Cloud. A rented virtual computer\nWhat “compute” means as distinct from “storage”\n\n\nIAM\nIdentity and Access Management. Who may do what\nWhy code gets AccessDenied even on public data\n\n\nCredentials\nThe keys that identify you to AWS\nWhy “unsigned” or “anonymous” requests exist, and when you need to sign one\n\n\n\nThe single most important idea underneath all nine: storage and compute are separate. Data sits in S3. Computers (your laptop, or a rented EC2 instance) reach into S3 for it. The data does not have to be where the computer is.",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "01 · Pre-class reading"
+    ]
+  },
+  {
+    "objectID": "session_1/01_preclass_reading.html#reading-from-s3-without-an-account",
+    "href": "session_1/01_preclass_reading.html#reading-from-s3-without-an-account",
+    "title": "Pre-Class Reading: Data Bigger Than Your Laptop",
+    "section": "",
+    "text": "Many large public datasets are hosted on S3 through the Registry of Open Data on AWS. They can be read anonymously: no account, no credit card, no credentials. The request is simply not signed.\nInstall what you need (once):\npip install boto3 s3fs psutil pandas matplotlib\nboto3 is the official AWS library for Python. Create an unsigned client:\nimport boto3\nfrom botocore import UNSIGNED\nfrom botocore.config import Config\n\ns3 = boto3.client(\"s3\", region_name=\"us-east-1\",\n                  config=Config(signature_version=UNSIGNED))\nOur dataset is NOAA’s Global Historical Climatology Network – Daily (GHCN-D): daily observations from tens of thousands of weather stations worldwide, some going back to the 1760s. It lives in the bucket noaa-ghcn-pds.\n\n\nThe first thing to do with any bucket is look at what is in it. Delimiter=\"/\" asks S3 to group keys by their first path segment, which is how you see the “folders”:\nBUCKET = \"noaa-ghcn-pds\"\n\nresp = s3.list_objects_v2(Bucket=BUCKET, Delimiter=\"/\")\nprint([p[\"Prefix\"] for p in resp.get(\"CommonPrefixes\", [])])\n# ['csv.gz/', 'csv/', 'parquet/']\n\nprint([o[\"Key\"] for o in resp.get(\"Contents\", [])][:6])\n# ['ghcnd-countries.txt', 'ghcnd-inventory.txt', 'ghcnd-states.txt', 'ghcnd-stations.txt', ...]\nThe csv/ prefix contains two layouts of the same data:\n\ncsv/by_year/YYYY.csv — every station, one year per file\ncsv/by_station/STATIONID.csv — one station, every year in one file\n\n\n\n\nEvery object carries its size as metadata. You can read it for free:\nresp = s3.list_objects_v2(Bucket=BUCKET, Prefix=\"csv/by_year/202\")\nfor obj in resp[\"Contents\"]:\n    print(f\"{obj['Key']:&lt;28} {human(obj['Size'])}\")\ncsv/by_year/2020.csv         1.3 GB\ncsv/by_year/2021.csv         1.4 GB\ncsv/by_year/2022.csv         1.4 GB\ncsv/by_year/2023.csv         1.4 GB\ncsv/by_year/2024.csv         1.3 GB\ncsv/by_year/2025.csv         1.3 GB\ncsv/by_year/2026.csv         818.8 MB\nCompare that to your available RAM from section 1, and remember the multiplier. One year of GHCN is a file most laptops cannot open with a plain pd.read_csv.\nFor a single object, head_object returns the metadata alone:\nmeta = s3.head_object(Bucket=BUCKET, Key=\"csv/by_year/2024.csv\")\nmeta[\"ContentLength\"], meta[\"LastModified\"]\n\n\n\nS3 supports HTTP range requests, so you can read the first few hundred bytes of a gigabyte file to see its shape:\nobj = s3.get_object(Bucket=BUCKET, Key=\"csv/by_year/2024.csv\", Range=\"bytes=0-299\")\nprint(obj[\"Body\"].read().decode())\nUse this to check whether a file has a header row before you read it. If the first line begins with ID,, it does.",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "01 · Pre-class reading"
+    ]
+  },
+  {
+    "objectID": "session_1/01_preclass_reading.html#extraction-strategy-filter-at-the-source",
+    "href": "session_1/01_preclass_reading.html#extraction-strategy-filter-at-the-source",
+    "title": "Pre-Class Reading: Data Bigger Than Your Laptop",
+    "section": "",
+    "text": "When data does not fit, there are three levers, and they all express one principle: move the filter to the data instead of moving the data to the filter.\nLever 1: pick the right object. GHCN offers the same data by year (1.3 GB, all stations) and by station (a few MB, all years). If you need one location, read the station file. Choosing the object is the cheapest filter there is.\nLever 2: read fewer columns. usecols tells pandas to discard columns while parsing, so they never take memory.\nLever 3: read fewer rows at a time. chunksize returns an iterator of DataFrames; you filter each chunk and keep only what survives.\nHere is the pattern, reading one station directly from S3. The GHCN CSV columns are, in order: station ID, date (YYYYMMDD), element code, value, and four flag columns.\nimport pandas as pd\n\nCOLS = [\"id\", \"date\", \"element\", \"value\", \"m_flag\", \"q_flag\", \"s_flag\", \"obs_time\"]\nSTATION = \"USC00047851\"          # SAN LUIS OBISPO POLY, CA — records since 1893\nkey = f\"csv/by_station/{STATION}.csv\"\n\n# Does the file have a header row? Read 100 bytes and look.\nfirst = s3.get_object(Bucket=BUCKET, Key=key, Range=\"bytes=0-99\")[\"Body\"].read().decode()\nhas_header = first.upper().startswith(\"ID,\")\n\nobj = s3.get_object(Bucket=BUCKET, Key=key)\ndf = pd.read_csv(\n    obj[\"Body\"],\n    header=0 if has_header else None,\n    names=COLS,\n    usecols=[\"id\", \"date\", \"element\", \"value\"],     # lever 2\n    dtype={\"id\": \"string\", \"element\": \"string\"},\n)\ndf.shape\nFor a by-year file, add lever 3 and keep only the rows you want as they stream past:\nkey = \"csv/by_year/2024.csv\"\nfirst = s3.get_object(Bucket=BUCKET, Key=key, Range=\"bytes=0-99\")[\"Body\"].read().decode()\nhas_header = first.upper().startswith(\"ID,\")\n\nchunks = pd.read_csv(\n    f\"s3://{BUCKET}/{key}\",\n    storage_options={\"anon\": True},                 # unsigned, via s3fs\n    header=0 if has_header else None,\n    names=COLS,\n    usecols=[\"id\", \"date\", \"element\", \"value\"],\n    chunksize=1_000_000,                            # lever 3\n)\nkeep = pd.concat(c[c[\"id\"] == STATION] for c in chunks)\nBoth produce the same rows for that station. One reads 6.7 MB; the other reads 1.3 GB and throws almost all of it away. Lever 1 was the one that mattered.\n\n\nGHCN stores temperatures in tenths of a degree Celsius and precipitation in tenths of a millimeter. A TMAX value of 266 means 26.6 °C. Divide by 10 before you do anything else, or your first chart will show 300-degree days. Data arrives with conventions attached; reading the documentation is part of extraction.\ndf[\"date\"] = pd.to_datetime(df[\"date\"].astype(str), format=\"%Y%m%d\")\ntmax = df[df[\"element\"] == \"TMAX\"].copy()\ntmax[\"tmax_c\"] = tmax[\"value\"] / 10",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "01 · Pre-class reading"
+    ]
+  },
+  {
+    "objectID": "session_1/01_preclass_reading.html#where-this-goes-next",
+    "href": "session_1/01_preclass_reading.html#where-this-goes-next",
+    "title": "Pre-Class Reading: Data Bigger Than Your Laptop",
+    "section": "",
+    "text": "In class you will:\n\nMeasure your own machine and put the class’s numbers side by side.\nRead sizes from the GHCN bucket and decide, with arithmetic, what fits.\nExtract one station’s history, transform it, and plot it.\nCompare two markets’ weather histories the way an analyst would before building a demand model.\n\nEverything in the practice activity uses only what is on this page.",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "01 · Pre-class reading"
+    ]
+  },
+  {
+    "objectID": "session_1/01_preclass_reading.html#reading-check",
+    "href": "session_1/01_preclass_reading.html#reading-check",
+    "title": "Pre-Class Reading: Data Bigger Than Your Laptop",
+    "section": "",
+    "text": "Answer these for yourself before class. They are the first questions in the practice activity.\n\nYour machine reports 16 GB total and 4.2 GB available. A CSV is 1.3 GB on disk. Will pd.read_csv on the whole file probably succeed? Show the arithmetic.\nWhat is the difference between a bucket, a key, and a prefix? Give one example of each from noaa-ghcn-pds.\nWhy can list_objects_v2 tell you a file’s size without downloading it?\nYou need every temperature reading for Phoenix since 1990. Which object do you read: csv/by_year/*.csv or csv/by_station/USW00023183.csv? Why?\nA TMAX value in the file is 412. What is the temperature in Celsius? In Fahrenheit?",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "01 · Pre-class reading"
+    ]
+  },
+  {
+    "objectID": "session_1/01_preclass_reading.html#references",
+    "href": "session_1/01_preclass_reading.html#references",
+    "title": "Pre-Class Reading: Data Bigger Than Your Laptop",
+    "section": "",
+    "text": "Registry of Open Data on AWS — NOAA GHCN-D: https://registry.opendata.aws/noaa-ghcn/\nGHCN-D by-year file format (column order and units): https://www.ncei.noaa.gov/pub/data/ghcn/daily/readme-by_year.txt\nGHCN-D full readme (element codes, flags): https://www.ncei.noaa.gov/pub/data/ghcn/daily/readme.txt\nboto3 S3 client reference: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html\npandas read_csv (usecols, chunksize, storage_options): https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "01 · Pre-class reading"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "AWS Sessions for GSB 5544",
+    "section": "",
+    "text": "This site holds the AWS-focused sessions being developed for GSB 5544. It exists so collaborators can see, in one place, what has been built so far and what students will actually do in each session. Every document is rendered here as a web page and is also available as a downloadable notebook or as a one-click Google Colab link.",
+    "crumbs": [
+      "Home",
+      "AWS Sessions for GSB 5544"
+    ]
+  },
+  {
+    "objectID": "index.html#status-at-a-glance",
+    "href": "index.html#status-at-a-glance",
+    "title": "AWS Sessions for GSB 5544",
+    "section": "Status at a glance",
+    "text": "Status at a glance\n\n\n\n\n\n\n\n\n\nSession\nTopic\nStatus\nStudent-facing documents\n\n\n\n\n1\nData Bigger Than Your Laptop: measuring capacity, S3 vocabulary, and extracting only what you need from NOAA weather data\nComplete draft, ready for review\nPre-class reading, topics-of-practice notebook, practice activity, solutions for both\n\n\n2+\nTo be determined\nNot started",
+    "crumbs": [
+      "Home",
+      "AWS Sessions for GSB 5544"
+    ]
+  },
+  {
+    "objectID": "index.html#how-a-session-is-structured",
+    "href": "index.html#how-a-session-is-structured",
+    "title": "AWS Sessions for GSB 5544",
+    "section": "How a session is structured",
+    "text": "How a session is structured\nEach session follows the same three-part pattern, so students always know what to expect.\n\nPre-class reading (01_*.md). A self-contained explainer with runnable code snippets. Students read it and run the code before class. It ends with a short reading check.\nTopics of practice (02_*.ipynb). An in-class, fill-in-the-blank walkthrough of every function introduced in the reading. Blanks are marked ____. The instructor version has the blanks filled in.\nPractice activity (03_*.ipynb). A business scenario with numbered questions and empty code cells. Students work through it in class or as homework. The solutions version has every cell completed.\n\nThe two notebooks are generated from a single source file, build_notebooks.py, so the student and solutions versions never drift apart. Editing the source and re-running the script regenerates all four notebooks.",
+    "crumbs": [
+      "Home",
+      "AWS Sessions for GSB 5544"
+    ]
+  },
+  {
+    "objectID": "index.html#session-1-data-bigger-than-your-laptop",
+    "href": "index.html#session-1-data-bigger-than-your-laptop",
+    "title": "AWS Sessions for GSB 5544",
+    "section": "Session 1 · Data Bigger Than Your Laptop",
+    "text": "Session 1 · Data Bigger Than Your Laptop\n\nWhat students will learn\nBy the end of Session 1, students can:\n\nMeasure how much RAM their own machine actually has available, and explain why “total” is not “available” and why disk is not memory.\nRead and reason in the units of data (KB through PB) and estimate whether a file will fit in pandas before trying to load it.\nUse the core AWS vocabulary: region, S3, bucket, object, key, prefix, and anonymous (unsigned) access.\nConnect to a public S3 bucket without an account, list objects, read an object’s size from metadata alone, and peek at a file with a byte-range request.\nExtract a single station’s full history rather than a whole year of global data, filter it at the source, transform it, and plot it.\n\n\n\nDataset\nAll exercises use the NOAA GHCN-Daily dataset in the public noaa-ghcn-pds bucket. The by-year files are multi-gigabyte and will not fit on a laptop, which is the point. The by-station files are small enough to pull and analyze.\n\n\nWhat students will do, in order\nBefore class: the pre-class reading. Students work through six sections and answer a five-question reading check:\n\nWhat your machine actually has\nThe units of data\nThe vocabulary of AWS\nReading from S3 without an account\nExtraction strategy: filter at the source\nWhere this goes next\n\nIn class: the topics-of-practice notebook. A guided, fill-in-the-blank tour of the same material, one function at a time:\n\nA. What your machine actually has\nB. The units of data\nC. The vocabulary of AWS\nD. Connect without an account\nE. Read a size without reading the file\nF. Peek at a file with a range request\nG. Extract one station, not one year\nH. Transform\nI. Bring the visual\n\nIn class or as homework: the practice activity. Students play an inventory planner for a beverage distributor with two markets, San Luis Obispo and Phoenix, and need each market’s weather history before anyone builds a demand model. Eleven questions across four sets:\n\nSet 1 · Capacity. Measure the machine, estimate how many rows fit, and total a decade of by-year files against available RAM.\nSet 2 · Vocabulary in action. List prefixes, explain why a “folder” is not a folder, and read file metadata without downloading.\nSet 3 · Extraction. Write a reusable load_station() function, pull both markets, count hot days per year, and compute monthly rainfall.\nSet 4 · Visualize and interpret. Chart both markets, write the business read, and (stretch) do it the wrong way on purpose to see why extraction strategy matters.\n\n\n\nSession 1 documents\n\n\n\nDocument\nPurpose\nRead online\nNotebook file\nOpen in Colab\n\n\n\n\n01 · Pre-class reading\nStudents read before class\nView\nMarkdown source\n\n\n\n02 · Topics of practice (student)\nFill-in-the-blank, in class\nView\nDownload\nOpen\n\n\n02 · Topics of practice (solutions)\nInstructor copy\nView\nDownload\nOpen\n\n\n03 · Practice activity (student)\nScenario with 11 questions\nView\nDownload\nOpen\n\n\n03 · Practice activity (solutions)\nInstructor copy\nView\nDownload\nOpen\n\n\nBuild script\nGenerates the four notebooks from one source\n\nbuild_notebooks.py\n\n\n\n\n\n\nWhat students need installed\npip install psutil boto3 pandas matplotlib\nColab already has all four. Locally, any Python 3.9+ with Jupyter works.",
+    "crumbs": [
+      "Home",
+      "AWS Sessions for GSB 5544"
+    ]
+  },
+  {
+    "objectID": "index.html#for-collaborators",
+    "href": "index.html#for-collaborators",
+    "title": "AWS Sessions for GSB 5544",
+    "section": "For collaborators",
+    "text": "For collaborators\n\nSource repository: github.com/gato365/aws-gsb-5544-sessions\nThis site: gato365.github.io/aws-gsb-5544-sessions\nEvery page has a “Source” link in the top right that opens the file on GitHub.\nTo propose changes, open an issue or a pull request on the repository. To rebuild the site after editing, run quarto render at the repository root and commit the docs/ folder.",
+    "crumbs": [
+      "Home",
+      "AWS Sessions for GSB 5544"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice.html",
+    "href": "session_1/02_topics_of_practice.html",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "",
+    "text": "GSB 5544 · Computing and Machine Learning for Business Analytics\nThis notebook walks through the main functions from the pre-class reading, one short block at a time. Each block names the section of the reading it draws on. Replace every ____ with the right code and run the cell.\nYou need: psutil, boto3, s3fs, pandas, matplotlib. No AWS account is required.\nimport io\nimport psutil\nimport boto3\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom botocore import UNSIGNED\nfrom botocore.config import Config\n\nBUCKET = \"noaa-ghcn-pds\"",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (student)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice.html#a.-what-your-machine-actually-has",
+    "href": "session_1/02_topics_of_practice.html#a.-what-your-machine-actually-has",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "A. What your machine actually has",
+    "text": "A. What your machine actually has\nFrom the reading, §1. Total RAM is not available RAM. The available number decides whether a file loads.\nFill in the two calls that report memory and the attribute that gives the memory available right now.\n\nvm = psutil.____()\ndu = psutil.disk_usage(\"/\")\n\nprint(f\"Physical cores : {psutil.cpu_count(logical=False)}\")\nprint(f\"Total RAM      : {vm.total / 1e9:.1f} GB\")\nprint(f\"Available RAM  : {vm.____ / 1e9:.1f} GB\")\nprint(f\"Free disk      : {du.free / 1e9:.1f} GB\")\n\nMY_RAM = vm.____          # keep this; we compare file sizes against it below",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (student)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice.html#b.-the-units-of-data",
+    "href": "session_1/02_topics_of_practice.html#b.-the-units-of-data",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "B. The units of data",
+    "text": "B. The units of data\nFrom the reading, §2. Byte counts are unreadable past a few million. Write the helper that turns them into KB / MB / GB and so on, using base 1000.\nFill in the list of units in ascending order and the line that steps n down one unit.\n\ndef human(n, base=1000):\n    for unit in [____]:\n        if n &lt; base:\n            return f\"{n:,.1f} {unit}\"\n        n ____\n    return f\"{n:,.1f} EB\"\n\nprint(human(1_500_000))          # expect 1.5 MB\nprint(human(1_336_457_184))      # expect 1.3 GB\nprint(human(MY_RAM))             # your available RAM, readable\n\nCheck yourself. A “1 TB” drive shows as 931 GB in your file browser. Which base does the drive maker use, and which does the operating system use? Write your answer in the cell below as a comment.\n\n# Drive maker uses base ____; the OS uses base ____.\n# 1e12 / 1024**3 = ____ GiB, which the OS labels \"GB\".",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (student)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice.html#c.-the-vocabulary-of-aws",
+    "href": "session_1/02_topics_of_practice.html#c.-the-vocabulary-of-aws",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "C. The vocabulary of AWS",
+    "text": "C. The vocabulary of AWS\nFrom the reading, §3. Fill in the term that each definition describes. The cell checks your answers.\n\nvocab = {\n    \"A named container for objects; its name is globally unique\":     \"____\",\n    \"One stored item plus its metadata such as size\":                  \"____\",\n    \"The full name of an object inside its bucket\":                    \"____\",\n    \"The start of a key, used to list everything 'under' something\":   \"____\",\n    \"A geographic cluster of data centers such as us-east-1\":          \"____\",\n    \"A rented virtual computer\":                                       \"____\",\n    \"The service that decides who may do what\":                        \"____\",\n}\n\nexpected = {\"bucket\", \"object\", \"key\", \"prefix\", \"region\", \"ec2\", \"iam\"}\ngiven = {v.strip().lower() for v in vocab.values()}\nprint(\"All correct\" if given == expected else f\"Check: {expected - given}\")",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (student)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice.html#d.-connect-without-an-account",
+    "href": "session_1/02_topics_of_practice.html#d.-connect-without-an-account",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "D. Connect without an account",
+    "text": "D. Connect without an account\nFrom the reading, §4. Public datasets on S3 can be read with an unsigned request. Build the client, then list the top-level “folders” of the GHCN bucket.\nFill in the signature setting that makes the request anonymous, and the delimiter that makes S3 group keys like folders.\n\ns3 = boto3.client(\n    \"s3\",\n    region_name=\"us-east-1\",\n    config=Config(signature_version=____),\n)\n\nresp = s3.list_objects_v2(Bucket=BUCKET, Delimiter=____)\n\nprint(\"Prefixes :\", [p[\"Prefix\"] for p in resp.get(\"____\", [])])\nprint(\"Files    :\", [o[\"Key\"] for o in resp.get(\"Contents\", [])][:6])\n\nLook at the output. csv/ is not a folder. In one sentence, what is it? Type your answer as a comment.\n\n# ____",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (student)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice.html#e.-read-a-size-without-reading-the-file",
+    "href": "session_1/02_topics_of_practice.html#e.-read-a-size-without-reading-the-file",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "E. Read a size without reading the file",
+    "text": "E. Read a size without reading the file\nFrom the reading, §4. Every object carries its size as metadata. List the by-year files for the 2020s and print each size in readable units.\nFill in the prefix that selects csv/by_year/2020.csv through 2026.csv, and the field that holds an object’s size.\n\nresp = s3.list_objects_v2(Bucket=BUCKET, Prefix=____)\n\nsizes = {}\nfor obj in resp[\"Contents\"]:\n    sizes[obj[\"Key\"]] = obj[____]\n    print(f\"{obj['Key']:&lt;28} {human(obj[____])}\")\n\nNow the comparison that the whole reading builds toward. pandas typically needs about 3× a text CSV’s size in memory. For each file, decide whether a plain pd.read_csv would fit in your available RAM.\nFill in the multiplier and the comparison.\n\nMULT = ____\n\nfor key, size in sizes.items():\n    need = size * MULT\n    fits = need ____ MY_RAM\n    print(f\"{key:&lt;28} needs ~{human(need):&gt;9}   fits: {fits}\")",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (student)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice.html#f.-peek-at-a-file-with-a-range-request",
+    "href": "session_1/02_topics_of_practice.html#f.-peek-at-a-file-with-a-range-request",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "F. Peek at a file with a range request",
+    "text": "F. Peek at a file with a range request\nFrom the reading, §4. You can read the first few hundred bytes of a gigabyte file to see its shape. Do that for the 2024 by-year file and check whether it has a header row.\nFill in the Range header for the first 300 bytes.\n\nkey = \"csv/by_year/2024.csv\"\n\nobj = s3.get_object(Bucket=BUCKET, Key=key, Range=____)\nfirst = obj[\"Body\"].read().decode()\nprint(first)\n\nhas_header = first.upper().startswith(____)\nprint(\"Header row present:\", has_header)",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (student)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice.html#g.-extract-one-station-not-one-year",
+    "href": "session_1/02_topics_of_practice.html#g.-extract-one-station-not-one-year",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "G. Extract one station, not one year",
+    "text": "G. Extract one station, not one year\nFrom the reading, §5. Lever 1 is picking the right object. The Cal Poly station (USC00047851, SAN LUIS OBISPO POLY) has records since 1893 in a single file of about 7 MB. Read it, keeping only the four columns you need.\nFill in the station key, the header logic, and the usecols list.\n\nCOLS = [\"id\", \"date\", \"element\", \"value\", \"m_flag\", \"q_flag\", \"s_flag\", \"obs_time\"]\nSTATION = \"USC00047851\"\nkey = f\"csv/by_station/{____}.csv\"\n\n# size first, always\nprint(\"Size:\", human(s3.head_object(Bucket=BUCKET, Key=key)[\"ContentLength\"]))\n\n# header check\nfirst = s3.get_object(Bucket=BUCKET, Key=key, Range=\"bytes=0-99\")[\"Body\"].read().decode()\nhas_header = first.upper().startswith(\"ID,\")\n\nraw = s3.get_object(Bucket=BUCKET, Key=key)[\"Body\"].read()\ndf = pd.read_csv(\n    io.BytesIO(raw),\n    header=____,\n    names=COLS,\n    usecols=____,\n    dtype={\"id\": \"string\", \"element\": \"string\"},\n)\n\nprint(df.shape)\nprint(\"In memory:\", human(df.memory_usage(deep=____).sum()))\ndf.head()",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (student)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice.html#h.-transform",
+    "href": "session_1/02_topics_of_practice.html#h.-transform",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "H. Transform",
+    "text": "H. Transform\nFrom the reading, §5, “The units trap”. Dates are stored as YYYYMMDD integers and temperatures in tenths of a degree Celsius. Fix both, keep only daily maximum temperature, and compute a yearly mean.\nFill in the date format string, the element code, the unit conversion, and the resampling rule for year-end.\n\ndf[\"date\"] = pd.to_datetime(df[\"date\"].astype(str), format=____)\n\ntmax = df[df[\"element\"] == ____].copy()\ntmax[\"tmax_c\"] = tmax[\"value\"] ____\n\nyearly = (\n    tmax.set_index(\"date\")[\"tmax_c\"]\n        .resample(____)          # \"Y\" on pandas &lt; 2.2\n        .mean()\n)\n\nprint(f\"{len(tmax):,} TMAX readings, {yearly.index.min().year}–{yearly.index.max().year}\")\nyearly.tail()",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (student)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice.html#i.-bring-the-visual",
+    "href": "session_1/02_topics_of_practice.html#i.-bring-the-visual",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "I. Bring the visual",
+    "text": "I. Bring the visual\nFrom the reading, §6. One picture that came from a bucket you never downloaded.\nFill in the series to plot and the y-axis label with its unit.\n\nfig, ax = plt.subplots(figsize=(9, 4))\nax.plot(yearly.index, ____, linewidth=1.2)\nax.set_ylabel(____)\nax.set_title(f\"{STATION}: yearly mean of daily maximum temperature\")\nax.grid(alpha=0.3)\nplt.tight_layout()\nplt.show()",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (student)"
+    ]
+  },
+  {
+    "objectID": "session_1/02_topics_of_practice.html#before-you-leave",
+    "href": "session_1/02_topics_of_practice.html#before-you-leave",
+    "title": "Topics of Practice: Data Bigger Than Your Laptop",
+    "section": "Before you leave",
+    "text": "Before you leave\nWrite one sentence, as a comment, that answers: why did reading the station file work when reading the year file would not have?\n\n# ____",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "02 · Topics of practice (student)"
+    ]
+  },
+  {
+    "objectID": "session_1/03_practice_activity.html",
+    "href": "session_1/03_practice_activity.html",
+    "title": "Practice Activity: Weather as a Business Covariate",
+    "section": "",
+    "text": "GSB 5544 · Computing and Machine Learning for Business Analytics\nYou manage inventory planning for a beverage distributor with two markets: San Luis Obispo, CA and Phoenix, AZ. Before anyone builds a demand model, you need each market’s weather history, and it lives in a bucket that is far larger than your laptop.\nEverything you need is in the pre-class reading. Each question has an empty code cell; some also ask for a short written answer in a markdown cell.\nStations\nRun the setup cell first.\nimport io\nimport time\nimport psutil\nimport boto3\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom botocore import UNSIGNED\nfrom botocore.config import Config\n\nBUCKET = \"noaa-ghcn-pds\"\nCOLS = [\"id\", \"date\", \"element\", \"value\", \"m_flag\", \"q_flag\", \"s_flag\", \"obs_time\"]\nSTATIONS = {\"San Luis Obispo\": \"USC00047851\", \"Phoenix\": \"USW00023183\"}\n\ns3 = boto3.client(\"s3\", region_name=\"us-east-1\", config=Config(signature_version=UNSIGNED))\n\n\ndef human(n, base=1000):\n    for unit in [\"B\", \"KB\", \"MB\", \"GB\", \"TB\", \"PB\"]:\n        if n &lt; base:\n            return f\"{n:,.1f} {unit}\"\n        n /= base\n    return f\"{n:,.1f} EB\"",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "03 · Practice activity (student)"
+    ]
+  },
+  {
+    "objectID": "session_1/03_practice_activity.html#set-1-capacity",
+    "href": "session_1/03_practice_activity.html#set-1-capacity",
+    "title": "Practice Activity: Weather as a Business Covariate",
+    "section": "Set 1 · Capacity",
+    "text": "Set 1 · Capacity\n\nQ1. Your machine\nReport physical cores, total RAM, available RAM, and free disk in GB. Store available RAM in bytes as MY_RAM.\n\n# your code here\n\n\n\nQ2. Rows that fit\nA GHCN row is roughly 50 bytes on disk, and a text-heavy CSV needs about 3× its disk size once loaded in pandas. How many raw rows could your available RAM hold? Print the number with thousands separators.\n\n# your code here\n\n\n\nQ3. A decade of weather\nList the by-year files for 2016 through 2025 and compute their total size. Print the total in readable units, then print how many copies of your available RAM that is.\nHint: a Prefix of csv/by_year/201 returns 2010–2019; you will need two listings or a filter.\n\n# your code here",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "03 · Practice activity (student)"
+    ]
+  },
+  {
+    "objectID": "session_1/03_practice_activity.html#set-2-vocabulary-in-action",
+    "href": "session_1/03_practice_activity.html#set-2-vocabulary-in-action",
+    "title": "Practice Activity: Weather as a Business Covariate",
+    "section": "Set 2 · Vocabulary in action",
+    "text": "Set 2 · Vocabulary in action\n\nQ4. What is under csv/?\nList the common prefixes directly under csv/ in the bucket. Then, in the markdown cell that follows, explain in one or two sentences why by_year/ is not a folder and what S3 is actually doing when it shows you one.\n\n# your code here\n\nYour answer:\n\n\nQ5. Metadata only\nUsing a single call that does not download the file, print the size (readable) and the last-modified date of csv/by_year/2024.csv. Then print whether a plain pd.read_csv of it would fit in your RAM at 3×.\n\n# your code here",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "03 · Practice activity (student)"
+    ]
+  },
+  {
+    "objectID": "session_1/03_practice_activity.html#set-3-extraction",
+    "href": "session_1/03_practice_activity.html#set-3-extraction",
+    "title": "Practice Activity: Weather as a Business Covariate",
+    "section": "Set 3 · Extraction",
+    "text": "Set 3 · Extraction\n\nQ6. Pull both markets\nWrite a function load_station(station_id) that:\n\nprints the object’s size before reading it,\nchecks whether the file has a header row using a range request,\nreads the file keeping only id, date, element, value,\nconverts date to a datetime,\nkeeps only TMAX and PRCP rows from 2015 onward,\nreturns the DataFrame.\n\nCall it for both stations and combine the results into one DataFrame called wx with a market column.\n\n# your code here\n\n\n\nQ7. Hot days per year\nTemperatures are stored in tenths of a degree Celsius. For each market and year, count the number of days with a daily maximum of 35 °C or higher (95 °F). Produce a table with years as rows and markets as columns.\n\n# your code here\n\n\n\nQ8. Monthly rainfall\nPrecipitation is stored in tenths of a millimeter. For each market, compute total precipitation per month in millimeters, then show the average for each calendar month across all years (so 12 rows per market). Which month is wettest in each market?\n\n# your code here",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "03 · Practice activity (student)"
+    ]
+  },
+  {
+    "objectID": "session_1/03_practice_activity.html#set-4-visualize-and-interpret",
+    "href": "session_1/03_practice_activity.html#set-4-visualize-and-interpret",
+    "title": "Practice Activity: Weather as a Business Covariate",
+    "section": "Set 4 · Visualize and interpret",
+    "text": "Set 4 · Visualize and interpret\n\nQ9. One chart, two markets\nPlot hot days per year (from Q7) for both markets on a single line chart. Label the axes with units and give the chart a title that says what it shows.\n\n# your code here\n\n\n\nQ10. The business read\nIn four to six sentences, answer as the inventory planner:\n\nWhat does the chart imply about how differently the two markets should be stocked across the year?\nName two other datasets you would want to join to this weather history before trusting a demand model, and say where each one probably lives (your laptop, a company database, or a cloud bucket).\n\nYour answer:\n\n\nQ11. Stretch: the wrong way, on purpose\nExtract the same Phoenix rows for 2024 by reading csv/by_year/2024.csv in chunks of one million rows, filtering each chunk to the Phoenix station. Time it. Then compare the row count to what you get by filtering wx to Phoenix and 2024.\nIn the markdown cell after, explain which extraction is better and why, using the phrase “filter at the source.”\nThis reads 1.3 GB over the network. Expect several minutes. Skip if your connection is slow.\n\n# your code here\n\nYour answer:\n\nSubmit this notebook with all cells run. Your written answers for Q4, Q10, and Q11 go in the markdown cells provided.",
+    "crumbs": [
+      "Home",
+      "Session 1 · Data Bigger Than Your Laptop",
+      "03 · Practice activity (student)"
+    ]
+  }
+]

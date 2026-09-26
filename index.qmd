@@ -1,0 +1,100 @@
+---
+title: "AWS Sessions for GSB 5544"
+subtitle: "Computing and Machine Learning for Business Analytics"
+toc: true
+---
+
+This site holds the AWS-focused sessions being developed for GSB 5544. It exists so collaborators can see, in one place, **what has been built so far** and **what students will actually do** in each session. Every document is rendered here as a web page and is also available as a downloadable notebook or as a one-click Google Colab link.
+
+::: {.callout-note title="No AWS account is needed"}
+Every session uses public datasets from the [Registry of Open Data on AWS](https://registry.opendata.aws/). Students read from S3 anonymously with `boto3`, so there is nothing to sign up for and nothing that can generate a bill.
+:::
+
+## Status at a glance
+
+| Session | Topic | Status | Student-facing documents |
+|---|---|---|---|
+| 1 | Data Bigger Than Your Laptop: measuring capacity, S3 vocabulary, and extracting only what you need from NOAA weather data | **Complete draft**, ready for review | Pre-class reading, topics-of-practice notebook, practice activity, solutions for both |
+| 2+ | To be determined | Not started | |
+
+## How a session is structured
+
+Each session follows the same three-part pattern, so students always know what to expect.
+
+1. **Pre-class reading** (`01_*.md`). A self-contained explainer with runnable code snippets. Students read it and run the code before class. It ends with a short reading check.
+2. **Topics of practice** (`02_*.ipynb`). An in-class, fill-in-the-blank walkthrough of every function introduced in the reading. Blanks are marked `____`. The instructor version has the blanks filled in.
+3. **Practice activity** (`03_*.ipynb`). A business scenario with numbered questions and empty code cells. Students work through it in class or as homework. The solutions version has every cell completed.
+
+The two notebooks are generated from a single source file, `build_notebooks.py`, so the student and solutions versions never drift apart. Editing the source and re-running the script regenerates all four notebooks.
+
+## Session 1 · Data Bigger Than Your Laptop
+
+### What students will learn
+
+By the end of Session 1, students can:
+
+- Measure how much RAM their own machine actually has available, and explain why "total" is not "available" and why disk is not memory.
+- Read and reason in the units of data (KB through PB) and estimate whether a file will fit in pandas before trying to load it.
+- Use the core AWS vocabulary: region, S3, bucket, object, key, prefix, and anonymous (unsigned) access.
+- Connect to a public S3 bucket without an account, list objects, read an object's size from metadata alone, and peek at a file with a byte-range request.
+- Extract a single station's full history rather than a whole year of global data, filter it at the source, transform it, and plot it.
+
+### Dataset
+
+All exercises use the **NOAA GHCN-Daily** dataset in the public `noaa-ghcn-pds` bucket. The by-year files are multi-gigabyte and will not fit on a laptop, which is the point. The by-station files are small enough to pull and analyze.
+
+### What students will do, in order
+
+**Before class: the pre-class reading.** Students work through six sections and answer a five-question reading check:
+
+1. What your machine actually has
+2. The units of data
+3. The vocabulary of AWS
+4. Reading from S3 without an account
+5. Extraction strategy: filter at the source
+6. Where this goes next
+
+**In class: the topics-of-practice notebook.** A guided, fill-in-the-blank tour of the same material, one function at a time:
+
+- A. What your machine actually has
+- B. The units of data
+- C. The vocabulary of AWS
+- D. Connect without an account
+- E. Read a size without reading the file
+- F. Peek at a file with a range request
+- G. Extract one station, not one year
+- H. Transform
+- I. Bring the visual
+
+**In class or as homework: the practice activity.** Students play an inventory planner for a beverage distributor with two markets, San Luis Obispo and Phoenix, and need each market's weather history before anyone builds a demand model. Eleven questions across four sets:
+
+- **Set 1 · Capacity.** Measure the machine, estimate how many rows fit, and total a decade of by-year files against available RAM.
+- **Set 2 · Vocabulary in action.** List prefixes, explain why a "folder" is not a folder, and read file metadata without downloading.
+- **Set 3 · Extraction.** Write a reusable `load_station()` function, pull both markets, count hot days per year, and compute monthly rainfall.
+- **Set 4 · Visualize and interpret.** Chart both markets, write the business read, and (stretch) do it the wrong way on purpose to see why extraction strategy matters.
+
+### Session 1 documents
+
+| Document | Purpose | Read online | Notebook file | Open in Colab |
+|---|---|---|---|---|
+| 01 · Pre-class reading | Students read before class | [View](session_1/01_preclass_reading.md) | [Markdown source](https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/01_preclass_reading.md) | |
+| 02 · Topics of practice (student) | Fill-in-the-blank, in class | [View](session_1/02_topics_of_practice.ipynb) | [Download](session_1/02_topics_of_practice.ipynb){download="02_topics_of_practice.ipynb"} | [Open](https://colab.research.google.com/github/gato365/aws-gsb-5544-sessions/blob/main/session_1/02_topics_of_practice.ipynb) |
+| 02 · Topics of practice (solutions) | Instructor copy | [View](session_1/02_topics_of_practice_SOLUTIONS.ipynb) | [Download](session_1/02_topics_of_practice_SOLUTIONS.ipynb){download="02_topics_of_practice_SOLUTIONS.ipynb"} | [Open](https://colab.research.google.com/github/gato365/aws-gsb-5544-sessions/blob/main/session_1/02_topics_of_practice_SOLUTIONS.ipynb) |
+| 03 · Practice activity (student) | Scenario with 11 questions | [View](session_1/03_practice_activity.ipynb) | [Download](session_1/03_practice_activity.ipynb){download="03_practice_activity.ipynb"} | [Open](https://colab.research.google.com/github/gato365/aws-gsb-5544-sessions/blob/main/session_1/03_practice_activity.ipynb) |
+| 03 · Practice activity (solutions) | Instructor copy | [View](session_1/03_practice_activity_SOLUTIONS.ipynb) | [Download](session_1/03_practice_activity_SOLUTIONS.ipynb){download="03_practice_activity_SOLUTIONS.ipynb"} | [Open](https://colab.research.google.com/github/gato365/aws-gsb-5544-sessions/blob/main/session_1/03_practice_activity_SOLUTIONS.ipynb) |
+| Build script | Generates the four notebooks from one source | | [build_notebooks.py](https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/build_notebooks.py) | |
+
+### What students need installed
+
+```bash
+pip install psutil boto3 pandas matplotlib
+```
+
+Colab already has all four. Locally, any Python 3.9+ with Jupyter works.
+
+## For collaborators
+
+- **Source repository:** [github.com/gato365/aws-gsb-5544-sessions](https://github.com/gato365/aws-gsb-5544-sessions)
+- **This site:** [gato365.github.io/aws-gsb-5544-sessions](https://gato365.github.io/aws-gsb-5544-sessions/)
+- Every page has a "Source" link in the top right that opens the file on GitHub.
+- To propose changes, open an issue or a pull request on the repository. To rebuild the site after editing, run `quarto render` at the repository root and commit the `docs/` folder.

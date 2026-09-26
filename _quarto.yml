@@ -1,0 +1,69 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - index.qmd
+    - session_1/01_preclass_reading.md
+    - session_1/*.ipynb
+  resources:
+    - "session_1/*.ipynb"
+    - "session_1/build_notebooks.py"
+
+execute:
+  enabled: false
+
+website:
+  title: "GSB 5544 · AWS Sessions"
+  description: "Course materials for the AWS sessions of GSB 5544, Computing and Machine Learning for Business Analytics."
+  site-url: https://gato365.github.io/aws-gsb-5544-sessions/
+  repo-url: https://github.com/gato365/aws-gsb-5544-sessions
+  repo-actions: [source]
+  page-navigation: true
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - text: "Session 1"
+        menu:
+          - text: "01 · Pre-class reading"
+            href: session_1/01_preclass_reading.md
+          - text: "02 · Topics of practice (student)"
+            href: session_1/02_topics_of_practice.ipynb
+          - text: "02 · Topics of practice (solutions)"
+            href: session_1/02_topics_of_practice_SOLUTIONS.ipynb
+          - text: "03 · Practice activity (student)"
+            href: session_1/03_practice_activity.ipynb
+          - text: "03 · Practice activity (solutions)"
+            href: session_1/03_practice_activity_SOLUTIONS.ipynb
+    right:
+      - icon: github
+        href: https://github.com/gato365/aws-gsb-5544-sessions
+  sidebar:
+    style: docked
+    search: true
+    contents:
+      - index.qmd
+      - section: "Session 1 · Data Bigger Than Your Laptop"
+        contents:
+          - text: "01 · Pre-class reading"
+            href: session_1/01_preclass_reading.md
+          - text: "02 · Topics of practice (student)"
+            href: session_1/02_topics_of_practice.ipynb
+          - text: "02 · Topics of practice (solutions)"
+            href: session_1/02_topics_of_practice_SOLUTIONS.ipynb
+          - text: "03 · Practice activity (student)"
+            href: session_1/03_practice_activity.ipynb
+          - text: "03 · Practice activity (solutions)"
+            href: session_1/03_practice_activity_SOLUTIONS.ipynb
+  page-footer:
+    left: "GSB 5544 · Computing and Machine Learning for Business Analytics"
+    right: "Built with Quarto · Hosted on GitHub Pages"
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    code-copy: true
+    code-overflow: wrap
+    link-external-newwindow: true
