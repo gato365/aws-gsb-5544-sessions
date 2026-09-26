@@ -1,4 +1,6 @@
-# Pre-Class Reading: Data Bigger Than Your Laptop
+---
+title: "Pre-Class Reading: Data Bigger Than Your Laptop"
+---
 
 **GSB 5544 · Computing and Machine Learning for Business Analytics**
 
