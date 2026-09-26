@@ -341,7 +341,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <p>Run the two setup cells first.</p>
-<div id="f2630308" class="cell">
+<div id="17798d84" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q s3fs             <span class="co"># harmless if already present</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -373,7 +373,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>n<span class="sc">:,.1f}</span><span class="ss"> EB"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Athena setup</strong> (given; it is block J of the topics-of-practice notebook, unchanged). It creates your results bucket if needed, defines the helpers, and defines the <code>gsb5544.ghcn</code> table over the public Parquet files. DDL is free.</p>
-<div id="1f530e78" class="cell">
+<div id="041cd993" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>sts     <span class="op">=</span> boto3.client(<span class="st">"sts"</span>,    region_name<span class="op">=</span>REGION)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>athena  <span class="op">=</span> boto3.client(<span class="st">"athena"</span>, region_name<span class="op">=</span>REGION)</span>
@@ -437,7 +437,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="q1.-two-machines">Q1. Two machines</h3>
 <p>Report physical cores, total RAM, available RAM, and free disk in GB for <strong>this</strong> machine (the SageMaker instance) and for <strong>your laptop</strong> (the numbers you wrote down from the reading, §1), as one DataFrame with a row per measure and a column per machine. Store this machine’s available RAM in bytes as <code>MY_RAM</code>.</p>
 <p>Then, in the markdown cell, one sentence: which machine would you rather use to read a 1.3 GB file from <code>noaa-ghcn-pds</code>, and why?</p>
-<div id="4baa2e09" class="cell">
+<div id="e3681e7a" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -446,7 +446,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="q2.-rows-that-fit" class="level3">
 <h3 class="anchored" data-anchor-id="q2.-rows-that-fit">Q2. Rows that fit</h3>
 <p>A GHCN row is roughly 50 bytes on disk, and a text-heavy CSV needs about 3× its disk size once loaded in pandas. How many raw rows could this machine’s available RAM hold? Print the number with thousands separators.</p>
-<div id="2a8220c8" class="cell">
+<div id="4a26bbcf" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -455,7 +455,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="q3.-a-decade-of-weather">Q3. A decade of weather</h3>
 <p>List the by-year files for 2016 through 2025 and compute their <strong>total</strong> size. Print the total in readable units, then print how many copies of this machine’s available RAM that is.</p>
 <p><em>Hint: a <code>Prefix</code> of <code>csv/by_year/201</code> returns 2010–2019; you will need two listings or a filter.</em></p>
-<div id="3f5f73b7" class="cell">
+<div id="a1dd42c0" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -466,7 +466,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="q4.-what-is-under-csv" class="level3">
 <h3 class="anchored" data-anchor-id="q4.-what-is-under-csv">Q4. What is under <code>csv/</code>?</h3>
 <p>List the common prefixes directly under <code>csv/</code> in the bucket. Then, in the markdown cell that follows, explain in one or two sentences why <code>by_year/</code> is not a folder and what S3 is actually doing when it shows you one.</p>
-<div id="3cbbfd17" class="cell">
+<div id="e4aebdaa" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -475,7 +475,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="q5.-metadata-only" class="level3">
 <h3 class="anchored" data-anchor-id="q5.-metadata-only">Q5. Metadata only</h3>
 <p>Using a single call that does <strong>not</strong> download the file, print the size (readable) and the last-modified date of <code>csv/by_year/2024.csv</code>. Then print whether a plain <code>pd.read_csv</code> of it would fit in this machine’s RAM at 3×.</p>
-<div id="98ef9262" class="cell">
+<div id="7c050768" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -496,7 +496,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <p>Call it for both stations and combine the results into one DataFrame called <code>wx</code> with a <code>market</code> column.</p>
 <p>This runs on the SageMaker instance: the bytes travel from S3 to this machine over AWS’s network in the same region, and never touch your laptop.</p>
-<div id="c04ba701" class="cell">
+<div id="ec5c1673" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -504,7 +504,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="q7.-hot-days-per-year" class="level3">
 <h3 class="anchored" data-anchor-id="q7.-hot-days-per-year">Q7. Hot days per year</h3>
 <p>Temperatures are stored in tenths of a degree Celsius. For each market and year, count the number of days with a daily maximum of <strong>35 °C or higher</strong> (95 °F). Produce a table with years as rows and markets as columns.</p>
-<div id="73269dc3" class="cell">
+<div id="aabadef8" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -512,7 +512,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="q8.-monthly-rainfall" class="level3">
 <h3 class="anchored" data-anchor-id="q8.-monthly-rainfall">Q8. Monthly rainfall</h3>
 <p>Precipitation is stored in tenths of a millimeter. For each market, compute total precipitation per month in millimeters, then show the <strong>average for each calendar month</strong> across all years (so 12 rows per market). Which month is wettest in each market?</p>
-<div id="c622ff2f" class="cell">
+<div id="3eec3386" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -523,7 +523,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="q9.-one-chart-two-markets" class="level3">
 <h3 class="anchored" data-anchor-id="q9.-one-chart-two-markets">Q9. One chart, two markets</h3>
 <p>Plot hot days per year (from Q7) for both markets on a single line chart. Label the axes with units and give the chart a title that says what it shows.</p>
-<div id="483a31cd" class="cell">
+<div id="5efa6a5d" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -551,11 +551,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Build a DataFrame <code>race</code> with one row per tier and columns for seconds, bytes moved or scanned, and rows returned. Also confirm that (b) and (c) return the same row count as filtering <code>wx</code> to Phoenix and 2024.</p>
 <p>In the markdown cell after, explain which tier you would use for this extraction and why, using the phrase “filter at the source.” Say what changed between (a) and (b), and what changed between (b) and (c).</p>
-<div id="2f183aa4" class="cell">
+<div id="c7fd3e36" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="1c9184c4" class="cell">
+<div id="dbbc84de" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: Athena fleet (results land in S3)</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -566,7 +566,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Write <strong>one Athena query</strong> that returns the number of hot days (<code>TMAX</code> ≥ 35 °C, i.e.&nbsp;<code>data_value &gt;= 350</code>) per station per year from 2015 onward, for both stations: the same table you built in Q7, but computed entirely on the fleet. Pivot the result to years as rows and markets as columns and check it against <code>hot</code>.</p>
 <p>Then print two numbers side by side: the bytes Athena scanned for this query, and the bytes pandas read in Q6 (the two by-station CSVs).</p>
 <p>In the markdown cell, explain the comparison. One of the two paths read fewer bytes. Which, and why? What does that tell you about when Athena over <code>by_year</code> is the right tool, and when choosing the right object (the by-station file) beats it?</p>
-<div id="1fa99ad4" class="cell">
+<div id="af9b2d8c" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: Athena fleet (results land in S3)</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -576,17 +576,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="q13.-cost-audit-and-teardown-graded">Q13. Cost audit and teardown (graded)</h3>
 <p>Every session on a rented machine ends the same way. Four parts; the last one is the evidence.</p>
 <p><strong>(a) Empty the results bucket.</strong> Print the number of objects and their total size before deleting, then confirm the bucket is empty.</p>
-<p><strong>(b) Estimate today’s spend.</strong> Hours this space has been running × the <code>ml.t3.medium</code> hourly price, plus <code>ATHENA_BYTES</code> × the Athena price per TB (10 MB minimum per query). Print the two lines and the total. The cell reads the space’s start time from SageMaker; if that lookup fails in your lab, set <code>hours</code> by hand from the Learner Lab timer.</p>
-<p><strong>(c) Stop the space.</strong> In Studio → JupyterLab spaces, click <strong>Stop</strong> on <code>gsb5544</code> and wait for <em>Stopped</em>. Then read the budget on the Learner Lab page.</p>
-<p><strong>(d) Evidence.</strong> Either paste a screenshot into the markdown cell showing the space <em>Stopped</em> and the Learner Lab budget readout, or run the verification cell from your <strong>laptop</strong> (paste the Learner Lab “AWS Details” credentials into <code>~/.aws/credentials</code> first) and paste its output into the markdown cell.</p>
-<div id="ca08a11f" class="cell">
+<p><strong>(b) Estimate today’s spend.</strong> Hours this space has been running × the <code>ml.t3.medium</code> hourly price, plus <code>ATHENA_BYTES</code> × the Athena price per TB (10 MB minimum per query). Print the two lines and the total. The cell reads the space’s start time from SageMaker; if that lookup fails, set <code>hours</code> by hand from the time you clicked <strong>Run space</strong> (Learner Lab: from the lab timer).</p>
+<p><strong>(c) Stop the space.</strong> In Studio → JupyterLab spaces, click <strong>Stop</strong> on <code>gsb5544</code> and wait for <em>Stopped</em>. Then read <strong>Credits remaining</strong> on Console Home (Learner Lab: the budget on the lab page).</p>
+<p><strong>(d) Evidence.</strong> Either paste a screenshot into the markdown cell showing the space <em>Stopped</em> and the credits readout, or run the verification cell from your <strong>laptop</strong> (it needs AWS credentials in <code>~/.aws/credentials</code>; Learner Lab users paste the “AWS Details” block there first) and paste its output into the markdown cell.</p>
+<div id="255e945c" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Verification cell</strong> for part (d). This one runs on your laptop <em>after</em> you have stopped the space, because a cell cannot stop the machine it is running on and then report on it.</p>
-<div id="5fe86b96" class="cell">
+<div id="84b4e606" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Paste the Learner Lab "AWS Details" credentials into ~/.aws/credentials before running this.</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Needs AWS credentials in ~/.aws/credentials (Learner Lab: paste the "AWS Details" block there first).</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> boto3</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>sm <span class="op">=</span> boto3.client(<span class="st">"sagemaker"</span>, region_name<span class="op">=</span><span class="st">"us-east-1"</span>)</span>

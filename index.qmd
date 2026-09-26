@@ -7,7 +7,7 @@ toc: true
 This site holds the AWS-focused sessions being developed for GSB 5544. It exists so collaborators can see, in one place, **what has been built so far** and **what students will actually do** in each session. Every document is rendered here as a web page and is also available as a downloadable notebook or as a one-click Google Colab link.
 
 ::: {.callout-note title="How students reach AWS"}
-Session 1 assumes the **AWS Academy Learner Lab**: a temporary account with credentials pre-set and a fixed budget, no credit card. Data comes from the public `noaa-ghcn-pds` bucket on the [Registry of Open Data on AWS](https://registry.opendata.aws/). Compute is a SageMaker Studio JupyterLab space on an `ml.t3.medium` and Athena queries, both in `us-east-1`. A full session costs a student roughly 20 to 30 cents if they stop the space when they finish, and stopping it is graded.
+Session 1 assumes each student has a **free AWS account** on the AWS Free Plan: $100 of credits for six months, and the account pauses rather than bills when they run out. The pre-class reading walks students through creating the account, the one-time SageMaker Studio setup, and starting and stopping the JupyterLab space. Courses that provide the **AWS Academy Learner Lab** ([aws.amazon.com/training/awsacademy](https://aws.amazon.com/training/awsacademy/)) instead can follow the same steps; the reading notes the three differences. Data comes from the public `noaa-ghcn-pds` bucket on the [Registry of Open Data on AWS](https://registry.opendata.aws/). Compute is a SageMaker Studio JupyterLab space on an `ml.t3.medium` and Athena queries, both in `us-east-1`. A full session costs a student roughly 20 to 30 cents if they stop the space when they finish, and stopping it is graded.
 :::
 
 ## Status at a glance
@@ -112,7 +112,7 @@ The Colab links are for reading and light editing. The notebooks are meant to ru
 pip install psutil boto3 s3fs pandas matplotlib
 ```
 
-- Access to the AWS Academy Learner Lab from Canvas. Inside SageMaker Studio the default image already has every library; the setup cell installs `s3fs` in case it is missing.
+- A free AWS account, created before class by following section 4 of the pre-class reading, with SageMaker Studio set up once. Inside SageMaker Studio the default image already has every library; the setup cell installs `s3fs` in case it is missing.
 
 ## For collaborators
 

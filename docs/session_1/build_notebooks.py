@@ -545,8 +545,8 @@ Second, stop the instance. A cell cannot stop the machine it is running on witho
 
 - [ ] File → Save All. Download anything you want to keep.
 - [ ] In Studio, open **JupyterLab spaces**, find `gsb5544`, click **Stop**, and wait until the status reads *Stopped*.
-- [ ] Read the budget at the top of the Learner Lab page. Today should have cost well under a dollar.
-- [ ] Click **End Lab**.
+- [ ] Read **Credits remaining** on Console Home (Learner Lab: the budget at the top of the lab page). Today should have cost well under a dollar.
+- [ ] Learner Lab only: click **End Lab**.
 
 Before you do, write one sentence, as a comment, that answers: *why did reading the station file work when reading the year file would not have, and what did Athena add on top of that?*
 """),
@@ -1031,11 +1031,11 @@ Every session on a rented machine ends the same way. Four parts; the last one is
 
 **(a) Empty the results bucket.** Print the number of objects and their total size before deleting, then confirm the bucket is empty.
 
-**(b) Estimate today's spend.** Hours this space has been running × the `ml.t3.medium` hourly price, plus `ATHENA_BYTES` × the Athena price per TB (10 MB minimum per query). Print the two lines and the total. The cell reads the space's start time from SageMaker; if that lookup fails in your lab, set `hours` by hand from the Learner Lab timer.
+**(b) Estimate today's spend.** Hours this space has been running × the `ml.t3.medium` hourly price, plus `ATHENA_BYTES` × the Athena price per TB (10 MB minimum per query). Print the two lines and the total. The cell reads the space's start time from SageMaker; if that lookup fails, set `hours` by hand from the time you clicked **Run space** (Learner Lab: from the lab timer).
 
-**(c) Stop the space.** In Studio → JupyterLab spaces, click **Stop** on `gsb5544` and wait for *Stopped*. Then read the budget on the Learner Lab page.
+**(c) Stop the space.** In Studio → JupyterLab spaces, click **Stop** on `gsb5544` and wait for *Stopped*. Then read **Credits remaining** on Console Home (Learner Lab: the budget on the lab page).
 
-**(d) Evidence.** Either paste a screenshot into the markdown cell showing the space *Stopped* and the Learner Lab budget readout, or run the verification cell from your **laptop** (paste the Learner Lab "AWS Details" credentials into `~/.aws/credentials` first) and paste its output into the markdown cell.
+**(d) Evidence.** Either paste a screenshot into the markdown cell showing the space *Stopped* and the credits readout, or run the verification cell from your **laptop** (it needs AWS credentials in `~/.aws/credentials`; Learner Lab users paste the "AWS Details" block there first) and paste its output into the markdown cell.
 """),
 answer("""
 # RUNS ON: SageMaker ml.t3.medium (us-east-1)
@@ -1059,7 +1059,7 @@ try:
     hours = (dt.datetime.now(dt.timezone.utc) - app["CreationTime"]).total_seconds() / 3600
 except Exception as e:
     print("Could not read the space's start time:", e)
-    hours = 3.0                  # <- set by hand from the Learner Lab timer
+    hours = 3.0                  # <- set by hand: hours since you clicked Run space
 
 instance_cost = hours * INSTANCE_PER_HOUR
 athena_cost   = max(ATHENA_BYTES, 10_000_000) / 1e12 * ATHENA_PER_TB
@@ -1073,7 +1073,7 @@ md("""
 """),
 code("""
 # RUNS ON: laptop
-# Paste the Learner Lab "AWS Details" credentials into ~/.aws/credentials before running this.
+# Needs AWS credentials in ~/.aws/credentials (Learner Lab: paste the "AWS Details" block there first).
 import boto3
 
 sm = boto3.client("sagemaker", region_name="us-east-1")

@@ -310,7 +310,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Session 1 assumes the <strong>AWS Academy Learner Lab</strong>: a temporary account with credentials pre-set and a fixed budget, no credit card. Data comes from the public <code>noaa-ghcn-pds</code> bucket on the <a href="https://registry.opendata.aws/">Registry of Open Data on AWS</a>. Compute is a SageMaker Studio JupyterLab space on an <code>ml.t3.medium</code> and Athena queries, both in <code>us-east-1</code>. A full session costs a student roughly 20 to 30 cents if they stop the space when they finish, and stopping it is graded.</p>
+<p>Session 1 assumes each student has a <strong>free AWS account</strong> on the AWS Free Plan: $100 of credits for six months, and the account pauses rather than bills when they run out. The pre-class reading walks students through creating the account, the one-time SageMaker Studio setup, and starting and stopping the JupyterLab space. Courses that provide the <strong>AWS Academy Learner Lab</strong> (<a href="https://aws.amazon.com/training/awsacademy/">aws.amazon.com/training/awsacademy</a>) instead can follow the same steps; the reading notes the three differences. Data comes from the public <code>noaa-ghcn-pds</code> bucket on the <a href="https://registry.opendata.aws/">Registry of Open Data on AWS</a>. Compute is a SageMaker Studio JupyterLab space on an <code>ml.t3.medium</code> and Athena queries, both in <code>us-east-1</code>. A full session costs a student roughly 20 to 30 cents if they stop the space when they finish, and stopping it is graded.</p>
 </div>
 </div>
 <section id="status-at-a-glance" class="level2">
@@ -488,7 +488,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install psutil boto3 s3fs pandas matplotlib</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
-<li>Access to the AWS Academy Learner Lab from Canvas. Inside SageMaker Studio the default image already has every library; the setup cell installs <code>s3fs</code> in case it is missing.</li>
+<li>A free AWS account, created before class by following section 4 of the pre-class reading, with SageMaker Studio set up once. Inside SageMaker Studio the default image already has every library; the setup cell installs <code>s3fs</code> in case it is missing.</li>
 </ul>
 </section>
 </section>

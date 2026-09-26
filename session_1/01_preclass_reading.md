@@ -168,21 +168,62 @@ An instance type is a menu item. Prices are approximate, for `us-east-1`, at the
 
 Read the table two ways. First, a bigger machine is one dropdown away and costs dollars per hour, not thousands up front. Second, the small one is enough for almost everything in this module, because the reading pattern in section 6 keeps the data small. Rent ability when extraction is not enough, not instead of it.
 
-### Opening a SageMaker Studio JupyterLab space (AWS Academy Learner Lab)
+### Getting onto AWS: a free account and a SageMaker Studio space
 
-This module assumes you reach AWS through the **AWS Academy Learner Lab** linked from Canvas. The lab gives you a temporary AWS account with credentials already set up and a fixed budget. Nothing here requires a credit card. The console changes its labels from time to time; follow the on-screen names if they differ slightly from these.
+This module runs on AWS through a **free AWS account**. A new account starts on AWS's **Free Plan**: you receive $100 of credits that last six months, everything you run spends from those credits, and when the credits or the six months run out the account is paused rather than billed. Nothing in this module comes close to spending them if you stop your machine when you finish. The console changes its labels from time to time; follow the on-screen names if they differ slightly from these.
 
-1. **Start the lab.** In the Learner Lab page, click **Start Lab** and wait for the circle next to "AWS" to turn green. Note two things at the top of the page: the **session timer** (the lab shuts itself down after a few hours) and the **budget** remaining. Everything you run in this module spends from that budget.
-2. **Open the console.** Click the green **AWS** link. Confirm the region shown in the top-right corner is **N. Virginia (`us-east-1`)**. If it is not, change it. This is co-location; see above.
-3. **Open SageMaker.** In the search bar type *SageMaker AI* and open it. In the left menu choose **Studio**. If no domain exists yet, choose **Set up for single user (Quick setup)** and wait; this takes several minutes the first time and only happens once per lab account. If asked for an execution role, pick the existing **LabRole**.
-4. **Open Studio, then JupyterLab.** Click **Open Studio**. In Studio's home page choose **JupyterLab**, then **Create JupyterLab space**. Name it `gsb5544`. Leave the storage at the default.
-5. **Choose the instance and run the space.** Set the instance to **`ml.t3.medium`** and the image to the default **SageMaker Distribution**. Click **Run space**. When the status changes to *Running*, click **Open JupyterLab**. The clock on the $0.05 per hour started when the status changed to *Running*.
-6. **Upload the two notebooks** for this session (the file-upload arrow in the left file browser) and open the topics-of-practice notebook.
-7. **Run the `psutil` cell first**, before anything else. Fill in the right-hand column of the table in section 1.
-8. **When you are done for the day, stop the space.** In Studio's JupyterLab spaces list, click **Stop**. Then click **End Lab** on the Learner Lab page. A stopped space costs only a few cents a month for its storage. A running space costs the same whether or not you are typing. The practice activity ends with a graded shutdown check for exactly this reason.
+Do parts A through C **before class**, ideally a few days before. Account activation and the one-time SageMaker setup each take several minutes, and you do not want to be waiting on them while everyone else is running code.
 
-::: {.callout-note title="If you are using a personal AWS account instead"}
-Do step 3 onward in the same way, but two things come first. Create a **budget alarm** (Billing → Budgets → Create budget, a monthly cost budget of $10 with an email alert at 80%) before you create anything else, so a forgotten space cannot surprise you. And when SageMaker asks for an execution role, let it create a new one. Everything in this module costs under a dollar if you stop the space when you finish; the alarm is there for the day you forget.
+#### Part A. Create the free account (once)
+
+1. **Go to** [aws.amazon.com/free](https://aws.amazon.com/free) and click **Create a free account**. Use an email address you will still have next year. Give the account a name; any name works, and it appears in the top-right corner of the console afterwards.
+2. **Verify the email and fill in your details.** AWS emails a verification code, then asks for a root-user password, your name, address, and phone number. Choose **Personal** as the account type.
+3. **Payment card.** AWS asks for a card to confirm your identity. On the Free Plan the card is not charged; the credits are the only thing that gets spent. If you are asked to choose between a **Free** and a **Paid** plan, choose **Free**. A phone verification follows: AWS texts or calls you with a code.
+4. **Sign in** at [console.aws.amazon.com](https://console.aws.amazon.com) as the *root user*, with the email and password you just set. A brand-new account can take a few minutes to activate; if sign-in fails right away, wait and try again.
+
+#### Part B. Read the Console Home before you click anything
+
+The first page after sign-in is **Console Home**. It is busy. Three things on it matter for this module; ignore the rest, including Amazon Q, the "Recently visited" panel, and any banners.
+
+![Console Home on a new Free Plan account. The **Cost and usage** panel at the bottom shows the credits and days remaining; the region and account name are in the top-right corner.](images/console-home.png){fig-alt="AWS Console Home showing the Amazon Q panel, an empty Recently visited panel, and a Cost and usage panel reading $100.00 credits remaining and 182 days remaining."}
+
+- **Cost and usage**, lower on the page. It shows **Credits remaining** (starts at $100.00) and **Days remaining** (starts near 182). This panel is your budget and your timer. The practice activity asks you to read these numbers before and after class, so **write both down now**.
+- **Region**, in the top-right corner next to your account name. It must read **US East (N. Virginia)**, which is `us-east-1`. If it says anything else, click it and choose N. Virginia. The GHCN data lives in `us-east-1`; this is the co-location from the definitions above, and it also decides which price list you are on.
+- **The search bar** at the top. It is how you reach every service. Type a service name, press Enter, and pick the service (not the documentation link) from the results.
+
+#### Part C. Set up SageMaker Studio (once)
+
+5. In the search bar type **SageMaker AI** and open it. There is also a plain "SageMaker" entry; the one you want is **SageMaker AI**.
+6. In the left menu choose **Studio**. The page reports that no domain exists yet. Choose **Set up for single user (Quick setup)** and click **Set up**. AWS creates a *domain* (the container for your Studio settings and files) and an *execution role* (the permissions your rented machine will have). Let AWS create a new role. This takes five to ten minutes; you can leave the page and come back.
+7. When the domain status reads **InService**, you are done with the one-time setup. If instead you see a message that SageMaker is **not available on your plan**, stop here and tell me before class so we can arrange an alternative. Do not upgrade the plan on your own.
+
+#### Part D. Create and run the JupyterLab space (each session)
+
+8. On the Studio page click **Open Studio**. Studio opens in a new tab.
+9. In Studio's left menu choose **JupyterLab**, then **Create JupyterLab space**. Name it `gsb5544`. Leave it **Private** and leave the storage at its default. Click **Create space**.
+10. On the space's page set **Instance** to `ml.t3.medium` and **Image** to the default *SageMaker Distribution*. If a price is shown next to the instance, note it; it should be about $0.05 per hour. Click **Run space**. The status goes *Starting*, then *Running*, in two to three minutes. **The billing clock starts at *Running*.**
+11. Click **Open JupyterLab**. This is the same JupyterLab you have used on your laptop, except that the kernel now lives on the rented instance and your laptop is a browser tab.
+12. **Upload the two notebooks** for this session with the upload arrow in the left file browser, and open the topics-of-practice notebook.
+13. **Run the `psutil` cell first**, before anything else, and fill in the right-hand column of the table in section 1.
+
+#### Part E. Stop the space when you are done (every time)
+
+14. Go back to the Studio tab, open **JupyterLab spaces**, find `gsb5544`, click **Stop**, and wait until the status reads **Stopped**. A stopped space keeps your files and costs a few cents a month for storage. A running space costs the same whether or not you are typing.
+15. Return to **Console Home** and read **Credits remaining** again. Compare it with the number you wrote down in part B. A class session should show 15 to 30 cents of difference, sometimes zero because the panel updates with a delay. The practice activity ends with a graded shutdown check for exactly this reason.
+
+::: {.callout-tip title="Lab, space, instance, domain: which word is which"}
+- **Instance**: the rented computer, such as `ml.t3.medium`. It has the cores and RAM from the table above, and it bills by the hour while it runs.
+- **Space**: SageMaker's name for one JupyterLab environment plus its storage. A space *runs on* an instance. The space is the thing you **Run** and **Stop**.
+- **Domain**: the one-time Studio setup that holds your spaces and permissions. You create it once and never touch it again.
+- **Learner Lab**: the classroom sandbox that AWS Academy gives to some courses. If you created your own free account, you do not have a lab, and there is no **Start Lab** button anywhere. Go straight to SageMaker.
+:::
+
+::: {.callout-note title="If you upgrade to a paid plan later"}
+The Free Plan cannot run up a bill: when the credits are gone, the account pauses. A paid account can. Before you create anything on a paid account, set a **budget alarm**: in the search bar type *Billing*, open **Budgets**, choose **Create budget**, pick a monthly *cost* budget of $10, and add an email alert at 80%. Everything in this module costs under a dollar if you stop the space when you finish; the alarm is there for the day you forget.
+:::
+
+::: {.callout-note title="If your course provides the AWS Academy Learner Lab instead"}
+Some courses supply accounts through [AWS Academy](https://aws.amazon.com/training/awsacademy/), reached from a Canvas course rather than from a sign-up page; your instructor sends the invitation, and there is no card. The Learner Lab account is temporary and has a fixed budget and a session timer. The differences from the steps above: skip part A. Open the Learner Lab page, click **Start Lab**, wait for the circle next to "AWS" to turn green, and click the green **AWS** link to open the console. The **budget** and **timer** at the top of the lab page replace Console Home's credits and days in part B. In part C, when SageMaker asks for an execution role, pick the existing **LabRole** instead of creating one. In part E, after stopping the space, also click **End Lab** on the lab page.
 :::
 
 ---
@@ -410,7 +451,7 @@ Two worked examples with the `ml.t3.medium` price:
 | Forgot for a month | 720 | $36.00 |
 | Same month, `ml.m5.4xlarge` | 720 | $662.40 |
 
-In the Learner Lab, the budget at the top of the page is what stands between you and the last row. When it reaches zero the lab account is disabled, and the material you have not downloaded goes with it. In a personal account, the budget alarm from section 4 is what stands between you and it.
+On the Free Plan, **Credits remaining** on Console Home is what stands between you and the last row. When it reaches zero the account is paused, and the material you have not downloaded goes with it. In the Learner Lab, the budget at the top of the lab page plays the same role. On a paid plan, the budget alarm from section 4 is the only guard.
 
 ### The teardown habit
 
@@ -429,7 +470,8 @@ Analysts who do this by reflex are trusted with cloud accounts. Analysts who do 
 
 - The five laptop numbers from section 1, filled into the left column of the table.
 - `LAPTOP_SECONDS` from section 6, or how long you waited before giving up.
-- Your Learner Lab started at least once, so the SageMaker domain from step 3 of section 4 already exists and you are not waiting on it in class.
+- Your free AWS account created (section 4, part A), signed into once, and the **Credits remaining** and **Days remaining** from Console Home written down (part B).
+- SageMaker Studio set up once (part C), so the domain already exists and you are not waiting on it in class. Creating and running the space (part D) can wait until class, but running it once beforehand and stopping it again (part E) is a good rehearsal.
 
 ---
 
