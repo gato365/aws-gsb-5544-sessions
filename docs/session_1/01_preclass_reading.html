@@ -637,51 +637,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="part-b.-read-the-console-home-before-you-click-anything" class="level4">
 <h4 class="anchored" data-anchor-id="part-b.-read-the-console-home-before-you-click-anything">Part B. Read the Console Home before you click anything</h4>
-<p>The first page after sign-in is <strong>Console Home</strong>. It is busy. Three things on it matter for this module; ignore the rest, including Amazon Q, the “Recently visited” panel, and any banners.</p>
+<p>The first page after sign-in is <strong>Console Home</strong>. It is busy. Two things on it matter for this module; ignore the rest, including Amazon Q, the “Recently visited” panel, and any banners.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/console-home.png" class="img-fluid figure-img" alt="AWS Console Home showing the Amazon Q panel, an empty Recently visited panel, and a Cost and usage panel reading $100.00 credits remaining and 182 days remaining."></p>
-<figcaption>Console Home on a new Free Plan account. The <strong>Cost and usage</strong> panel at the bottom shows the credits and days remaining; the region and account name sit in the top-right corner (blurred here).</figcaption>
+<figcaption>Console Home on a new Free Plan account. The <strong>Cost and usage</strong> panel at the bottom shows the credits and days remaining; your account name sits in the top-right corner (blurred here).</figcaption>
 </figure>
 </div>
 <ul>
 <li><strong>Cost and usage</strong>, lower on the page. It shows <strong>Credits remaining</strong> (starts at $100.00) and <strong>Days remaining</strong> (starts near 182). This panel is your budget and your timer. The practice activity asks you to read these numbers before and after class, so <strong>write both down now</strong>.</li>
-<li><strong>Region</strong>, in the top-right corner next to your account name. It must read <strong>US East (N. Virginia)</strong>, which is <code>us-east-1</code>. If it says anything else, click it and choose N. Virginia. The GHCN data lives in <code>us-east-1</code>; this is the co-location from the definitions above, and it also decides which price list you are on.</li>
 <li><strong>The search bar</strong> at the top. It is how you reach every service. Type a service name, press Enter, and pick the service (not the documentation link) from the results.</li>
 </ul>
+<p>Console Home does not show which <strong>region</strong> you are in. You will check the region in part C, on the SageMaker page, where it does appear.</p>
 </section>
 <section id="part-c.-set-up-sagemaker-studio-once" class="level4">
 <h4 class="anchored" data-anchor-id="part-c.-set-up-sagemaker-studio-once">Part C. Set up SageMaker Studio (once)</h4>
 <ol start="5" type="1">
 <li>In the search bar type <strong>SageMaker AI</strong> and open it. There is also a plain “SageMaker” entry; the one you want is <strong>SageMaker AI</strong>.</li>
+<li><strong>Check the region before you create anything.</strong> Look at the address bar of your browser: the address should begin with <code>us-east-1.console.aws.amazon.com</code> and contain <code>region=us-east-1</code>. On service pages like this one the region also appears as a menu in the top bar, next to your account name, and it should read <strong>US East (N. Virginia)</strong>. If you see any other region, choose N. Virginia from that menu, or open <a href="https://us-east-1.console.aws.amazon.com/sagemaker/home?region=us-east-1">us-east-1.console.aws.amazon.com/sagemaker/home?region=us-east-1</a> directly. The GHCN data lives in <code>us-east-1</code>; this is the co-location from the definitions above, and it also decides which price list you are on. Everything you create from here on is created in the region shown.</li>
 <li>In the left menu, under <em>Applications and IDEs</em>, choose <strong>SageMaker Studio</strong>. On a new account the page shows a <strong>Get Started</strong> box with the button <strong>Create a SageMaker domain</strong>. Click it.</li>
 </ol>
-<p><img src="images/05-sagemaker-landing.png" class="img-fluid" alt="Amazon SageMaker AI console with SageMaker Studio selected in the left menu and a Get Started box containing the Create a SageMaker domain button."> 7. On the <strong>Set up SageMaker domain</strong> page, leave <strong>Set up for single user (Quick setup)</strong> selected and click <strong>Set up</strong> in the lower right. AWS creates a <em>domain</em> (the container for your Studio settings and files) and an <em>execution role</em> (the permissions your rented machine will have; the page calls it a new IAM role). Do not choose the organizations option.</p>
-<p><img src="images/06-quick-setup.png" class="img-fluid" alt="Set up SageMaker domain page with two cards, Set up for single user Quick setup selected, and an orange Set up button."> 8. A progress page appears while the domain is created. Keep the tab open until it finishes; the page says about 20 seconds, but allow a few minutes. When it lands you in Studio, the one-time setup is done. If instead you see a message that SageMaker is <strong>not available on your plan</strong>, stop here and tell me before class so we can arrange an alternative. Do not upgrade the plan on your own.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/07-domain-setting-up.png" class="img-fluid figure-img" alt="Amazon SageMaker Studio setup page listing what gets created, with a progress bar at 32 percent."></p>
-<figcaption>The setup progress page. Leave it open until the bar reaches 100%.</figcaption>
-</figure>
-</div>
+<p><img src="images/05-sagemaker-landing.png" class="img-fluid" alt="Amazon SageMaker AI console with SageMaker Studio selected in the left menu and a Get Started box containing the Create a SageMaker domain button."> 8. On the <strong>Set up SageMaker domain</strong> page, leave <strong>Set up for single user (Quick setup)</strong> selected and click <strong>Set up</strong> in the lower right. AWS creates a <em>domain</em> (the container for your Studio settings and files) and an <em>execution role</em> (the permissions your rented machine will have; the page calls it a new IAM role). Do not choose the organizations option.</p>
+<p><img src="images/06-quick-setup.png" class="img-fluid" alt="Set up SageMaker domain page with two cards, Set up for single user Quick setup selected, and an orange Set up button."> 9. A progress page appears while the domain is created. Keep the tab open until it finishes; the page says about 20 seconds, but allow a few minutes. When it lands you in Studio, the one-time setup is done. If instead you see a message that SageMaker is <strong>not available on your plan</strong>, stop here and tell me before class so we can arrange an alternative. Do not upgrade the plan on your own.</p>
+<p><img src="images/07-domain-setting-up.png" class="img-fluid" alt="Amazon SageMaker Studio setup page listing what gets created, with a progress bar at 32 percent."> 10. The first time Studio opens, it offers a short <strong>tour</strong>. Go through it. It is only six slides about what Studio can do, and it names the parts of the screen you are about to use.</p>
 </section>
 <section id="part-d.-create-and-run-the-jupyterlab-space-each-session" class="level4">
 <h4 class="anchored" data-anchor-id="part-d.-create-and-run-the-jupyterlab-space-each-session">Part D. Create and run the JupyterLab space (each session)</h4>
-<ol start="9" type="1">
+<ol start="11" type="1">
 <li>Studio opens on its own <strong>Home</strong> page, a dark interface that looks nothing like the rest of the console. On later days, reach it from the SageMaker Studio page by clicking <strong>Open Studio</strong>. Under <strong>Applications</strong> in the top-left, click <strong>JupyterLab</strong>.</li>
 </ol>
-<p><img src="images/08-studio-home.png" class="img-fluid" alt="SageMaker Studio Home page with Applications tiles for JupyterLab, Canvas, Code Editor and MLflow, and a large JupyterLab card."> 10. The JupyterLab page lists your spaces; on the first visit it says <em>No JupyterLab spaces</em>. Ignore the <strong>Space templates</strong> and their <em>Launch now</em> links, which create a space with a generated name. Instead click <strong>Create JupyterLab space</strong> in the top right.</p>
-<p><img src="images/09-jupyterlab-spaces.png" class="img-fluid" alt="JupyterLab page in SageMaker Studio showing three space templates, an empty spaces table, and a Create JupyterLab space button."> 11. In the dialog, name the space <code>gsb5544</code>, leave <strong>Private</strong> selected, and click <strong>Create space</strong>.</p>
-<p><img src="images/09-create-space.png" class="img-fluid" alt="Create JupyterLab space dialog with Name set to gsb5544 and Sharing set to Private."> 12. The space’s own page opens with status <em>Stopped</em>. Check three settings before you run it. <strong>Instance</strong> should read <code>ml.t3.medium</code> and <strong>Image</strong> should read <em>SageMaker Distribution</em> (the version number does not matter). Further down, change <strong>Idle Shutdown (minutes)</strong> from its default of 10080 (a week) to <strong>60</strong>, so a space you forget turns itself off after an hour. Leave <strong>Storage</strong> at 5 GB. Then click <strong>Run space</strong>.</p>
-<p><img src="images/10-space-settings.png" class="img-fluid" alt="SageMaker Studio space page for gsb5544 showing a Run space button, status Stopped, Instance ml.t3.medium, Image Sagemaker Distribution 4.5.0, and space settings including Idle Shutdown of 10080 minutes."> 13. The status changes to <em>Starting</em> and a banner estimates the remaining time. It takes one to three minutes. When it reads <em>Running</em>, the <strong>Run space</strong> button becomes <strong>Open JupyterLab</strong>; click it. <strong>The billing clock starts at <em>Running</em>.</strong></p>
-<p><img src="images/10-space-starting.png" class="img-fluid" alt="The gsb5544 space page with status Starting and a banner reading Starting space, estimated time remaining 30 seconds."> 14. JupyterLab opens in a new tab. It is the same JupyterLab you have used on your laptop, except that the kernel now lives on the rented instance and your laptop is a browser tab. <strong>Upload the two notebooks</strong> for this session with the upload arrow in the left file browser, open the topics-of-practice notebook, and <strong>run the <code>psutil</code> cell first</strong>, before anything else. Fill in the right-hand column of the table in section 1.</p>
+<p><img src="images/08-studio-home.png" class="img-fluid" alt="SageMaker Studio Home page with Applications tiles for JupyterLab, Canvas, Code Editor and MLflow, and a large JupyterLab card."> 12. The JupyterLab page lists your spaces; on the first visit it says <em>No JupyterLab spaces</em>. Ignore the <strong>Space templates</strong> and their <em>Launch now</em> links, which create a space with a generated name. Instead click <strong>Create JupyterLab space</strong> in the top right.</p>
+<p><img src="images/09-jupyterlab-spaces.png" class="img-fluid" alt="JupyterLab page in SageMaker Studio showing three space templates, an empty spaces table, and a Create JupyterLab space button."> 13. In the dialog, name the space <code>gsb5544</code>, leave <strong>Private</strong> selected, and click <strong>Create space</strong>.</p>
+<p><img src="images/09-create-space.png" class="img-fluid" alt="Create JupyterLab space dialog with Name set to gsb5544 and Sharing set to Private."> 14. The space’s own page opens with status <em>Stopped</em>. Check three settings before you run it. <strong>Instance</strong> should read <code>ml.t3.medium</code> and <strong>Image</strong> should read <em>SageMaker Distribution</em> (the version number does not matter). Further down, change <strong>Idle Shutdown (minutes)</strong> from its default of 10080 (a week) to <strong>60</strong>, so a space you forget turns itself off after an hour. Leave <strong>Storage</strong> at 5 GB. Then click <strong>Run space</strong>.</p>
+<p><img src="images/10-space-settings.png" class="img-fluid" alt="SageMaker Studio space page for gsb5544 showing a Run space button, status Stopped, Instance ml.t3.medium, Image Sagemaker Distribution 4.5.0, and space settings including Idle Shutdown of 10080 minutes."> 15. The status changes to <em>Starting</em> and a banner estimates the remaining time. It takes one to three minutes. When the space is ready, a green message at the bottom of the page reads <em>Successfully created JupyterLab app for space: gsb5544</em>, the status reads <em>Running</em>, and the <strong>Run space</strong> button becomes <strong>Open JupyterLab</strong>; click it. <strong>The billing clock starts at <em>Running</em>.</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/10-space-starting.png" class="img-fluid figure-img" alt="The gsb5544 space page with status Starting and a banner reading Starting space, estimated time remaining 30 seconds."></p>
+<figcaption>The space starting. Wait for the status to read Running.</figcaption>
+</figure>
+</div>
+<p><img src="images/11-space-running.png" class="img-fluid" alt="The Space Settings panel for gsb5544 with Idle Shutdown set to 60 minutes and a green message at the bottom reading Successfully created JupyterLab app for space: gsb5544."> 16. JupyterLab opens in a new tab. It is the same JupyterLab you have used on your laptop, except that the kernel now lives on the rented instance and your laptop is a browser tab. <strong>Upload the two notebooks</strong> for this session with the upload arrow in the left file browser, open the topics-of-practice notebook, and <strong>run the <code>psutil</code> cell first</strong>, before anything else. Fill in the right-hand column of the table in section 1.</p>
 </section>
 <section id="part-e.-stop-the-space-when-you-are-done-every-time" class="level4">
 <h4 class="anchored" data-anchor-id="part-e.-stop-the-space-when-you-are-done-every-time">Part E. Stop the space when you are done (every time)</h4>
-<ol start="15" type="1">
-<li>Go back to the Studio tab, open <strong>JupyterLab</strong> in the left menu, find <code>gsb5544</code> in the spaces table, click <strong>Stop</strong>, and wait until the status reads <strong>Stopped</strong>. A stopped space keeps your files and costs a few cents a month for storage. A running space costs the same whether or not you are typing.</li>
-<li>Return to <strong>Console Home</strong> and read <strong>Credits remaining</strong> again. Compare it with the number you wrote down in part B. A class session should show 15 to 30 cents of difference, sometimes zero because the panel updates with a delay. The practice activity ends with a graded shutdown check for exactly this reason.</li>
+<ol start="17" type="1">
+<li>Go back to the Studio tab, the one showing the <code>gsb5544</code> space page. If you have left that page, click <strong>JupyterLab</strong> under Applications and open <code>gsb5544</code> from the spaces table. Click <strong>Stop space</strong>, to the left of <strong>Open JupyterLab</strong>. A dialog asks you to confirm; click the red <strong>Stop space</strong> button in it. Wait until the status reads <strong>Stopped</strong>. A stopped space keeps your files and costs a few cents a month for storage. A running space costs the same whether or not you are typing. The dialog also warns that S3 buckets created from Studio are not deleted when the space stops. That is why the teardown in section 7 empties the results bucket as its own step.</li>
 </ol>
+<p><img src="images/12-stop-space.png" class="img-fluid" alt="The gsb5544 space page with status Running, a Stop space button next to Open JupyterLab, and a Stop space confirmation dialog with Cancel and Stop space buttons."> 18. Open <a href="https://console.aws.amazon.com">console.aws.amazon.com</a> <strong>in a new browser tab</strong>, so that Studio and JupyterLab stay open in their own tabs, and read <strong>Credits remaining</strong> on Console Home again. Compare it with the number you wrote down in part B. A class session should show 15 to 30 cents of difference, sometimes zero because the panel updates with a delay. The practice activity ends with a graded shutdown check for exactly this reason.</p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Lab, space, instance, domain: which word is which">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -694,7 +696,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <ul>
 <li><strong>Instance</strong>: the rented computer, such as <code>ml.t3.medium</code>. It has the cores and RAM from the table above, and it bills by the hour while it runs.</li>
-<li><strong>Space</strong>: SageMaker’s name for one JupyterLab environment plus its storage. A space <em>runs on</em> an instance. The space is the thing you <strong>Run</strong> and <strong>Stop</strong>.</li>
+<li><strong>Space</strong>: SageMaker’s name for one JupyterLab environment plus its storage. A space <em>runs on</em> an instance. The space is the thing you run and stop, with the <strong>Run space</strong> and <strong>Stop space</strong> buttons.</li>
 <li><strong>Domain</strong>: the one-time Studio setup that holds your spaces and permissions. You create it once and never touch it again.</li>
 <li><strong>Learner Lab</strong>: the classroom sandbox that AWS Academy gives to some courses. If you created your own free account, you do not have a lab, and there is no <strong>Start Lab</strong> button anywhere. Go straight to SageMaker.</li>
 </ul>
@@ -713,26 +715,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The Free Plan cannot run up a bill: when the credits are gone, the account pauses. A paid account can. Before you create anything on a paid account, set a <strong>budget alarm</strong>: in the search bar type <em>Billing</em>, open <strong>Budgets</strong>, choose <strong>Create budget</strong>, pick a monthly <em>cost</em> budget of $10, and add an email alert at 80%. Everything in this module costs under a dollar if you stop the space when you finish; the alarm is there for the day you forget.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-note callout-titled" title="If your course provides the AWS Academy Learner Lab instead">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>If your course provides the AWS Academy Learner Lab instead
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Some courses supply accounts through <a href="https://aws.amazon.com/training/awsacademy/">AWS Academy</a>, reached from a Canvas course rather than from a sign-up page; your instructor sends the invitation, and there is no card. The Learner Lab account is temporary and has a fixed budget and a session timer. The differences from the steps above: skip part A. Open the Learner Lab page, click <strong>Start Lab</strong>, wait for the circle next to “AWS” to turn green, and click the green <strong>AWS</strong> link to open the console. The <strong>budget</strong> and <strong>timer</strong> at the top of the lab page replace Console Home’s credits and days in part B. In part C, if the Quick setup offers a choice of execution role, pick the existing <strong>LabRole</strong> instead of creating one. In part E, after stopping the space, also click <strong>End Lab</strong> on the lab page.</p>
-</div>
-</div>
 <hr>
 </section>
 </section>
 </section>
 <section id="reading-from-s3-without-an-account" class="level2">
 <h2 class="anchored" data-anchor-id="reading-from-s3-without-an-account">5. Reading from S3 without an account</h2>
-<p>Many large public datasets are hosted on S3 through the <a href="https://registry.opendata.aws/">Registry of Open Data on AWS</a>. They can be read <em>anonymously</em>: no account, no credit card, no credentials. The request is simply not signed. This works identically from your laptop and from inside SageMaker; only the network in between changes.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Where am I working now? Back on your laptop">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Where am I working now? Back on your laptop
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sections 5 and 6 run in a notebook <strong>on your laptop</strong>, not in the SageMaker space you set up in section 4. Every cell here is marked <code># RUNS ON: laptop</code>. This is deliberate: before class you measure how the work goes on your own machine, and in class you run the same code inside JupyterLab on SageMaker and compare the two. If your space is still running from the rehearsal, stop it (part E); you do not need it until class.</p>
+</div>
+</div>
+<p>Many large public datasets are hosted on S3, and they can be read <em>anonymously</em>: no account, no credit card, no credentials. The request is simply not signed. This works identically from your laptop and from inside SageMaker; only the network in between changes.</p>
+<p>The <a href="https://registry.opendata.aws/">Registry of Open Data on AWS</a> is the catalog where these public datasets are listed. It is a website to browse, like a library catalog. You do not work in it or sign into it, and nothing in this section requires you to open it; it is where we found the bucket name used below.</p>
 <p>Install what you need on your laptop (once). Inside SageMaker the default image already has all of these.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install boto3 s3fs psutil pandas matplotlib</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>boto3</code> is the official AWS library for Python. Create an unsigned client:</p>
