@@ -27,11 +27,63 @@ This reading gives you four things:
 3. A working pattern for reading only what you need from a large remote dataset.
 4. A way to run the same notebook on a machine next to the data, and to know what it costs.
 
-We will use weather data as the example. Weather is one of the most common external covariates in business analytics: it drives beverage and apparel demand, energy load, insurance claims, delivery times, and foot traffic. It is also a dataset that is far too large to open on a laptop, which is exactly the point.
+We will use weather data as the example. Weather is one of the most common external covariates in business analytics: it drives beverage and apparel demand, energy load, insurance claims, delivery times, and foot traffic. It is also a dataset that is far too large to open on a laptop, which is exactly the point. Our example location is close to home: the weather station at Cal Poly in **San Luis Obispo (SLO)**, which has recorded daily weather since 1893.
+
+---
+
+## Before you start: open a notebook in Positron
+
+This reading has code in it, and you run that code as you read. All of it goes into **one new notebook in Positron, on your laptop**. Create it now, before section 1, so it is open and waiting the first time you meet a code block.
+
+::: {.callout-note title="Where to save your work: two cases"}
+- **If your section set up a course folder** (a folder named like `GSB-5544-Fall-2026-ijw` with a `practice_activities` folder inside it), you already know where things go. Save this notebook under `practice_activities/week_7` as usual and skip the folder explanations in steps 1 and 3.
+- **If your section did not**, you need one folder to hold this week's work, and any location you can find again is fine. Create a folder named `GSB-5544` on your Desktop or in Documents, and inside it a folder named `week_7`. Steps 1 and 3 refer to this folder.
+:::
+
+1. **Open Positron and open your course folder.** Choose **File → Open Folder** and pick your course folder: the one your section set up, or the `GSB-5544` folder you just created.
+2. **Create the notebook.** Click the **New** button (the **+** in the top-left corner), choose **New File...**, and pick **Jupyter Notebook** from the list that drops down.
+
+![Positron after clicking **New** and then **New File...**. Choose **Jupyter Notebook**.](images/13-positron-new-notebook.png){fig-alt="Positron Welcome page with the New File menu open, listing Text File, R File, Python File, Jupyter Notebook, Quarto Document and Quarto Project."}
+
+3. **Save it under week 7.** Press Cmd+S (Ctrl+S on Windows) and name the notebook `week_7_preclass_reading.ipynb`. Save it in your `week_7` folder: `practice_activities/week_7` if you use the course folder layout, or the `week_7` folder you created above. With the course folder layout, the full path looks like mine: `/Users/immanuelwilliams/Desktop/GSB-5544-Fall-2026-ijw/practice_activities/week_7/week_7_preclass_reading.ipynb`.
+4. **Pick Python.** If the notebook asks you to select a kernel (top right of the notebook), choose the Python you use for this course.
+
+5. **Install the packages.** Copy this into the first cell and run it with Shift+Enter. The `%pip` form installs into the same Python the notebook is using. You only need to do this once.
+
+```python
+# RUNS ON: laptop
+%pip install boto3 fsspec s3fs psutil pandas matplotlib
+```
+
+If a later cell stops with `ModuleNotFoundError` or `ImportError`, the install did not reach the Python your notebook is using. Run this cell again, restart the kernel (the **Restart** button at the top of the notebook), and rerun your cells from the top.
+
+Keep Positron open for the rest of the reading. How to use the notebook as you go:
+
+- **Copy each code snippet from this page into its own cell**, in the order it appears, and run it with Shift+Enter. Every code block on this page has a copy button in its top-right corner.
+- **Run the cells top to bottom.** Later cells use names that earlier cells created (`human`, `s3`, `BUCKET`, `COLS`, `STATION`, `df`). If you see a `NameError`, a cell above was skipped.
+- **Read the "What this code does" notes** under the snippets after you run them, and compare them with the output you got. The goal is that you can explain each cell, not only that it ran.
+
+### Two places you will work, and how to tell which one you are in
+
+This reading moves between two places. Coloured boxes mark every switch, and each one says why you are switching.
+
+| The box says | Where you are | What you do there | Why |
+|---|---|---|---|
+| **In your notebook** | Positron, on your laptop | Copy a snippet into a cell and run it | The code runs on your own machine, so the numbers you record describe your laptop. Nothing here costs money or needs an AWS account |
+| **Detour: AWS website** | Your web browser, signed in to AWS | Click through setup pages. No code, nothing typed into the notebook | The account and the rented machine have to exist before class, and they can only be created on AWS's own site |
+| **Reading only** | This page | Read. Nothing to run or click | The section explains ideas or vocabulary you need for what comes next |
+
+The code blocks carry the same information in their first line. `# RUNS ON: laptop` means the notebook in Positron. Any other value (`SageMaker`, `Athena`) means the code runs on AWS in class, and you do not copy it into your notebook now.
+
+One thing to watch for in class: JupyterLab inside SageMaker looks almost identical to a notebook on your laptop, but it lives in a browser tab and runs on the rented machine. The look of the notebook does not tell you where the code runs. The place it was opened from does.
 
 ---
 
 ## 1. What your machine actually has
+
+::: {.callout-tip title="In your notebook · Positron, on your laptop"}
+Sections 1 and 2 are your first cells. **Why the notebook?** You are measuring your own machine, so the code has to run on it. You will reuse these cells' results all the way through section 6.
+:::
 
 Your laptop has an amount of memory (RAM) installed, and a smaller amount that is *available right now*. The available number is the one that determines whether a dataset loads. Measure it:
 
@@ -107,11 +159,17 @@ A CSV that is 800 MB on disk will not be 800 MB in pandas. Text columns are stor
 df.memory_usage(deep=True).sum()   # deep=True, or string columns are undercounted
 ```
 
+Do not run this one yet. There is no `df` in your notebook until section 6; come back and try it once that table exists.
+
 So the question "does this fit?" is really: *is (file size × a multiplier) less than my available RAM?* When the answer is no, you have two choices, and this module teaches both. You can make a **smaller extraction**, or you can rent a **bigger machine**. Usually you do the first before the second, because the first is free.
 
 ---
 
 ## 3. The vocabulary of AWS
+
+::: {.callout-note title="Reading only · nothing to run or click"}
+Leave the notebook open and read. Section 3 and the first half of section 4 are vocabulary and ideas. **Why stop coding?** The AWS website and the code in sections 5 and 6 use these words without explaining them.
+:::
 
 Amazon Web Services is the largest cloud provider, and its vocabulary has become the industry's vocabulary. Eleven terms cover most of what you will read in documentation, pricing pages, and error messages.
 
@@ -145,7 +203,7 @@ Three definitions, then a walkthrough.
 
 ### The `# RUNS ON:` convention
 
-From here on, **every code cell in this module starts with a comment that says where it executes.** There are exactly three values:
+From here on, **every code cell in this module starts with a comment that says where it executes.** There are exactly three values. (This block only shows the three labels; it is not a cell to copy into your notebook.)
 
 ```python
 # RUNS ON: laptop
@@ -169,6 +227,14 @@ An instance type is a menu item. Prices are approximate, for `us-east-1`, at the
 Read the table two ways. First, a bigger machine is one dropdown away and costs dollars per hour, not thousands up front. Second, the small one is enough for almost everything in this module, because the reading pattern in section 6 keeps the data small. Rent ability when extraction is not enough, not instead of it.
 
 ### Getting onto AWS: a free account and a SageMaker Studio space
+
+::: {.callout-warning title="Detour: AWS website · in your web browser"}
+**Leave the notebook alone for parts A through E.** Everything here happens in your web browser on AWS's own site. You click through pages; you write no code and type nothing into the Positron notebook. Keep Positron open in the background, because you return to it in section 5.
+
+**Why the detour?** The code you have run so far used your laptop. In class the same code will run on a machine you rent from AWS, and that machine cannot be created from a notebook on your laptop. It needs an AWS account and a one-time setup, both done on the AWS site, and both take long enough that they need to be finished before class.
+
+**How to tell you are on the AWS site:** the address bar reads `aws.amazon.com` or `console.aws.amazon.com`, or, inside Studio, an address containing `sagemaker`. In step 16 you will meet JupyterLab running *on AWS*, in a browser tab. It looks like your Positron notebook, but it is not the same notebook and it is not on your laptop.
+:::
 
 This module runs on AWS through a **free AWS account**. A new account starts on AWS's **Free Plan**: you receive $100 of credits that last six months, everything you run spends from those credits, and when the credits or the six months run out the account is paused rather than billed. Nothing in this module comes close to spending them if you stop your machine when you finish. The console changes its labels from time to time; follow the on-screen names if they differ slightly from these.
 
@@ -250,40 +316,17 @@ The Free Plan cannot run up a bill: when the credits are gone, the account pause
 
 ## 5. Reading from S3 without an account
 
-::: {.callout-important title="Where am I working now? Back on your laptop"}
-Sections 5 and 6 run in a notebook **on your laptop**, in Positron, not in the SageMaker space you set up in section 4. Every cell here is marked `# RUNS ON: laptop`. This is deliberate: before class you measure how the work goes on your own machine, and in class you run the same code inside JupyterLab on SageMaker and compare the two. If your space is still running from the rehearsal, stop it (part E); you do not need it until class.
+::: {.callout-tip title="Back in your notebook · Positron, on your laptop"}
+The AWS detour is over. Return to Positron and keep adding cells to the same notebook, below the `human()` cell from section 2. Sections 5 and 6 are marked `# RUNS ON: laptop` and run in that notebook, **not** in the JupyterLab space you just set up on AWS.
+
+**Why here and not on AWS?** Before class you measure how this work goes on your own machine: how long it takes and how much memory it needs. In class you run the same cells inside JupyterLab on SageMaker and compare the two. Without the laptop numbers there is nothing to compare against. If your space is still running from the rehearsal, stop it (part E); you do not need it until class.
 :::
-
-### Set up a notebook in Positron
-
-You will do sections 5 and 6 in one new, empty notebook. Create it before you read on.
-
-1. **Open Positron and open your class folder.** Choose **File → Open Folder** and pick the folder you use for this course. Mine, for example, is `GSB-5544-Fall-2026-ijw` on my Desktop; yours has your own initials.
-2. **Create the notebook.** Click the **New** button (the **+** in the top-left corner), choose **New File...**, and pick **Jupyter Notebook** from the list that drops down.
-
-![Positron after clicking **New** and then **New File...**. Choose **Jupyter Notebook**.](images/13-positron-new-notebook.png){fig-alt="Positron Welcome page with the New File menu open, listing Text File, R File, Python File, Jupyter Notebook, Quarto Document and Quarto Project."}
-
-3. **Save it under week 7.** Press Cmd+S (Ctrl+S on Windows) and save the notebook inside your class folder at `practice_activities/week_7`, with the name `week_7_preclass_reading.ipynb`. Create the `week_7` folder if it does not exist yet. My full path, for example, is `/Users/immanuelwilliams/Desktop/GSB-5544-Fall-2026-ijw/practice_activities/week_7/week_7_preclass_reading.ipynb`.
-4. **Pick Python.** If the notebook asks you to select a kernel (top right of the notebook), choose the Python you use for this course.
-
-How to work through the two sections:
-
-- **Copy each code snippet from this page into its own cell**, in the order it appears, and run it with Shift+Enter. Every code block on this page has a copy button in its top-right corner.
-- **Run the cells top to bottom.** Later cells use names that earlier cells created (`s3`, `BUCKET`, `human`, `COLS`, `STATION`, `df`). If you see a `NameError`, a cell above was skipped.
-- **Start with two cells from earlier sections**: the `psutil` cell from section 1 and the `human()` helper from section 2. Section 5 calls `human()`, and having your machine's numbers at the top of the notebook makes the comparison in class easier.
-- **Read the "What this code does" notes** under each snippet after you run it, and compare them with the output you got. The goal is that you can explain each cell, not only that it ran.
-- **Do not copy the SQL block** in section 6. It runs on Athena in class, not on your laptop.
 
 Many large public datasets are hosted on S3, and they can be read *anonymously*: no account, no credit card, no credentials. The request is simply not signed. This works identically from your laptop and from inside SageMaker; only the network in between changes.
 
 The [Registry of Open Data on AWS](https://registry.opendata.aws/) is the catalog where these public datasets are listed. It is a website to browse, like a library catalog. You do not work in it or sign into it, and nothing in this section requires you to open it; it is where we found the bucket name used below.
 
-Install what you need on your laptop (once). Put this in the first cell of the notebook and run it; the `%pip` form installs into the same Python the notebook is using. Inside SageMaker the default image already has all of these.
-
-```python
-# RUNS ON: laptop
-%pip install boto3 s3fs psutil pandas matplotlib
-```
+You installed the packages for this section in the first cell of your notebook. Inside SageMaker the default image already has all of them.
 
 `boto3` is the official AWS library for Python. Create an unsigned client:
 
@@ -304,7 +347,9 @@ s3 = boto3.client("s3", region_name="us-east-1",
 - `Config(signature_version=UNSIGNED)` tells the client not to attach any credentials to its requests. Normally every AWS request is signed with your keys; a public bucket accepts requests with no signature. This one argument is what "anonymous access" means in code.
 - Every later cell uses this `s3` object, so this cell has to run first.
 
-Our dataset is NOAA's **Global Historical Climatology Network – Daily (GHCN-D)**: daily observations from tens of thousands of weather stations worldwide, some going back to the 1760s. It lives in the bucket `noaa-ghcn-pds`.
+**NOAA** is the National Oceanic and Atmospheric Administration, the U.S. federal agency that collects and publishes weather and climate records. Our dataset is NOAA's **Global Historical Climatology Network – Daily (GHCN-D)**: daily observations from tens of thousands of weather stations worldwide, some going back to the 1760s. It lives in the bucket `noaa-ghcn-pds`.
+
+Out of all those stations, this reading is after one: **the weather data for San Luis Obispo**. The station is on the Cal Poly campus, its ID is `USC00047851`, and its records start in 1893. Whenever the code below says "the station" or uses `STATION`, it means SLO's daily highs, lows, and rainfall. Everything in sections 5 and 6 is about getting those SLO rows out of a worldwide dataset without bringing the rest of the world along.
 
 ### Listing, not downloading
 
@@ -353,7 +398,7 @@ csv/by_year/2020.csv         1.3 GB
 csv/by_year/2021.csv         1.4 GB
 csv/by_year/2022.csv         1.4 GB
 csv/by_year/2023.csv         1.4 GB
-csv/by_year/2024.csv         1.3 GB
+csv/by_year/2024.csv         1.4 GB
 csv/by_year/2025.csv         1.3 GB
 csv/by_year/2026.csv         818.8 MB
 ```
@@ -405,6 +450,15 @@ Use this to check whether a file has a header row before you read it. If the fir
 
 ## 6. Extraction strategy: filter at the source
 
+::: {.callout-warning title="Some cells in this section take a while. Be patient"}
+The cells in section 5 answered in a second or two because they moved almost no data. Two cells in this section move real data and are slower:
+
+- The **by-station cell** downloads a few megabytes. Expect several seconds, longer on a slow connection.
+- The **timed cell** downloads 300 MB. Expect **about 3 minutes** on an ordinary home connection, and noticeably longer on slow Wi-Fi or on a laptop that is short on free memory or has an older or busy processor.
+
+While a cell is working, the notebook shows it as running and prints nothing. That is normal. **Do not run the cell again and do not interrupt it**; starting over only makes the wait longer. Closing other programs and browser tabs helps if your machine is struggling. Use the wait to read ahead.
+:::
+
 When data does not fit, there are three levers, and they all express one principle: **move the filter to the data instead of moving the data to the filter.**
 
 **Lever 1: pick the right object.** GHCN offers the same data by year (1.3 GB, all stations) and by station (a few MB, all years). If you need one location, read the station file. Choosing the object is the cheapest filter there is.
@@ -449,7 +503,9 @@ df.shape
 - `dtype={...}` stores the two text columns in pandas' compact string type.
 - `df.shape` shows (rows, columns). You should see four columns and a row count in the hundreds of thousands: every daily measurement at this station since 1893.
 
-For a by-year file, add lever 3 and keep only the rows you want as they stream past. **Time this one and write the number down.** It is the laptop leg of a three-way race you will finish in class, and it is the slow leg, so run it now while you read the rest of this page. Expect several minutes; if your connection is very slow, note how long you waited before giving up, and bring that number instead.
+For a by-year file, add lever 3 and keep only the rows you want as they stream past. The 2024 file holds every station in the world and is about 1.4 GB, which takes most home connections 10 to 15 minutes or more to pull down. You do not need to wait that long to learn what it costs. The cell below reads only the **first 300 MB** of the file, times that, and scales the result up to estimate the whole file.
+
+**Time this one and write the number down.** It is the laptop leg of a three-way race you will finish in class, and it is the slow leg, so start it and keep reading while it runs. If your connection is very slow, note how long you waited before giving up, and bring that number instead.
 
 ```python
 # RUNS ON: laptop
@@ -459,32 +515,43 @@ key = "csv/by_year/2024.csv"
 first = s3.get_object(Bucket=BUCKET, Key=key, Range="bytes=0-99")["Body"].read().decode()
 has_header = first.upper().startswith("ID,")
 
+SAMPLE_BYTES = 300_000_000                          # read the first 300 MB, not all 1.4 GB
+total_bytes = s3.head_object(Bucket=BUCKET, Key=key)["ContentLength"]
+
 t0 = time.perf_counter()
+obj = s3.get_object(Bucket=BUCKET, Key=key, Range=f"bytes=0-{SAMPLE_BYTES - 1}")
 chunks = pd.read_csv(
-    f"s3://{BUCKET}/{key}",
-    storage_options={"anon": True},                 # unsigned, via s3fs
+    obj["Body"],
     header=0 if has_header else None,
     names=COLS,
     usecols=["id", "date", "element", "value"],
+    dtype={"id": "string", "element": "string"},
     chunksize=1_000_000,                            # lever 3
 )
 keep = pd.concat(c[c["id"] == STATION] for c in chunks)
-LAPTOP_SECONDS = time.perf_counter() - t0
+SAMPLE_SECONDS = time.perf_counter() - t0
 
-print(f"{len(keep):,} rows for {STATION} in {LAPTOP_SECONDS:,.0f} s")   # write this down
+# Scale the sample up to the whole file: same speed, more bytes.
+LAPTOP_SECONDS = SAMPLE_SECONDS * total_bytes / SAMPLE_BYTES
+
+print(f"{len(keep):,} rows for {STATION} in {SAMPLE_SECONDS:,.0f} s (first {human(SAMPLE_BYTES)})")
+print(f"Estimated for the whole {human(total_bytes)} file: {LAPTOP_SECONDS:,.0f} s")   # write this down
 ```
 
 **What this code does.**
 
-- `key` now points at the by-year file: every station in the world for 2024, 1.3 GB. The header check is the same as before.
-- `t0 = time.perf_counter()` starts a stopwatch. The matching line after the read subtracts it, so `LAPTOP_SECONDS` is how long the extraction took.
-- `f"s3://{BUCKET}/{key}"` is an S3 address. When pandas sees `s3://`, it uses the `s3fs` library to open the file, and `storage_options={"anon": True}` is the `s3fs` way of saying "unsigned".
+- `key` now points at the by-year file: every station in the world for 2024. The header check is the same as before.
+- `SAMPLE_BYTES` is how much of the file you will read: 300 million bytes, a little over a fifth of it. `total_bytes` asks S3 for the full size with `head_object`, the free metadata request from section 5.
+- `t0 = time.perf_counter()` starts a stopwatch. The matching line after the read subtracts it, so `SAMPLE_SECONDS` is how long the 300 MB took.
+- `Range=f"bytes=0-{SAMPLE_BYTES - 1}"` is the range request from section 5 again, only bigger. S3 sends the first 300 MB and stops.
 - `chunksize=1_000_000` is **lever 3**. With it, `pd.read_csv` does not return a table. It returns an *iterator* that hands you one table of a million rows at a time. That line finishes instantly because nothing has been read yet.
-- `pd.concat(c[c["id"] == STATION] for c in chunks)` does the work. For each chunk `c`, it keeps only the rows whose `id` is our station and lets the rest go, then stitches the surviving rows into one table. Your memory holds one chunk at a time, which is why this runs on a laptop that could never load the file whole.
-- Chunking protects your memory, not your time. All 1.3 GB still has to travel across the internet to your laptop to be inspected, and that is why this cell is slow. Hold on to that thought for section 7.
-- The final `print` reports the row count and the seconds. Write the seconds down.
+- `pd.concat(c[c["id"] == STATION] for c in chunks)` does the work. For each chunk `c`, it keeps only the rows whose `id` is the SLO station and lets the rest go, then stitches the surviving rows into one table. Your memory holds one chunk at a time, which is why this runs on a laptop that could never load the file whole.
+- The file is sorted by date, so the first 300 MB covers January to about the middle of March. Expect roughly 300 SLO rows, out of more than 8 million rows read. The byte range cuts the very last row in half; that half-row belongs to some other station, and the filter discards it.
+- `LAPTOP_SECONDS` scales the measured time up to the full file. This is a fair estimate because nearly all of the time is spent moving bytes across the internet, and the rest of the file would arrive at the same speed.
+- Chunking protects your memory, not your time. Every byte still has to travel to your laptop to be inspected, and that is why this cell is slow. Hold on to that thought for section 7.
+- The two `print` lines report the sample and the estimate. Write the estimate down.
 
-Both produce the same rows for that station. One reads 6.7 MB; the other reads 1.3 GB and throws almost all of it away. Lever 1 was the one that mattered.
+Compare the two cells. The by-station cell read 6.7 MB and returned every SLO row since 1893. This one read 300 MB to find a few hundred SLO rows, and the full year would mean reading 1.4 GB and throwing almost all of it away. Lever 1 was the one that mattered.
 
 ### The fourth lever: let the fleet do the filtering
 
@@ -497,7 +564,7 @@ FROM   ghcn
 WHERE  year = 2024 AND element = 'TMAX' AND id = 'USC00047851'
 ```
 
-**What this code does.** Do not run it now; you will run it in class.
+**What this code does.** Do not copy this block into your notebook. Its first line says `RUNS ON: Athena fleet`, not `laptop`; you will run it in class.
 
 - `SELECT id, "date", data_value` names the three columns to return. Because Parquet stores each column separately, the other columns are never read.
 - `FROM ghcn` refers to a table definition that you will create in class. It tells Athena that the Parquet files under `parquet/by_year/` should be treated as one table.
@@ -526,6 +593,10 @@ tmax["tmax_c"] = tmax["value"] / 10
 ---
 
 ## 7. Cost, space, and ability: what you are actually renting
+
+::: {.callout-note title="Reading only · then write in your notebook"}
+There is no code to run in this section and nothing to click on AWS. You return to the notebook once, at the end, to write your answers to the questions.
+:::
 
 Cost is part of the job, not a footnote. A model that costs more to refresh than the decision it informs is a bad model.
 
@@ -578,7 +649,7 @@ On the Free Plan, **Credits remaining** on Console Home is what stands between y
 
 ### How you code is how you spend
 
-Look back at the two cells in section 6 that produced the same rows. One read 6.7 MB and the other read 1.3 GB. On your laptop the difference showed up as waiting. On AWS the same difference shows up on the bill, in three places:
+Look back at the two cells in section 6 that went after the same SLO rows. One read 6.7 MB. The other needs 1.4 GB for a single year, which is why you sampled only 300 MB of it. On your laptop the difference showed up as waiting. On AWS the same difference shows up on the bill, in three places:
 
 | A choice you make | What it reduces | Which charge that is |
 |---|---|---|
@@ -596,7 +667,7 @@ Efficient code and cheap code are the same code. An analysis costs roughly (how 
 Add a markdown cell at the end of your notebook and answer these in full sentences. Take your time; a careful paragraph for each is the goal, and we will start class by comparing answers.
 
 1. In your own words, what are you paying for when a JupyterLab space is *Running*? What are you paying for when you run an Athena query? Why are those two charged so differently?
-2. The slow cell in section 6 took `LAPTOP_SECONDS` on your laptop. Suppose it ran on a rented instance instead. Which parts of the bill would it affect, and how would the by-station version of the same extraction change each one?
+2. The slow cell in section 6 would take about `LAPTOP_SECONDS` on your laptop for the whole file. Suppose it ran on a rented instance instead. Which parts of the bill would it affect, and how would the by-station version of the same extraction change each one?
 3. A colleague says, "The data doesn't fit in memory, so let's just rent the 64 GB machine." Explain what they should try first, and why that order saves money.
 4. Pick one row of the "forgot to stop it" table. Describe what went wrong, what it cost, and the habit that prevents it.
 5. Finish this sentence with a specific example from this reading: "Writing efficient code reduces cloud cost because ..."
@@ -617,8 +688,8 @@ Analysts who do this by reflex are trusted with cloud accounts. Analysts who do 
 ## Before class: what to bring
 
 - The five laptop numbers from section 1, filled into the left column of the table.
-- `LAPTOP_SECONDS` from section 6, or how long you waited before giving up.
-- Your notebook `week_7_preclass_reading.ipynb`, saved in `practice_activities/week_7`, with the cells from sections 5 and 6 run and your written answers to the section 7 questions at the end.
+- `LAPTOP_SECONDS` from section 6 (the estimate for the whole file), or how long you waited before giving up.
+- Your notebook `week_7_preclass_reading.ipynb`, saved in your `week_7` folder, with the cells from sections 1, 2, 5, and 6 run and your written answers to the section 7 questions at the end.
 - Your free AWS account created (section 4, part A), signed into once, and the **Credits remaining** and **Days remaining** from Console Home written down (part B).
 - SageMaker Studio set up once (part C), so the domain already exists and you are not waiting on it in class. Creating and running the space (part D) can wait until class, but running it once beforehand and stopping it again (part E) is a good rehearsal.
 
