@@ -238,7 +238,7 @@ Read the table two ways. First, a bigger machine is one dropdown away and costs 
 
 This module runs on AWS through a **free AWS account**. A new account starts on AWS's **Free Plan**: you receive $100 of credits that last six months, everything you run spends from those credits, and when the credits or the six months run out the account is paused rather than billed. Nothing in this module comes close to spending them if you stop your machine when you finish. The console changes its labels from time to time; follow the on-screen names if they differ slightly from these.
 
-Do parts A through C **before class**, ideally a few days before. Account activation and the one-time SageMaker setup each take several minutes, and you do not want to be waiting on them while everyone else is running code.
+Do parts A through C, and part F, **before class**, ideally a few days before. Account activation and the one-time SageMaker setup each take several minutes, and you do not want to be waiting on them while everyone else is running code.
 
 #### Part A. Create the free account (once)
 
@@ -300,6 +300,24 @@ Console Home does not show which **region** you are in. You will check the regio
 
 ![Stopping the space. Click **Stop space** on the space page, then **Stop space** again in the dialog.](images/12-stop-space.png){fig-alt="The gsb5544 space page with status Running, a Stop space button next to Open JupyterLab, and a Stop space confirmation dialog with Cancel and Stop space buttons."}
 18. Open [console.aws.amazon.com](https://console.aws.amazon.com) **in a new browser tab**, so that Studio and JupyterLab stay open in their own tabs, and read **Credits remaining** on Console Home again. Compare it with the number you wrote down in part B. A class session should show 15 to 30 cents of difference, sometimes zero because the panel updates with a delay. The practice activity ends with a graded shutdown check for exactly this reason.
+
+#### Part F. Let your Studio role use Athena (once)
+
+The Quick setup in part C gives your rented machine permission to use SageMaker and little else. Block J of the in-class notebook also needs to run Athena queries and to create and empty a results bucket. You add those two permissions once, in the console, and never again. Do this before class.
+
+17. In the console search bar type **IAM** and open it. In the left menu choose **Roles**.
+18. In the search box type `AmazonSageMaker`. Click the role the Quick setup created; its name begins with **AmazonSageMaker** and contains **ExecutionRole**. If more than one appears, open JupyterLab, run the cell below in a new notebook, and use the role name it prints.
+
+```python
+# RUNS ON: SageMaker ml.t3.medium (us-east-1)
+import boto3
+print(boto3.client("sts").get_caller_identity()["Arn"].split("/")[1])
+```
+
+19. On the role's page choose **Add permissions → Attach policies**. Search for and tick **AmazonAthenaFullAccess**, then search for and tick **AmazonS3FullAccess**. Click **Add permissions**.
+20. Both policies now appear in the role's list. There is nothing to restart; the next cell you run has the new permissions.
+
+These are broad permissions, chosen so that setup is two ticks and not a custom policy. They apply only inside your own account, which holds nothing but this course's work. Learner Lab accounts skip this part: their **LabRole** already has both.
 
 ::: {.callout-tip title="Lab, space, instance, domain: which word is which"}
 - **Instance**: the rented computer, such as `ml.t3.medium`. It has the cores and RAM from the table above, and it bills by the hour while it runs.
@@ -573,6 +591,46 @@ WHERE  year = 2024 AND element = 'TMAX' AND id = 'USC00047851'
 
 Two things make this cheap. Parquet is columnar, so Athena reads only the columns named. And the `YEAR=2024/ELEMENT=TMAX/` layout of the keys means Athena opens only that one slice of the bucket and never touches the other 270 years or the other 100-odd element codes. In class you will run this query from the notebook with `boto3`, read the bytes-scanned statistic, and compare it to the 1.3 GB CSV. Levers 1 to 3 shrink what *your* machine reads. Lever 4 shrinks what *any* machine reads.
 
+#### How you will run it in class
+
+You do not open Athena's own web page, and you do not run this on your laptop. You run it from **block J of the topics-of-practice notebook, inside JupyterLab on your SageMaker space**. Three machines take part, and it helps to know which does what:
+
+1. **Your laptop** is only the browser tab.
+2. **Your SageMaker instance** runs the notebook cell. The cell uses `boto3` to hand the SQL text to Athena, then waits.
+3. **Athena's fleet** scans the Parquet files in the public NOAA bucket, and writes the answer as a CSV file into a bucket that belongs to you. The notebook then reads that small CSV back into `pandas`.
+
+**Before you start block J**, check four things:
+
+- Your space is *Running* and you opened JupyterLab from it (section 4, part D).
+- The region in the console reads **N. Virginia**. Athena must run in the same region as the data.
+- You have done the one-time permission step in section 4, part F. Without it the first cell stops with `AccessDeniedException`.
+- You have run blocks A through I in this kernel. Block J uses names they define: `REGION`, `STATION`, `human`, and `BY_YEAR_2024_BYTES`. If you restarted the kernel, choose **Run → Run All Above Selected Cell** first.
+
+**Then run the four cells of block J in order**, with Shift-Enter. Each has one or two blanks to fill in first.
+
+| Cell | What it does | What you should see |
+|---|---|---|
+| 1. Results bucket | Creates an S3 bucket named `gsb5544-athena-` plus your 12-digit account number. Athena refuses to run without somewhere to write results. | `Results will land in s3://gsb5544-athena-…/athena/` |
+| 2. Helpers | Defines `run_athena`, which starts a query, checks once a second until it finishes, and adds its bytes scanned to a running total; and `athena_df`, which reads a finished result into a table. | No output |
+| 3. Database and table | Creates a database called `gsb5544` and a table called `ghcn` that *points at* the Parquet files. Nothing is copied or scanned, and these statements are free. | `Table gsb5544.ghcn is defined. Bytes scanned so far: 0 B` |
+| 4. The query | Sends the `SELECT` above for your station, for 2024, for `TMAX` and `PRCP`. | Rows returned, bytes scanned, query time, cost, and the first rows of the table |
+
+For cell 4, expect several hundred rows (one per day per element), a scan measured in megabytes rather than the 1.3 GB of the CSV, a query time of a few seconds, and a cost that rounds to a hundredth of a cent. Write down the bytes scanned; the practice activity asks for it. Running any of these cells a second time is safe: the bucket, database, and table are only created if they do not already exist.
+
+**When you finish**, run block K. It deletes the result files from your bucket and prints the day's Athena total. Then stop the space (section 4, part E).
+
+::: {.callout-warning title="If a cell in block J fails"}
+- **`AccessDeniedException`** or **`not authorized to perform: athena:…`**: the permission step in section 4, part F has not been done, or was applied to the wrong role. The role to change is the one named in the error message.
+- **`Unable to verify/create output bucket`**: cell 1 did not run, or ran in a different region. Rerun cell 1.
+- **`NameError: name 'STATION' is not defined`** (or `REGION`, `human`): the kernel restarted. Run the earlier blocks again.
+- **`TABLE_NOT_FOUND`** or **`SCHEMA_NOT_FOUND`**: cell 3 did not finish. Rerun it.
+- **Zero rows returned**: check that the year is `2024` and that `STATION` still holds the station id from block G.
+:::
+
+::: {.callout-tip title="Optional: watch the same query in the Athena console"}
+After block J has run once, you can see what the notebook did. In the console search bar type **Athena** and open it, then choose **Query editor**. The first time, a banner asks for a result location: click **Edit settings** and enter `s3://gsb5544-athena-` followed by your account number and `/athena/`. In the left panel pick the database **gsb5544**; the table **ghcn** appears beneath it. Paste the `SELECT` statement with your station id, click **Run**, and read **Data scanned** under the result. It is the same number the notebook printed. The **Recent queries** tab lists every query your notebook sent.
+:::
+
 ### The units trap
 
 GHCN stores temperatures in **tenths of a degree Celsius** and precipitation in **tenths of a millimeter**. A `TMAX` value of `266` means 26.6 °C. Divide by 10 before you do anything else, or your first chart will show 300-degree days. Data arrives with conventions attached; reading the documentation is part of extraction.
@@ -691,7 +749,7 @@ Analysts who do this by reflex are trusted with cloud accounts. Analysts who do 
 - `LAPTOP_SECONDS` from section 6 (the estimate for the whole file), or how long you waited before giving up.
 - Your notebook `week_7_preclass_reading.ipynb`, saved in your `week_7` folder, with the cells from sections 1, 2, 5, and 6 run and your written answers to the section 7 questions at the end.
 - Your free AWS account created (section 4, part A), signed into once, and the **Credits remaining** and **Days remaining** from Console Home written down (part B).
-- SageMaker Studio set up once (part C), so the domain already exists and you are not waiting on it in class. Creating and running the space (part D) can wait until class, but running it once beforehand and stopping it again (part E) is a good rehearsal.
+- SageMaker Studio set up once (part C) and your Studio role given Athena and S3 permissions (part F), so the domain already exists and you are not waiting on it in class. Creating and running the space (part D) can wait until class, but running it once beforehand and stopping it again (part E) is a good rehearsal.
 
 ---
 

@@ -401,7 +401,9 @@ plt.show()
 md("""
 ## J. Ask Athena for the same station
 
-*From the reading, §6, "the fourth lever".* So far every filter has run on the machine holding this kernel. Athena runs the filter on AWS's fleet, against the Parquet copy of the data, and hands back only the matching rows. Three cells: a results bucket you own, a table definition, and the query.
+*From the reading, §6, "the fourth lever".* So far every filter has run on the machine holding this kernel. Athena runs the filter on AWS's fleet, against the Parquet copy of the data, and hands back only the matching rows. Four cells: a results bucket you own, two helper functions, a table definition, and the query.
+
+**Before you run this block:** blocks A–I must have run in this kernel (`REGION`, `STATION`, `human`, and `BY_YEAR_2024_BYTES` come from them), and your Studio role needs the Athena and S3 permissions from the reading, §4 part F. If the first cell stops with `AccessDeniedException`, that step is what is missing; the reading's §6 lists the other common errors. Every cell here is safe to run twice.
 
 **Results bucket.** Athena writes every result to S3, so you need a bucket of your own. These clients are *signed*: they act as you, because this bucket is yours, not public. Fill in the bucket name in the create call.
 """),
