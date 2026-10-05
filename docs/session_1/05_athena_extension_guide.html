@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>AWS Sessions for GSB 5544 – GSB 5544 · AWS Sessions</title>
+<title>Optional Extension: Athena, a Fourth Place a Filter Can Run – GSB 5544 · AWS Sessions</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -58,25 +58,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./session_1/01_preclass_reading.html" rel="next">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-b4acf84f37d6d68f6a15c6fe27913e81.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../session_1/05_athena_extension.html" rel="next">
+<link href="../session_1/05_athena_extension_SOLUTIONS.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b4acf84f37d6d68f6a15c6fe27913e81.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -115,7 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">GSB 5544 · AWS Sessions</span>
     </a>
   </div>
@@ -126,7 +127,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -135,31 +136,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-session-1">    
         <li>
-    <a class="dropdown-item" href="./session_1/01_preclass_reading.html">
+    <a class="dropdown-item" href="../session_1/01_preclass_reading.html">
  <span class="dropdown-text">01 · Pre-class reading</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./session_1/02_topics_of_practice.html">
+    <a class="dropdown-item" href="../session_1/02_topics_of_practice.html">
  <span class="dropdown-text">02 · Topics notebook (student)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./session_1/03_practice_activity_remote.html">
+    <a class="dropdown-item" href="../session_1/03_practice_activity_remote.html">
  <span class="dropdown-text">03 · Practice: remote notebook (student)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./session_1/03_practice_activity_local.html">
+    <a class="dropdown-item" href="../session_1/03_practice_activity_local.html">
  <span class="dropdown-text">03 · Practice: local notebook (student)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./session_1/04_lab_remote.html">
+    <a class="dropdown-item" href="../session_1/04_lab_remote.html">
  <span class="dropdown-text">04 · Lab: remote notebook (student)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./session_1/04_lab_local.html">
+    <a class="dropdown-item" href="../session_1/04_lab_local.html">
  <span class="dropdown-text">04 · Lab: local notebook (student)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./session_1/CHANGELOG.html">
+    <a class="dropdown-item" href="../session_1/CHANGELOG.html">
  <span class="dropdown-text">Changelog</span></a>
   </li>  
     </ul>
@@ -170,27 +171,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-solutions">    
         <li>
-    <a class="dropdown-item" href="./session_1/02_topics_of_practice_SOLUTIONS.html">
+    <a class="dropdown-item" href="../session_1/02_topics_of_practice_SOLUTIONS.html">
  <span class="dropdown-text">02 · Topics notebook</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./session_1/03_practice_activity_remote_SOLUTIONS.html">
+    <a class="dropdown-item" href="../session_1/03_practice_activity_remote_SOLUTIONS.html">
  <span class="dropdown-text">03 · Practice: remote notebook</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./session_1/03_practice_activity_local_SOLUTIONS.html">
+    <a class="dropdown-item" href="../session_1/03_practice_activity_local_SOLUTIONS.html">
  <span class="dropdown-text">03 · Practice: local notebook</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./session_1/04_lab_remote_SOLUTIONS.html">
+    <a class="dropdown-item" href="../session_1/04_lab_remote_SOLUTIONS.html">
  <span class="dropdown-text">04 · Lab: remote notebook</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./session_1/04_lab_local_SOLUTIONS.html">
+    <a class="dropdown-item" href="../session_1/04_lab_local_SOLUTIONS.html">
  <span class="dropdown-text">04 · Lab: local notebook</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./session_1/05_athena_extension_SOLUTIONS.html">
+    <a class="dropdown-item" href="../session_1/05_athena_extension_SOLUTIONS.html">
  <span class="dropdown-text">05 · Athena extension notebook</span></a>
   </li>  
     </ul>
@@ -201,19 +202,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-optional">    
         <li>
-    <a class="dropdown-item" href="./session_1/05_athena_extension_guide.html">
+    <a class="dropdown-item" href="../session_1/05_athena_extension_guide.html">
  <span class="dropdown-text">05 · Athena extension: guide</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./session_1/05_athena_extension.html">
+    <a class="dropdown-item" href="../session_1/05_athena_extension.html">
  <span class="dropdown-text">05 · Athena extension: notebook (student)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./session_1/06_extraction_strategies_optional.html">
+    <a class="dropdown-item" href="../session_1/06_extraction_strategies_optional.html">
  <span class="dropdown-text">06 · Extraction strategies and cost detail</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./session_1/lab/lab_cloudy_with_a_chance_of_parquet.html">
+    <a class="dropdown-item" href="../session_1/lab/lab_cloudy_with_a_chance_of_parquet.html">
  <span class="dropdown-text">Challenge lab · Cloudy with a Chance of Parquet</span></a>
   </li>  
     </ul>
@@ -236,7 +237,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">AWS Sessions for GSB 5544</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../session_1/05_athena_extension_guide.html">Optional extensions</a></li><li class="breadcrumb-item"><a href="../session_1/05_athena_extension_guide.html">05 · Athena extension: guide</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -258,7 +259,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">AWS Sessions for GSB 5544</span></a>
   </div>
 </li>
@@ -273,37 +274,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./session_1/01_preclass_reading.html" class="sidebar-item-text sidebar-link">
+  <a href="../session_1/01_preclass_reading.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">01 · Pre-class reading</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./session_1/02_topics_of_practice.html" class="sidebar-item-text sidebar-link">
+  <a href="../session_1/02_topics_of_practice.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">02 · Topics notebook (student)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./session_1/03_practice_activity_remote.html" class="sidebar-item-text sidebar-link">
+  <a href="../session_1/03_practice_activity_remote.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">03 · Practice: remote notebook (student)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./session_1/03_practice_activity_local.html" class="sidebar-item-text sidebar-link">
+  <a href="../session_1/03_practice_activity_local.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">03 · Practice: local notebook (student)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./session_1/04_lab_remote.html" class="sidebar-item-text sidebar-link">
+  <a href="../session_1/04_lab_remote.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">04 · Lab: remote notebook (student)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./session_1/04_lab_local.html" class="sidebar-item-text sidebar-link">
+  <a href="../session_1/04_lab_local.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">04 · Lab: local notebook (student)</span></a>
   </div>
 </li>
@@ -320,37 +321,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./session_1/02_topics_of_practice_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+  <a href="../session_1/02_topics_of_practice_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">02 · Topics notebook</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./session_1/03_practice_activity_remote_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+  <a href="../session_1/03_practice_activity_remote_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">03 · Practice: remote notebook</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./session_1/03_practice_activity_local_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+  <a href="../session_1/03_practice_activity_local_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">03 · Practice: local notebook</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./session_1/04_lab_remote_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+  <a href="../session_1/04_lab_remote_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">04 · Lab: remote notebook</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./session_1/04_lab_local_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+  <a href="../session_1/04_lab_local_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">04 · Lab: local notebook</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./session_1/05_athena_extension_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+  <a href="../session_1/05_athena_extension_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">05 · Athena extension notebook</span></a>
   </div>
 </li>
@@ -367,25 +368,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./session_1/05_athena_extension_guide.html" class="sidebar-item-text sidebar-link">
+  <a href="../session_1/05_athena_extension_guide.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">05 · Athena extension: guide</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./session_1/05_athena_extension.html" class="sidebar-item-text sidebar-link">
+  <a href="../session_1/05_athena_extension.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">05 · Athena extension: notebook (student)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./session_1/06_extraction_strategies_optional.html" class="sidebar-item-text sidebar-link">
+  <a href="../session_1/06_extraction_strategies_optional.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">06 · Extraction strategies and cost detail</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./session_1/lab/lab_cloudy_with_a_chance_of_parquet.html" class="sidebar-item-text sidebar-link">
+  <a href="../session_1/lab/lab_cloudy_with_a_chance_of_parquet.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Challenge lab · Cloudy with a Chance of Parquet</span></a>
   </div>
 </li>
@@ -393,7 +394,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./session_1/CHANGELOG.html" class="sidebar-item-text sidebar-link">
+  <a href="../session_1/CHANGELOG.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Changelog</span></a>
   </div>
 </li>
@@ -407,31 +408,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#status-at-a-glance" id="toc-status-at-a-glance" class="nav-link active" data-scroll-target="#status-at-a-glance">Status at a glance</a></li>
-  <li><a href="#the-learning-objective" id="toc-the-learning-objective" class="nav-link" data-scroll-target="#the-learning-objective">The learning objective</a></li>
-  <li><a href="#what-each-document-is-for" id="toc-what-each-document-is-for" class="nav-link" data-scroll-target="#what-each-document-is-for">What each document is for</a>
-  <ul class="collapse">
-  <li><a href="#how-the-documents-keep-execution-locations-clear" id="toc-how-the-documents-keep-execution-locations-clear" class="nav-link" data-scroll-target="#how-the-documents-keep-execution-locations-clear">How the documents keep execution locations clear</a></li>
-  </ul></li>
-  <li><a href="#session-1-data-bigger-than-your-laptop" id="toc-session-1-data-bigger-than-your-laptop" class="nav-link" data-scroll-target="#session-1-data-bigger-than-your-laptop">Session 1 · Data Bigger Than Your Laptop</a>
-  <ul class="collapse">
-  <li><a href="#concepts-covered" id="toc-concepts-covered" class="nav-link" data-scroll-target="#concepts-covered">Concepts covered</a></li>
-  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">Dataset</a></li>
-  <li><a href="#the-timing-comparison" id="toc-the-timing-comparison" class="nav-link" data-scroll-target="#the-timing-comparison">The timing comparison</a></li>
-  <li><a href="#session-1-documents" id="toc-session-1-documents" class="nav-link" data-scroll-target="#session-1-documents">Session 1 documents</a></li>
-  <li><a href="#what-students-need" id="toc-what-students-need" class="nav-link" data-scroll-target="#what-students-need">What students need</a></li>
-  </ul></li>
-  <li><a href="#for-collaborators" id="toc-for-collaborators" class="nav-link" data-scroll-target="#for-collaborators">For collaborators</a></li>
+  <li><a href="#where-athena-fits" id="toc-where-athena-fits" class="nav-link active" data-scroll-target="#where-athena-fits">1. Where Athena fits</a></li>
+  <li><a href="#one-time-setup-let-your-studio-role-use-athena" id="toc-one-time-setup-let-your-studio-role-use-athena" class="nav-link" data-scroll-target="#one-time-setup-let-your-studio-role-use-athena">2. One-time setup: let your Studio role use Athena</a></li>
+  <li><a href="#running-the-notebook" id="toc-running-the-notebook" class="nav-link" data-scroll-target="#running-the-notebook">3. Running the notebook</a></li>
+  <li><a href="#cost-and-cleanup" id="toc-cost-and-cleanup" class="nav-link" data-scroll-target="#cost-and-cleanup">4. Cost and cleanup</a></li>
+  <li><a href="#a-caution-about-comparing-speeds" id="toc-a-caution-about-comparing-speeds" class="nav-link" data-scroll-target="#a-caution-about-comparing-speeds">5. A caution about comparing speeds</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/05_athena_extension_guide.md" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../session_1/05_athena_extension_guide.html">Optional extensions</a></li><li class="breadcrumb-item"><a href="../session_1/05_athena_extension_guide.html">05 · Athena extension: guide</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">AWS Sessions for GSB 5544</h1>
-<p class="subtitle lead">Computing and Machine Learning for Business Analytics</p>
+<h1 class="title">Optional Extension: Athena, a Fourth Place a Filter Can Run</h1>
 </div>
 
 
@@ -448,53 +439,107 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>This site holds the AWS-focused sessions being developed for GSB 5544. It exists so collaborators can see, in one place, <strong>what has been built so far</strong> and <strong>what students will actually do</strong> in each session. Every document is rendered here as a web page and is also available as a downloadable notebook.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="How students reach AWS">
+<p><strong>GSB 5544 · Optional. Not part of the required first session.</strong></p>
+<p><em>Everything required in Session 1 runs on SageMaker alone. This guide and its notebook, <code>05_athena_extension.ipynb</code>, preserve the Athena material for a later session or for students who want to go further. Do the required reading, topics notebook, and practice activity first.</em></p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Read this before you start">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>How students reach AWS
+<span class="screen-reader-only">Warning</span>Read this before you start
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Each student uses <strong>their own personal AWS account</strong> on the AWS Free plan. Per AWS’s documentation, a new account receives $100 of credits (up to $100 more for optional activities), the plan lasts six months or until the credits are used, it incurs no charges, and SageMaker AI is available on it. The pre-class reading walks students through creating the account, the one-time SageMaker Studio setup, and starting and stopping a JupyterLab space. Data comes from the public <code>noaa-ghcn-pds</code> bucket. The only AWS service the required session uses is SageMaker Studio, on an <code>ml.t3.medium</code> in <code>us-east-1</code>. A class session costs a student roughly ten cents of credit if they stop the space when they finish.</p>
+<p>This extension differs from the required work in three ways:</p>
+<ul>
+<li>It needs a <strong>one-time permission change</strong> in your account (part 2 below).</li>
+<li>It <strong>creates a bucket in your account</strong> that stays until you empty it.</li>
+<li>It can incur a <strong>small per-query charge</strong> against your credits.</li>
+</ul>
+<p>The steps below were written for the course but have <strong>not been run end to end in a student Free plan account</strong>. If a step does not match what you see, stop and ask; do not upgrade your plan to get past it.</p>
 </div>
 </div>
-<section id="status-at-a-glance" class="level2">
-<h2 class="anchored" data-anchor-id="status-at-a-glance">Status at a glance</h2>
+<hr>
+<section id="where-athena-fits" class="level2">
+<h2 class="anchored" data-anchor-id="where-athena-fits">1. Where Athena fits</h2>
+<p>In the required workflow there are two computers: your laptop and your SageMaker space. The filter and the summary run on the SageMaker space, and only a small file comes home.</p>
+<p><strong>Amazon Athena</strong> is a third place the work can run. It is a query service: you send it a SQL statement, AWS’s own machines scan Parquet files directly in S3, and the answer is written as a CSV into a bucket you own. You do not start, size, or stop those machines. You pay for the bytes the query had to scan.</p>
 <table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
 <thead>
 <tr class="header">
-<th>Session</th>
-<th>Topic</th>
-<th>Status</th>
-<th>Student-facing documents</th>
+<th></th>
+<th>Stores data?</th>
+<th>Runs code?</th>
+<th>You pay for</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>1</td>
-<td>Data Bigger Than Your Laptop: process NOAA weather data on a remote machine, download a small summary, visualize it locally in Positron, and compare the two machines</td>
-<td><strong>Revised 2026-10-05</strong> around one eight-step remote-to-local workflow. Solution notebooks were executed end to end against the live NOAA bucket on a laptop; <strong>not yet executed inside an AWS account</strong>. See the <a href="./session_1/CHANGELOG.html">changelog</a></td>
-<td>Pre-class reading, topics notebook, two-notebook practice activity, two-notebook lab, optional extensions</td>
+<td>S3 bucket</td>
+<td>Yes</td>
+<td>No</td>
+<td>GB stored per month</td>
 </tr>
 <tr class="even">
-<td>2+</td>
-<td>To be determined</td>
-<td>Not started</td>
-<td></td>
+<td>SageMaker space</td>
+<td>A little</td>
+<td>Yes, your Python</td>
+<td>Hours it is <em>Running</em></td>
+</tr>
+<tr class="odd">
+<td><strong>Athena</strong></td>
+<td>No.&nbsp;It reads from S3 and writes its answer to S3</td>
+<td>Yes, SQL only, on AWS-managed machines</td>
+<td>Bytes scanned per query</td>
 </tr>
 </tbody>
 </table>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- RUNS ON: Athena (AWS-managed)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">id</span>, <span class="ot">"date"</span>, data_value</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   ghcn</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  <span class="dt">year</span> <span class="op">=</span> <span class="dv">2024</span> <span class="kw">AND</span> element <span class="op">=</span> <span class="st">'TMAX'</span> <span class="kw">AND</span> <span class="kw">id</span> <span class="op">=</span> <span class="st">'USC00047851'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>What this code does.</strong></p>
+<ul>
+<li><code>SELECT id, "date", data_value</code> names the three columns to return. Parquet stores each column separately, so the others are never read.</li>
+<li><code>FROM ghcn</code> refers to a <em>table definition</em> that the notebook creates. It tells Athena that the Parquet files under <code>parquet/by_year/</code> should be treated as one table. Nothing is copied.</li>
+<li><code>WHERE year = 2024 AND element = 'TMAX'</code> picks which <em>files</em> Athena opens, and <code>id = 'USC00047851'</code> picks which <em>rows</em> inside them it returns.</li>
+</ul>
+<p>Two things make this cheap. Parquet is columnar, so Athena reads only the columns named. And the <code>YEAR=2024/ELEMENT=TMAX/</code> layout of the keys lets Athena open only that one slice and skip every other year and element. Telling Athena how that key layout maps to columns is called <strong>partition projection</strong>; the notebook’s table definition does it.</p>
+<p>In the required session you already use the same two ideas from pandas: you read one year-and-element slice, and you ask for only the columns you need. Athena moves that work off your instance entirely.</p>
+<hr>
 </section>
-<section id="the-learning-objective" class="level2">
-<h2 class="anchored" data-anchor-id="the-learning-objective">The learning objective</h2>
-<blockquote class="blockquote">
-<p>Students will use their own AWS account to process NOAA weather data remotely, download a compact summary for local visualization in Positron, and compare the resources and elapsed time of local and remote execution.</p>
-</blockquote>
-<p>Every document is organized around the same eight steps:</p>
+<section id="one-time-setup-let-your-studio-role-use-athena" class="level2">
+<h2 class="anchored" data-anchor-id="one-time-setup-let-your-studio-role-use-athena">2. One-time setup: let your Studio role use Athena</h2>
+<p>The Quick setup in the reading gives your SageMaker space permission to use SageMaker and little else. The Athena notebook also needs to run Athena queries and to create, read, and empty a results bucket. You add those permissions once, in the console.</p>
+<ol type="1">
+<li>In the console search bar type <strong>IAM</strong> and open it. In the left menu choose <strong>Roles</strong>.</li>
+<li>In the search box type <code>AmazonSageMaker</code>. Click the role the Quick setup created; its name begins with <strong>AmazonSageMaker</strong> and contains <strong>ExecutionRole</strong>. If more than one appears, open JupyterLab on your space, run the cell below in a new notebook, and use the role name it prints.</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> boto3</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(boto3.client(<span class="st">"sts"</span>).get_caller_identity()[<span class="st">"Arn"</span>].split(<span class="st">"/"</span>)[<span class="dv">1</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="3" type="1">
+<li>On the role’s page choose <strong>Add permissions → Attach policies</strong>. Search for and tick <strong>AmazonAthenaFullAccess</strong>, then search for and tick <strong>AmazonS3FullAccess</strong>. Click <strong>Add permissions</strong>.</li>
+<li>Both policies now appear in the role’s list. There is nothing to restart.</li>
+</ol>
+<p>These are broad permissions, chosen so that setup is two ticks and not a custom policy. They apply only inside your own account.</p>
+<hr>
+</section>
+<section id="running-the-notebook" class="level2">
+<h2 class="anchored" data-anchor-id="running-the-notebook">3. Running the notebook</h2>
+<p>Open <code>05_athena_extension.ipynb</code> in <strong>JupyterLab on your SageMaker space</strong>. Three computers take part:</p>
+<ol type="1">
+<li><strong>Your laptop</strong> is only the browser tab.</li>
+<li><strong>Your SageMaker instance</strong> runs the notebook cell, which hands the SQL text to Athena with <code>boto3</code> and waits.</li>
+<li><strong>Athena’s machines</strong> scan the Parquet files in NOAA’s bucket and write the answer into your results bucket. The notebook then reads that small CSV into pandas.</li>
+</ol>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -503,287 +548,91 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </colgroup>
 <thead>
 <tr class="header">
-<th>Step</th>
-<th>What the student does</th>
-<th>Which computer runs code</th>
+<th>Section of the notebook</th>
+<th>What it does</th>
+<th>What you should see</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>1</td>
-<td>Signs in to their own AWS account</td>
-<td>none</td>
+<td>1. Results bucket</td>
+<td>Creates a bucket named <code>gsb5544-athena-</code> plus your 12-digit account number</td>
+<td><code>Results will land in s3://gsb5544-athena-…/athena/</code></td>
 </tr>
 <tr class="even">
-<td>2</td>
-<td>Opens and starts their SageMaker space</td>
-<td>none yet</td>
+<td>2. Helpers and table</td>
+<td>Defines <code>run_athena</code> (start a query, poll once a second until it finishes, add up bytes scanned) and <code>athena_df</code> (read a result). Creates a database <code>gsb5544</code> and a table <code>ghcn</code> that points at the Parquet files</td>
+<td><code>Table gsb5544.ghcn is defined. Bytes scanned so far: 0.0 B</code></td>
 </tr>
 <tr class="odd">
-<td>3</td>
-<td>Reads NOAA data from the public S3 bucket</td>
-<td><strong>SageMaker</strong></td>
+<td>3. One station, one year</td>
+<td>Sends the <code>SELECT</code> above for the SLO station, for <code>TMAX</code> and <code>PRCP</code></td>
+<td>Rows returned, bytes scanned, query time, estimated cost</td>
 </tr>
 <tr class="even">
-<td>4</td>
-<td>Filters, transforms, and aggregates</td>
-<td><strong>SageMaker</strong></td>
+<td>4. Hot days by Athena</td>
+<td>One query that reproduces the lab’s hot-days table</td>
+<td>A year-by-market table</td>
 </tr>
 <tr class="odd">
-<td>5</td>
-<td>Saves a small summary CSV on the remote machine</td>
-<td><strong>SageMaker</strong></td>
-</tr>
-<tr class="even">
-<td>6</td>
-<td>Downloads that summary to their laptop</td>
-<td>none (a file copy)</td>
-</tr>
-<tr class="odd">
-<td>7</td>
-<td>Opens it in Positron and creates a visualization</td>
-<td><strong>their laptop</strong></td>
-</tr>
-<tr class="even">
-<td>8</td>
-<td>Saves their work and stops the remote machine</td>
-<td>none</td>
+<td>5. Clean up</td>
+<td>Deletes the result files from your bucket</td>
+<td><code>Bucket empty : True</code></td>
 </tr>
 </tbody>
 </table>
-<p>Reading S3 data straight into a notebook on the laptop does not count as the workflow. A student who finishes can answer five questions: where the original data is stored, which computer performed the analysis, what was downloaded, which computer created the visualization, and how the two machines compared.</p>
-</section>
-<section id="what-each-document-is-for" class="level2">
-<h2 class="anchored" data-anchor-id="what-each-document-is-for">What each document is for</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Document</th>
-<th>Its one job</th>
-<th>Where it runs</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>01 · Pre-class reading</strong></td>
-<td>Explain the concepts, have students measure their laptop, and walk them through account setup</td>
-<td>Laptop (Positron) and the AWS website</td>
-</tr>
-<tr class="even">
-<td><strong>02 · Topics notebook</strong></td>
-<td>Short. Measure the remote machine, inspect data sizes, read a manageable dataset, make a small summary</td>
-<td>SageMaker</td>
-</tr>
-<tr class="odd">
-<td><strong>03 · Practice activity</strong></td>
-<td>The full eight-step workflow with explicit instructions, plus a fair local-versus-remote timing test</td>
-<td>Two notebooks: one on SageMaker, one in Positron</td>
-</tr>
-<tr class="even">
-<td><strong>04 · Lab</strong></td>
-<td>Repeat the workflow more independently for a two-market inventory-planning question, and interpret the business implications</td>
-<td>Two notebooks: one on SageMaker, one in Positron</td>
-</tr>
-<tr class="odd">
-<td><strong>05 · Athena extension</strong> (optional)</td>
-<td>Preserve the Athena material for a later session</td>
-<td>SageMaker, with an extra permission step</td>
-</tr>
-<tr class="even">
-<td><strong>06 · Extraction strategies and cost detail</strong> (optional)</td>
-<td>The longer extraction exercises and cost tables moved out of the reading</td>
-<td>Laptop (Positron)</td>
-</tr>
-</tbody>
-</table>
-<section id="how-the-documents-keep-execution-locations-clear" class="level3">
-<h3 class="anchored" data-anchor-id="how-the-documents-keep-execution-locations-clear">How the documents keep execution locations clear</h3>
+<p>Running any cell a second time is safe: the bucket, database, and table are created only if they do not already exist.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="If a cell fails">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>If a cell fails
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ul>
-<li>Remote and local work are in <strong>separate companion notebooks</strong>, so a student is never unsure which computer a cell belongs to.</li>
-<li>Every code cell begins with <code># RUNS ON: SageMaker (remote)</code> or <code># RUNS ON: laptop (Positron)</code>. The materials say plainly that this comment is a label and <strong>does not move execution</strong>; each notebook also calls <code>where_am_i()</code>, which checks the machine it is really on and prints the computer’s name.</li>
-<li>Every transition (browser setup, remote notebook, file download, local notebook) is its own numbered step.</li>
-<li>No required notebook plots remotely. The remote notebooks export; the local notebooks plot.</li>
-<li>Routine boilerplate (<code>human</code>, <code>machine_report</code>, <code>prefix_size</code>, <code>where_am_i</code>) is supplied, not reconstructed by students.</li>
+<li><strong><code>AccessDeniedException</code></strong> or <strong><code>not authorized to perform: athena:…</code></strong>: the permission step in part 2 has not been done, or was applied to the wrong role. The role to change is the one named in the error message.</li>
+<li><strong><code>Unable to verify/create output bucket</code></strong>: the results-bucket cell did not run, or ran in a different region. Rerun it.</li>
+<li><strong><code>NameError</code></strong>: the kernel restarted. Run the notebook again from the top.</li>
+<li><strong><code>TABLE_NOT_FOUND</code></strong> or <strong><code>SCHEMA_NOT_FOUND</code></strong>: the table-definition cell did not finish. Rerun it.</li>
 </ul>
-<p>All notebooks are generated from one source file, <code>build_notebooks.py</code>, so student and solution versions cannot drift apart. The build refuses to write a notebook where a code cell lacks a <code>RUNS ON</code> line or carries one that does not belong in that notebook.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Optional: watch the same query in the Athena console">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Optional: watch the same query in the Athena console
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>After the notebook has run once, type <strong>Athena</strong> in the console search bar and open <strong>Query editor</strong>. The first time, a banner asks for a result location: click <strong>Edit settings</strong> and enter <code>s3://gsb5544-athena-</code> followed by your account number and <code>/athena/</code>. Pick the database <strong>gsb5544</strong>; the table <strong>ghcn</strong> appears beneath it. Paste the <code>SELECT</code> statement, click <strong>Run</strong>, and read <strong>Data scanned</strong> under the result. The <strong>Recent queries</strong> tab lists every query your notebook sent.</p>
+</div>
+</div>
+<hr>
 </section>
-</section>
-<section id="session-1-data-bigger-than-your-laptop" class="level2">
-<h2 class="anchored" data-anchor-id="session-1-data-bigger-than-your-laptop">Session 1 · Data Bigger Than Your Laptop</h2>
-<section id="concepts-covered" class="level3">
-<h3 class="anchored" data-anchor-id="concepts-covered">Concepts covered</h3>
+<section id="cost-and-cleanup" class="level2">
+<h2 class="anchored" data-anchor-id="cost-and-cleanup">4. Cost and cleanup</h2>
 <ul>
-<li>Account creation, signing in, opening SageMaker, and starting and stopping the environment.</li>
-<li>Storage versus computation; disk versus RAM; total versus available RAM.</li>
-<li>CPU cores: physical cores, logical CPUs, and cloud vCPUs.</li>
-<li>Bytes through terabytes, and decimal versus binary units.</li>
-<li>S3 buckets, objects, keys, and prefixes.</li>
-<li>Four sizes of the same data: source files in S3, the loaded DataFrame in RAM, space on the remote disk, and the downloaded summary.</li>
-<li>Why NOAA’s public data can be read anonymously while students still need their own account to rent the computer.</li>
-<li>What computing and storage cost, the difference between <em>open</em> and <em>running</em>, and a shutdown checklist.</li>
+<li><strong>Athena</strong> charges per byte scanned, with a small minimum per query; definition statements (<code>CREATE ...</code>) and failed queries are not charged. The notebook estimates each query’s cost at about $5 per TB with a 10 MB minimum, which was the published rate when this was written. Check the <a href="https://aws.amazon.com/athena/pricing/">Athena pricing page</a> for the current rate. The queries here scan megabytes, so each costs a small fraction of a cent.</li>
+<li><strong>The results bucket</strong> is real storage in your account, charged per GB per month, and it is <strong>not</strong> removed when your space stops. Section 5 of the notebook empties it. Run it every time.</li>
+<li><strong>The space</strong> bills per hour while <em>Running</em>, exactly as in the required session. Stop it when you finish.</li>
 </ul>
 </section>
-<section id="dataset" class="level3">
-<h3 class="anchored" data-anchor-id="dataset">Dataset</h3>
-<p>All exercises use <strong>NOAA GHCN-Daily</strong> in the public <code>noaa-ghcn-pds</code> bucket, read from its Parquet copy, which is split by year and element (<code>parquet/by_year/YEAR=…/ELEMENT=…/</code>). Values are in tenths of a unit, dates are text, and each value carries a quality flag; the notebooks convert units, parse dates, drop values that failed NOAA’s checks, and never treat a missing observation as zero.</p>
+<section id="a-caution-about-comparing-speeds" class="level2">
+<h2 class="anchored" data-anchor-id="a-caution-about-comparing-speeds">5. A caution about comparing speeds</h2>
+<p>An earlier version of these materials raced a laptop, a SageMaker instance, and Athena against each other. That comparison was not fair: the three were doing different amounts of work on different copies of the data, and the laptop time was an extrapolation. If you compare Athena with pandas, compare <strong>what each one had to read</strong> (bytes scanned versus source bytes) and report measured times as measurements from one moment, not as a ranking. The required practice activity shows what a controlled timing comparison looks like.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
 <ul>
-<li>The <strong>practice activity</strong> uses the California stations of the U.S. Cooperative Observer network (ids beginning <code>USC0004</code>), daily highs for 2015 to 2024. The materials label this subset for what it is and state that its unweighted average is not a statewide temperature estimate.</li>
-<li>The <strong>lab</strong> uses two stations, San Luis Obispo (<code>USC00047851</code>) and Phoenix (<code>USW00023183</code>), daily highs and precipitation for 2015 to 2024.</li>
-</ul>
-<p>Sizes observed on 2026-10-05, for orientation only; the notebooks report whatever students observe: one year of <code>TMAX</code> is about 15 MB of Parquet and about 4.4 million rows; the practice workflow reads about 156 MB of source files and returns a summary of under 3 KB.</p>
-</section>
-<section id="the-timing-comparison" class="level3">
-<h3 class="anchored" data-anchor-id="the-timing-comparison">The timing comparison</h3>
-<p>The practice activity’s Part B runs <strong>one identical job on both machines</strong>: the 2024 <code>TMAX</code> slice, the same four columns, the same filter, the same transformation, the same aggregation, defined once in a function that appears verbatim in both notebooks. It measures reading time and processing time separately, runs twice on each machine to expose caching, checks that the two machines produced equivalent summaries before any times are compared, and asks students to interpret their own numbers. It does not promise that AWS is faster. The larger Part A workflow is kept separate and is not used as a timing comparison.</p>
-</section>
-<section id="session-1-documents" class="level3">
-<h3 class="anchored" data-anchor-id="session-1-documents">Session 1 documents</h3>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Document</th>
-<th>Purpose</th>
-<th>Read online</th>
-<th>Download</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>01 · Pre-class reading</td>
-<td>Concepts, laptop measurements, account setup</td>
-<td><a href="./session_1/01_preclass_reading.html">View</a></td>
-<td><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/01_preclass_reading.md">Markdown source</a></td>
-</tr>
-<tr class="even">
-<td>02 · Topics notebook (student)</td>
-<td>Short fill-in-the-blank, on SageMaker</td>
-<td><a href="./session_1/02_topics_of_practice.html">View</a></td>
-<td><a href="./session_1/02_topics_of_practice.html" download="02_topics_of_practice.ipynb">Notebook</a></td>
-</tr>
-<tr class="odd">
-<td>02 · Topics notebook (solutions)</td>
-<td>Instructor copy</td>
-<td><a href="./session_1/02_topics_of_practice_SOLUTIONS.html">View</a></td>
-<td><a href="./session_1/02_topics_of_practice_SOLUTIONS.html" download="02_topics_of_practice_SOLUTIONS.ipynb">Notebook</a></td>
-</tr>
-<tr class="even">
-<td>03 · Practice, remote notebook (student)</td>
-<td>Steps 1 to 6 and the remote half of the timing test, on SageMaker</td>
-<td><a href="./session_1/03_practice_activity_remote.html">View</a></td>
-<td><a href="./session_1/03_practice_activity_remote.html" download="03_practice_activity_remote.ipynb">Notebook</a></td>
-</tr>
-<tr class="odd">
-<td>03 · Practice, local notebook (student)</td>
-<td>Steps 7 and 8 and the local half of the timing test, in Positron</td>
-<td><a href="./session_1/03_practice_activity_local.html">View</a></td>
-<td><a href="./session_1/03_practice_activity_local.html" download="03_practice_activity_local.ipynb">Notebook</a></td>
-</tr>
-<tr class="even">
-<td>03 · Practice, remote notebook (solutions)</td>
-<td>Instructor copy</td>
-<td><a href="./session_1/03_practice_activity_remote_SOLUTIONS.html">View</a></td>
-<td><a href="./session_1/03_practice_activity_remote_SOLUTIONS.html" download="03_practice_activity_remote_SOLUTIONS.ipynb">Notebook</a></td>
-</tr>
-<tr class="odd">
-<td>03 · Practice, local notebook (solutions)</td>
-<td>Instructor copy</td>
-<td><a href="./session_1/03_practice_activity_local_SOLUTIONS.html">View</a></td>
-<td><a href="./session_1/03_practice_activity_local_SOLUTIONS.html" download="03_practice_activity_local_SOLUTIONS.ipynb">Notebook</a></td>
-</tr>
-<tr class="even">
-<td>04 · Lab, remote notebook (student)</td>
-<td>Inventory-planning lab: analyze and export, on SageMaker</td>
-<td><a href="./session_1/04_lab_remote.html">View</a></td>
-<td><a href="./session_1/04_lab_remote.html" download="04_lab_remote.ipynb">Notebook</a></td>
-</tr>
-<tr class="odd">
-<td>04 · Lab, local notebook (student)</td>
-<td>Inventory-planning lab: visualize and interpret, in Positron</td>
-<td><a href="./session_1/04_lab_local.html">View</a></td>
-<td><a href="./session_1/04_lab_local.html" download="04_lab_local.ipynb">Notebook</a></td>
-</tr>
-<tr class="even">
-<td>04 · Lab, remote notebook (solutions)</td>
-<td>Instructor copy</td>
-<td><a href="./session_1/04_lab_remote_SOLUTIONS.html">View</a></td>
-<td><a href="./session_1/04_lab_remote_SOLUTIONS.html" download="04_lab_remote_SOLUTIONS.ipynb">Notebook</a></td>
-</tr>
-<tr class="odd">
-<td>04 · Lab, local notebook (solutions)</td>
-<td>Instructor copy</td>
-<td><a href="./session_1/04_lab_local_SOLUTIONS.html">View</a></td>
-<td><a href="./session_1/04_lab_local_SOLUTIONS.html" download="04_lab_local_SOLUTIONS.ipynb">Notebook</a></td>
-</tr>
-<tr class="even">
-<td>05 · Athena extension, guide (optional)</td>
-<td>What Athena is, its permission step, cost, cleanup</td>
-<td><a href="./session_1/05_athena_extension_guide.html">View</a></td>
-<td><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/05_athena_extension_guide.md">Markdown source</a></td>
-</tr>
-<tr class="odd">
-<td>05 · Athena extension, notebook (optional, student)</td>
-<td>Athena queries from SageMaker</td>
-<td><a href="./session_1/05_athena_extension.html">View</a></td>
-<td><a href="./session_1/05_athena_extension.html" download="05_athena_extension.ipynb">Notebook</a></td>
-</tr>
-<tr class="even">
-<td>05 · Athena extension, notebook (optional, solutions)</td>
-<td>Instructor copy</td>
-<td><a href="./session_1/05_athena_extension_SOLUTIONS.html">View</a></td>
-<td><a href="./session_1/05_athena_extension_SOLUTIONS.html" download="05_athena_extension_SOLUTIONS.ipynb">Notebook</a></td>
-</tr>
-<tr class="odd">
-<td>06 · Extraction strategies and cost detail (optional)</td>
-<td>Longer laptop exercises and cost tables moved out of the reading</td>
-<td><a href="./session_1/06_extraction_strategies_optional.html">View</a></td>
-<td><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/06_extraction_strategies_optional.md">Markdown source</a></td>
-</tr>
-<tr class="even">
-<td>Optional challenge lab · Cloudy with a Chance of Parquet</td>
-<td>A function-writing lab on the same workflow, for students who want more</td>
-<td><a href="./session_1/lab/lab_cloudy_with_a_chance_of_parquet.html">View</a></td>
-<td><a href="session_1/lab/lab_cloudy_with_a_chance_of_parquet.ipynb" download="lab_cloudy_with_a_chance_of_parquet.ipynb">Notebook</a></td>
-</tr>
-<tr class="odd">
-<td>Changelog</td>
-<td>What was retained, simplified, moved, and corrected</td>
-<td><a href="./session_1/CHANGELOG.html">View</a></td>
-<td><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/CHANGELOG.md">Markdown source</a></td>
-</tr>
-<tr class="even">
-<td>Build script</td>
-<td>Generates all twelve notebooks from one source</td>
-<td></td>
-<td><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/build_notebooks.py">build_notebooks.py</a></td>
-</tr>
-</tbody>
-</table>
-<p>The remote notebooks are meant to be uploaded to JupyterLab in the student’s SageMaker space. The local notebooks are meant to be opened in Positron. Opening a remote notebook locally will run it locally; its first cell says so.</p>
-</section>
-<section id="what-students-need" class="level3">
-<h3 class="anchored" data-anchor-id="what-students-need">What students need</h3>
-<ul>
-<li><strong>Positron</strong> on their laptop, with a Python environment. The first cell of the reading and of each local notebook installs the packages:</li>
-</ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install boto3 pandas pyarrow fsspec s3fs psutil matplotlib</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<ul>
-<li><strong>Their own AWS account</strong> on the Free plan, created before class by following section 5 of the pre-class reading, with SageMaker Studio set up once. Each remote notebook’s setup cell installs <code>s3fs</code>, <code>pyarrow</code>, and <code>psutil</code> in case the image lacks them.</li>
-</ul>
-</section>
-</section>
-<section id="for-collaborators" class="level2">
-<h2 class="anchored" data-anchor-id="for-collaborators">For collaborators</h2>
-<ul>
-<li><strong>Source repository:</strong> <a href="https://github.com/gato365/aws-gsb-5544-sessions">github.com/gato365/aws-gsb-5544-sessions</a></li>
-<li><strong>This site:</strong> <a href="https://gato365.github.io/aws-gsb-5544-sessions/">gato365.github.io/aws-gsb-5544-sessions</a></li>
-<li><strong>Start with the <a href="./session_1/CHANGELOG.html">changelog</a>.</strong> It lists what was retained, simplified, moved, and corrected in the 2026-10-05 revision, what was tested and how, and what still needs a dry run in a real student account.</li>
-<li>Every page has a “Source” link in the top right that opens the file on GitHub.</li>
-<li>To rebuild: run <code>python build_notebooks.py</code> in <code>session_1/</code>, then <code>quarto render</code> at the repository root, and commit the <code>docs/</code> folder.</li>
+<li>Athena pricing: <a href="https://aws.amazon.com/athena/pricing/" class="uri">https://aws.amazon.com/athena/pricing/</a></li>
+<li>Athena partition projection: <a href="https://docs.aws.amazon.com/athena/latest/ug/partition-projection.html" class="uri">https://docs.aws.amazon.com/athena/latest/ug/partition-projection.html</a></li>
+<li>boto3 Athena client reference: <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/athena.html" class="uri">https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/athena.html</a></li>
 </ul>
 
 
@@ -1197,10 +1046,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../session_1/05_athena_extension_SOLUTIONS.html" class="pagination-link" aria-label="05 · Athena extension notebook">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">05 · Athena extension notebook</span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./session_1/01_preclass_reading.html" class="pagination-link" aria-label="01 · Pre-class reading">
-        <span class="nav-page-text">01 · Pre-class reading</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../session_1/05_athena_extension.html" class="pagination-link" aria-label="05 · Athena extension: notebook (student)">
+        <span class="nav-page-text">05 · Athena extension: notebook (student)</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1212,7 +1064,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/05_athena_extension_guide.md" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>Built with Quarto · Hosted on GitHub Pages</p>
 </div>

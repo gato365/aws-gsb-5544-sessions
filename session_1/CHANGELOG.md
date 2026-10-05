@@ -1,11 +1,108 @@
 ---
-title: "Changelog: Session 1, local compute to remote compute"
+title: "Changelog: Session 1"
 ---
+
+# Revision of 2026-10-05: one remote-to-local workflow
+
+**Scope:** everything in `session_1/`, the home page, the navigation, and the README.
+
+## Summary
+
+Session 1 is now organized around one learning objective and one eight-step workflow: sign in to your own AWS account, start a SageMaker space, read NOAA data from S3 on the remote machine, summarize it there, save a small CSV there, download it, chart it locally in Positron, and stop the space. Each document has a single job, Athena is an optional extension, and the local-versus-remote comparison is a controlled test of one identical job.
+
+## Retained
+
+- All of the essential concepts, each with a concise explanation in the reading: account creation and sign-in; opening, starting, and stopping SageMaker; storage versus computation; disk versus RAM; total versus available RAM; physical cores, logical CPUs, and vCPUs; bytes through terabytes with decimal versus binary units; buckets, objects, keys, and prefixes; anonymous access to public data versus an account for computing.
+- The reading's Positron setup section, its coloured "where am I" callouts, the "What this code does" notes, the `week_7` folder convention, and all twelve setup screenshots.
+- Account setup parts A through E, with their step numbers and screenshots.
+- NOAA GHCN-Daily as the dataset, and the San Luis Obispo and Phoenix inventory-planning scenario (now the lab).
+- One build script that generates student and solution versions together.
+- The `# RUNS ON:` convention, now with an explicit statement of what it does not do.
+- The "open is not running" cost lesson and the shutdown checklist.
+
+## Simplified
+
+- **Pre-class reading:** from about 780 lines to about 490, most of the remainder being the setup walkthrough and its screenshots. It now does three things: concepts, laptop measurement, and account setup. Three short laptop cells remain (machine measurements, the `human` helper, and one S3 metadata call).
+- **Topics notebook:** from eleven blocks (A to K) to seven (A to G), all on the remote machine: measure it, compare with the laptop, bucket and key, size before reading, read one slice, summarize one station, save a small file and compare four sizes.
+- **Helper code** (`human`, `where_am_i`, `machine_report`, `slice_prefix`, `prefix_size`) is supplied in each setup cell instead of being rebuilt by students.
+- **`# RUNS ON:` labels:** two values in the required materials (`laptop (Positron)` and `SageMaker (remote)`) instead of three with an instance type baked in.
+- **Cost:** one short table and one checklist in the reading; the detailed tables moved to an optional page.
+
+## Moved
+
+| What | From | To |
+|---|---|---|
+| Athena: the "fourth lever", SQL table creation, partition projection, results bucket, query polling, IAM permissions (old Part F), Athena cost arithmetic, block J and block K's bucket cleanup, Q11(c) and Q12 | Reading, topics notebook, practice activity | `05_athena_extension_guide.md` and `05_athena_extension.ipynb` (optional) |
+| Listing, size-from-metadata, range requests, the three extraction levers, the by-station read, the chunked read, the units example, and the detailed cost tables | Reading, sections 5 to 7 | `06_extraction_strategies_optional.md` (optional) |
+| The San Luis Obispo and Phoenix inventory questions (old Q1 to Q10 and Q13) | Practice activity, Part 2 | `04_lab_remote.ipynb` and `04_lab_local.ipynb` |
+| All plotting | Remote notebooks | Local notebooks |
+| The patio-days function-writing lab from the previous revision | "Lab" | "Optional challenge lab"; relabelled, otherwise unchanged |
+
+Nothing was deleted outright. The superseded `03_practice_activity.ipynb` pair is replaced by the remote and local pairs; its content lives in the practice activity, the lab, and the Athena extension.
+
+## Corrected
+
+- **The timing comparison.** The old comparison set an *extrapolated* laptop time for a 300 MB sample of a CSV against a full remote CSV read and an Athena query: three different jobs on three different inputs. The new Part B of the practice activity runs one identical function on both machines (the 2024 `TMAX` Parquet slice, the same four columns, filter, transformation, and aggregation), measures reading and processing separately, runs twice on each machine, verifies that the two summaries are equivalent before comparing, reports only measured times, explains what reading time includes and how caching affects it, and asks students to interpret their own numbers. It does not promise that AWS is faster. Part A, the larger remote job, is not used as a timing comparison.
+- **Resource comparison.** Labels are now accurate: "physical CPU cores" and "logical CPUs (vCPUs in the cloud)" are separate rows; RAM has total and available; disk has total and free **for the filesystem that holds the student's work** (the old code measured `/`, which on SageMaker is not the space's disk). The remote machine's numbers travel to the local notebook in a small JSON file, so the table is built from measurements rather than copied by hand. The materials no longer assume the remote machine is larger or faster.
+- **The "3×" rule.** Removed. The materials no longer present a CSV-to-RAM multiplier as a way to know whether data fits. Students load a slice known to be small and record source size, DataFrame memory, exported CSV size, and downloaded size.
+- **Account plan wording.** The reading said a Free plan account is "paused" when credits run out. AWS's documentation says it **closes**, with contents retained for 90 days pending an upgrade. Corrected, and attributed to AWS's documentation.
+- **AWS Academy Learner Lab.** All Learner Lab instructions and "Learner Lab only" asides are removed from the required materials. The pathway is personal accounts throughout.
+- **Local tool.** Local work is in Positron everywhere; the old Part 1 said "Jupyter or VS Code".
+- **Remote plotting.** The topics notebook (block I) and the practice activity (Q9) plotted on SageMaker. Remote notebooks now export, and local notebooks plot.
+- **Submission instructions.** The old instructions asked for one notebook "run inside SageMaker". Both the practice activity and the lab now ask for the remote notebook, the local notebook, the chart files, and a screenshot of the stopped space.
+- **Missing data and quality flags.** Every summary now drops values whose quality flag is set and reports how many days or stations actually reported. The lab's rainfall question discards incomplete months instead of summing them as if missing days were dry.
+- **California subset label.** The old Part 1 called ids beginning `USC0004` "California stations" and its mean "the average of all stations". It is now described as the California stations of the Cooperative Observer network, with a statement that the unweighted mean is not a statewide temperature estimate.
+- **Promised numbers.** Fixed row counts, sizes, and durations ("about 4.4 million rows", "about 11 KB", "a few seconds") are replaced with whatever the student's run reports.
+- **Laptop verification cell.** The old Q13 offered a laptop cell that needed AWS access keys in `~/.aws/credentials`. Removed; a screenshot of the stopped space is the evidence.
+
+## Verified against official documentation (2026-10-05)
+
+| Claim in the materials | Source | Status |
+|---|---|---|
+| New accounts get $100 in credits and can earn up to $100 more | [AWS Billing: Choosing a plan](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/free-tier-plans.html) | Confirmed |
+| The Free plan ends after six months or when credits are used, incurs no charges, and the account then closes with a 90-day retention period | Same page | Confirmed |
+| SageMaker AI is available on the Free plan | [aws.amazon.com/free](https://aws.amazon.com/free/) lists it as "Available on both plans" | Confirmed |
+| Positron opens `.ipynb` files and has a kernel selector | [Positron: Jupyter Notebooks](https://positron.posit.co/jupyter-notebooks.html) | Confirmed |
+| `ml.t3.medium` costs about $0.05 per hour in `us-east-1` | [SageMaker AI pricing](https://aws.amazon.com/sagemaker/ai/pricing/) | **Not confirmed.** The page loads its price table dynamically and the figure could not be read. The materials say "about" and link the page |
+| Sign-up requires a payment card | Neither AWS page states it | **Unresolved.** The reading says AWS "may ask" for a card |
+| Which instance types a Free plan account may start | Not found in the documentation read | **Unresolved.** The materials use only `ml.t3.medium`, which the instructor's own Free plan account started on 2026-09-26 (see screenshots) |
+
+## Tested, and how
+
+**Executed on a laptop against the live public bucket (2026-10-05).** All five required solution notebooks were run top to bottom with `nbclient`, in order, in one folder, so that each local notebook consumed the files its remote partner wrote:
+
+| Notebook | Result |
+|---|---|
+| `02_topics_of_practice_SOLUTIONS` | Ran. Read 4,369,453 rows from 14.8 MB of source; DataFrame measured at about 223 MB |
+| `03_practice_activity_remote_SOLUTIONS` | Ran. Read 45,913,677 rows from 155.8 MB of source in about 20 s; wrote a 2.7 KB summary |
+| `03_practice_activity_local_SOLUTIONS` | Ran. Equivalence check passed (same shape, dates, station counts; largest difference 0.0 °C); chart written |
+| `04_lab_remote_SOLUTIONS` | Ran. 555.3 MB of source across 20 slices; 14,612 rows kept; no incomplete months |
+| `04_lab_local_SOLUTIONS` | Ran. Both charts written |
+
+These runs prove the code, the paths, the Parquet schema (`ID`, `DATE`, `DATA_VALUE`, `Q_FLAG`), the units, the file hand-off between notebooks, and the execution order. Memory figures came from pandas 3 on a Mac; older pandas stores text less compactly and will report larger DataFrames, still well inside 4 GB for one year of `TMAX`.
+
+**Static checks only.** Every solution cell compiles; every code cell carries a `RUNS ON` label that belongs in its notebook; student and solution versions have identical cell counts; the site renders; internal links resolve.
+
+**Not executed in an AWS account.** Nothing here was run inside SageMaker. Before class, one dry run in a student-type Free plan account should confirm:
+
+1. The setup steps and button labels in the reading (they match screenshots taken 2026-09-26).
+2. That the remote setup cell's `%pip install` works in the SageMaker Distribution image, and that `where_am_i()` reports "SageMaker (remote)" there. It looks for `/opt/ml/metadata/resource-metadata.json` or a home directory of `/home/sagemaker-user`; if neither exists in the image, the function will say "not SageMaker" and print a warning even though the notebook is in the right place.
+3. That one year of `TMAX` loads comfortably on `ml.t3.medium` with the image's pandas version.
+4. That the JupyterLab file browser's right-click **Download** behaves as described.
+5. In the lab, that the cost cell's `describe_app` lookup is permitted; it falls back to a hand-entered number if not.
+
+The **Athena extension** has not been run at all. Its permission step (attaching `AmazonAthenaFullAccess` and `AmazonS3FullAccess` to the Studio role) is an untested proposal, and the guide says so.
+
+---
+
+# Earlier revision of 2026-09-26 (superseded)
+
+*Kept as history. It describes the Learner Lab and Athena design that the revision above replaces.*
 
 **Date:** 2026-09-26
 **Scope:** the six files in `session_1/`. Originals are preserved in git history (commit `12e5b34` and earlier).
 
-## Summary
+### Summary
 
 As originally written, AWS was only the storage side of Session 1: students pulled files from the public `noaa-ghcn-pds` bucket, but every `read_csv`, filter, `groupby`, and plot ran on their laptop. This revision moves the computation onto AWS while keeping the pedagogy that already worked. Two services are used and nothing else:
 
@@ -14,7 +111,7 @@ As originally written, AWS was only the storage side of Session 1: students pull
 
 The module now teaches three things about AWS explicitly: **space** (what storage costs and that it has no practical ceiling), **ability** (that compute is rented by the hour in sizes you choose), and **cost** (per-hour, per-byte, and the difference between a notebook that is open and a space that is running). Cost is graded: the practice activity ends with a cost audit and a verified teardown.
 
-## Assumptions made (please review)
+### Assumptions made (please review)
 
 The prompt left two fields for the instructor to fill in. Neither was filled, so these choices were made and should be confirmed before the session:
 
@@ -27,7 +124,7 @@ The prompt left two fields for the instructor to fill in. Neither was filled, so
 - **`s3fs`**: both setup cells run `%pip install -q s3fs` because I could not confirm it ships in the SageMaker Distribution image. It is harmless if already present. Everything else (`boto3`, `pandas`, `psutil`, `matplotlib`) does ship.
 - **Not executed against a live account.** The notebooks were not run on AWS from here. Every solution cell compiles (enforced by the build script), the bucket layout and Parquet schema were checked against the live public bucket, and the `boto3` calls follow the documented API. The Athena DDL, the `/opt/ml/metadata/resource-metadata.json` lookup in Q13(b), and the Learner Lab permissions need **one dry run in the actual lab** before class.
 
-## `01_preclass_reading.md`
+### `01_preclass_reading.md`
 
 - **Front matter and intro.** Reframed from "storage is remote, compute is yours" to "storage and compute are both things you rent." Introduced the three questions (space, ability, cost) that the module now asks repeatedly. The list of what the reading gives you grew from three items to four (the fourth: run the same notebook next to the data and know what it costs).
 - **§1 What your machine actually has.** Kept. Added `# RUNS ON: laptop` to the cell, the instruction to write all five numbers down, and a blank two-column table (laptop now / SageMaker in class) that block A of the topics notebook and Q1 of the practice activity fill in.
@@ -41,7 +138,7 @@ The prompt left two fields for the instructor to fill in. Neither was filled, so
 - **Reading check.** Kept all five questions; added #6 on region co-location.
 - **References.** Added Athena `boto3` reference, SageMaker Studio spaces docs, SageMaker, Athena, and S3 pricing pages, and Athena partition projection.
 
-## `build_notebooks.py`
+### `build_notebooks.py`
 
 - Docstring documents the `# RUNS ON:` convention. Three allowed values are the set `RUNS_ON_VALUES`.
 - `answer()` student output now keeps the cell's first line (the `# RUNS ON:` line) above `# your code here`, so students see where the empty cell will run.
@@ -49,7 +146,7 @@ The prompt left two fields for the instructor to fill in. Neither was filled, so
 - The `# RUNS ON:` line is written literally as the first line of every cell source, not added by post-processing, so it survives regeneration.
 - `⟦...⟧` and `answer()` conventions unchanged.
 
-## `02_topics_of_practice.ipynb` (11 blocks, was 9 plus a closing cell)
+### `02_topics_of_practice.ipynb` (11 blocks, was 9 plus a closing cell)
 
 - **Intro.** Says to run the notebook inside the SageMaker space, explains the `# RUNS ON:` line, and asks students to bring their laptop numbers. Removed "No AWS account is required."
 - **Setup cell.** Runs on SageMaker. Added `%pip install -q s3fs`, `import time`, and `REGION = "us-east-1"`.
@@ -58,7 +155,7 @@ The prompt left two fields for the instructor to fill in. Neither was filled, so
 - **Block J "Ask Athena for the same station" (new).** Four code cells: signed clients and results bucket creation (blank: the bucket name in `create_bucket`); the `run_athena`/`athena_df` helpers with an `ATHENA_BYTES` running total (blank: `start_query_execution`); the `CREATE DATABASE` and `CREATE EXTERNAL TABLE` DDL (runs on Athena, no blanks); and the query for the block G station, 2024, `TMAX`+`PRCP` (blanks: the year in the `WHERE` clause and `DataScannedInBytes`). Prints rows, bytes scanned, seconds, estimated cost, and the ratio against the 1.3 GB CSV from block E. A reflection cell asks which lever the partition layout pulled.
 - **Block K "Stop the meter" (new).** Empties the results bucket (blanks: `list_objects_v2`, `delete_objects`), prints the day's Athena bytes and cost, then a checklist for stopping the space in the Studio UI and ending the lab. The old "Before you leave" reflection was folded in here and extended with "what did Athena add."
 
-## `03_practice_activity.ipynb` (13 questions, was 11)
+### `03_practice_activity.ipynb` (13 questions, was 11)
 
 - **Intro.** Says to run inside SageMaker, explains `# RUNS ON:`, and notes that Q1 and Q11 need numbers from the reading. "Run the two setup cells first."
 - **Setup cell.** Runs on SageMaker. Added `%pip install -q s3fs`, `json`, `datetime`, `REGION`. `human()`, `COLS`, `STATIONS`, and the unsigned client are unchanged.
@@ -74,11 +171,11 @@ The prompt left two fields for the instructor to fill in. Neither was filled, so
 - **Q13 (new, graded).** (a) empty the results bucket; (b) estimate today's spend from the space's start time (`describe_app` via the Studio metadata file, with a manual fallback) and `ATHENA_BYTES`; (c) stop the space in the UI; (d) evidence: screenshot of *Stopped* plus the budget readout, or a verification cell that runs on the laptop and lists SageMaker apps and their status.
 - **Submission note.** Now lists Q1, Q4, Q10, Q11, Q12 written answers plus Q13 evidence, and says a submission is not complete while its space is running.
 
-## Both solutions notebooks
+### Both solutions notebooks
 
 Regenerated from the build script. Every solution code cell compiles. Header detection (`Range="bytes=0-99"` then `startswith("ID,")`) is unchanged and is used in block G, Q6, and Q11(b).
 
-## Preserved exactly
+### Preserved exactly
 
 - `human()` and its base-1000 behavior.
 - Station IDs `USC00047851` and `USW00023183`; the "size first, always" habit (`head_object` before `get_object`).
@@ -87,7 +184,7 @@ Regenerated from the build script. Every solution code cell compiles. Header det
 - All five original reading-check questions.
 - The unsigned `boto3` client for listing and metadata.
 
-## Final checks run
+### Final checks run
 
 - Every code cell in both student notebooks begins with a `# RUNS ON:` line (build-time assertion; 22 + 16 cells).
 - No cell assumes a header row in the GHCN CSVs.

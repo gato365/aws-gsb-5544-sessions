@@ -4,120 +4,124 @@ subtitle: "Computing and Machine Learning for Business Analytics"
 toc: true
 ---
 
-This site holds the AWS-focused sessions being developed for GSB 5544. It exists so collaborators can see, in one place, **what has been built so far** and **what students will actually do** in each session. Every document is rendered here as a web page and is also available as a downloadable notebook or as a one-click Google Colab link.
+This site holds the AWS-focused sessions being developed for GSB 5544. It exists so collaborators can see, in one place, **what has been built so far** and **what students will actually do** in each session. Every document is rendered here as a web page and is also available as a downloadable notebook.
 
 ::: {.callout-note title="How students reach AWS"}
-Session 1 assumes each student has a **free AWS account** on the AWS Free Plan: $100 of credits for six months, and the account pauses rather than bills when they run out. The pre-class reading walks students through creating the account, the one-time SageMaker Studio setup, and starting and stopping the JupyterLab space. Data comes from the public `noaa-ghcn-pds` bucket on the [Registry of Open Data on AWS](https://registry.opendata.aws/). Compute is a SageMaker Studio JupyterLab space on an `ml.t3.medium` and Athena queries, both in `us-east-1`. A full session costs a student roughly 20 to 30 cents if they stop the space when they finish, and stopping it is graded.
+Each student uses **their own personal AWS account** on the AWS Free plan. Per AWS's documentation, a new account receives $100 of credits (up to $100 more for optional activities), the plan lasts six months or until the credits are used, it incurs no charges, and SageMaker AI is available on it. The pre-class reading walks students through creating the account, the one-time SageMaker Studio setup, and starting and stopping a JupyterLab space. Data comes from the public `noaa-ghcn-pds` bucket. The only AWS service the required session uses is SageMaker Studio, on an `ml.t3.medium` in `us-east-1`. A class session costs a student roughly ten cents of credit if they stop the space when they finish.
 :::
 
 ## Status at a glance
 
 | Session | Topic | Status | Student-facing documents |
 |---|---|---|---|
-| 1 | Data Bigger Than Your Laptop: measuring capacity, S3 vocabulary, extracting only what you need, and running the work on rented AWS compute | **Complete draft, revised 2026-09-26** to move computation onto AWS (SageMaker Studio + Athena). Needs one dry run in the Learner Lab before class; see the [changelog](session_1/CHANGELOG.md) | Pre-class reading, topics-of-practice notebook, practice activity, solutions for both |
+| 1 | Data Bigger Than Your Laptop: process NOAA weather data on a remote machine, download a small summary, visualize it locally in Positron, and compare the two machines | **Revised 2026-10-05** around one eight-step remote-to-local workflow. Solution notebooks were executed end to end against the live NOAA bucket on a laptop; **not yet executed inside an AWS account**. See the [changelog](session_1/CHANGELOG.md) | Pre-class reading, topics notebook, two-notebook practice activity, two-notebook lab, optional extensions |
 | 2+ | To be determined | Not started | |
 
-## What Session 1 teaches about AWS: space, ability, and cost
+## The learning objective
 
-The module is organized around three questions an analyst asks of any cloud, and it answers each one with numbers the students produce themselves.
+> Students will use their own AWS account to process NOAA weather data remotely, download a compact summary for local visualization in Positron, and compare the resources and elapsed time of local and remote execution.
 
-- **Space.** Storage is separate from compute and has no practical ceiling. Students read the size of a 1.3 GB file without downloading it, total a decade of files against their own RAM, and learn what S3 storage, requests, and data transfer cost per gigabyte. They see that transfer inside a region is free and transfer to a laptop is not, which is why the notebook runs next to the bucket.
-- **Ability.** Compute is rented by the hour in sizes you choose. Students run the same `psutil` cell on their laptop and inside a rented `ml.t3.medium`, put the two side by side, and see an instance-type table from 2 cores and 4 GB at $0.05 per hour up to 96 cores and 384 GB at about $5.50 per hour. They then hand a `WHERE` clause to Athena's fleet and watch it scan a fraction of the file in seconds.
-- **Cost.** Every code cell says where it runs. The reading has a section on what the instance costs per hour, what Athena charges per terabyte scanned, and the difference between a notebook that is open and a space that is running, with worked examples (a class session: 15 cents; a forgotten month: $36). The practice activity ends with a graded cost audit and a verified teardown.
+Every document is organized around the same eight steps:
 
-## How a session is structured
+| Step | What the student does | Which computer runs code |
+|---|---|---|
+| 1 | Signs in to their own AWS account | none |
+| 2 | Opens and starts their SageMaker space | none yet |
+| 3 | Reads NOAA data from the public S3 bucket | **SageMaker** |
+| 4 | Filters, transforms, and aggregates | **SageMaker** |
+| 5 | Saves a small summary CSV on the remote machine | **SageMaker** |
+| 6 | Downloads that summary to their laptop | none (a file copy) |
+| 7 | Opens it in Positron and creates a visualization | **their laptop** |
+| 8 | Saves their work and stops the remote machine | none |
 
-Each session follows the same three-part pattern, so students always know what to expect.
+Reading S3 data straight into a notebook on the laptop does not count as the workflow. A student who finishes can answer five questions: where the original data is stored, which computer performed the analysis, what was downloaded, which computer created the visualization, and how the two machines compared.
 
-1. **Pre-class reading** (`01_*.md`). A self-contained explainer with runnable code snippets. Students read it and run the code on their laptop before class, write down their machine's numbers and one timing, and start the Learner Lab once so the SageMaker domain exists. It ends with a short reading check.
-2. **Topics of practice** (`02_*.ipynb`). An in-class, fill-in-the-blank walkthrough of every function introduced in the reading, run inside SageMaker Studio. Blanks are marked `____`. The instructor version has the blanks filled in.
-3. **Practice activity** (`03_*.ipynb`). A business scenario with numbered questions and empty code cells, also run inside SageMaker Studio. Students work through it in class or as homework. The solutions version has every cell completed.
+## What each document is for
 
-Every code cell in both notebooks begins with one of three lines: `# RUNS ON: laptop`, `# RUNS ON: SageMaker ml.t3.medium (us-east-1)`, or `# RUNS ON: Athena fleet (results land in S3)`. The build script refuses to generate a notebook where any cell lacks one.
+| Document | Its one job | Where it runs |
+|---|---|---|
+| **01 · Pre-class reading** | Explain the concepts, have students measure their laptop, and walk them through account setup | Laptop (Positron) and the AWS website |
+| **02 · Topics notebook** | Short. Measure the remote machine, inspect data sizes, read a manageable dataset, make a small summary | SageMaker |
+| **03 · Practice activity** | The full eight-step workflow with explicit instructions, plus a fair local-versus-remote timing test | Two notebooks: one on SageMaker, one in Positron |
+| **04 · Lab** | Repeat the workflow more independently for a two-market inventory-planning question, and interpret the business implications | Two notebooks: one on SageMaker, one in Positron |
+| **05 · Athena extension** (optional) | Preserve the Athena material for a later session | SageMaker, with an extra permission step |
+| **06 · Extraction strategies and cost detail** (optional) | The longer extraction exercises and cost tables moved out of the reading | Laptop (Positron) |
 
-The two notebooks are generated from a single source file, `build_notebooks.py`, so the student and solutions versions never drift apart. Editing the source and re-running the script regenerates all four notebooks.
+### How the documents keep execution locations clear
+
+- Remote and local work are in **separate companion notebooks**, so a student is never unsure which computer a cell belongs to.
+- Every code cell begins with `# RUNS ON: SageMaker (remote)` or `# RUNS ON: laptop (Positron)`. The materials say plainly that this comment is a label and **does not move execution**; each notebook also calls `where_am_i()`, which checks the machine it is really on and prints the computer's name.
+- Every transition (browser setup, remote notebook, file download, local notebook) is its own numbered step.
+- No required notebook plots remotely. The remote notebooks export; the local notebooks plot.
+- Routine boilerplate (`human`, `machine_report`, `prefix_size`, `where_am_i`) is supplied, not reconstructed by students.
+
+All notebooks are generated from one source file, `build_notebooks.py`, so student and solution versions cannot drift apart. The build refuses to write a notebook where a code cell lacks a `RUNS ON` line or carries one that does not belong in that notebook.
 
 ## Session 1 · Data Bigger Than Your Laptop
 
-### What students will learn
+### Concepts covered
 
-By the end of Session 1, students can:
-
-- Measure how much RAM a machine actually has available, and explain why "total" is not "available" and why disk is not memory.
-- Read and reason in the units of data (KB through PB) and estimate whether a file will fit in pandas before trying to load it.
-- Use the core AWS vocabulary: region, S3, bucket, object, key, prefix, EC2, instance type, Athena, IAM, and anonymous (unsigned) access.
-- Explain where a notebook's code runs (kernel, instance, region co-location) and open a SageMaker Studio JupyterLab space in the Learner Lab.
-- Connect to a public S3 bucket without an account, list objects, read an object's size from metadata alone, and peek at a file with a byte-range request.
-- Extract a single station's full history rather than a whole year of global data, filter it at the source, transform it, and plot it, on a rented machine in the same region as the data.
-- Run a SQL `WHERE` clause on Athena's fleet against Parquet files in S3, read the bytes-scanned statistic, and compare it to reading the CSV.
-- Estimate what a session cost, empty their results bucket, stop the space, and prove it.
+- Account creation, signing in, opening SageMaker, and starting and stopping the environment.
+- Storage versus computation; disk versus RAM; total versus available RAM.
+- CPU cores: physical cores, logical CPUs, and cloud vCPUs.
+- Bytes through terabytes, and decimal versus binary units.
+- S3 buckets, objects, keys, and prefixes.
+- Four sizes of the same data: source files in S3, the loaded DataFrame in RAM, space on the remote disk, and the downloaded summary.
+- Why NOAA's public data can be read anonymously while students still need their own account to rent the computer.
+- What computing and storage cost, the difference between *open* and *running*, and a shutdown checklist.
 
 ### Dataset
 
-All exercises use the **NOAA GHCN-Daily** dataset in the public `noaa-ghcn-pds` bucket. The by-year CSV files are multi-gigabyte and will not fit on a laptop or on the rented instance, which is the point. The by-station files are small enough to pull and analyze. The same data also exists as Parquet partitioned by `YEAR=` and `ELEMENT=`, which is what Athena reads.
+All exercises use **NOAA GHCN-Daily** in the public `noaa-ghcn-pds` bucket, read from its Parquet copy, which is split by year and element (`parquet/by_year/YEAR=…/ELEMENT=…/`). Values are in tenths of a unit, dates are text, and each value carries a quality flag; the notebooks convert units, parse dates, drop values that failed NOAA's checks, and never treat a missing observation as zero.
 
-### What students will do, in order
+- The **practice activity** uses the California stations of the U.S. Cooperative Observer network (ids beginning `USC0004`), daily highs for 2015 to 2024. The materials label this subset for what it is and state that its unweighted average is not a statewide temperature estimate.
+- The **lab** uses two stations, San Luis Obispo (`USC00047851`) and Phoenix (`USW00023183`), daily highs and precipitation for 2015 to 2024.
 
-**Before class: the pre-class reading.** Students work through seven sections on their laptop, write down five machine numbers and one timing, start the Learner Lab once, and answer a six-question reading check:
+Sizes observed on 2026-10-05, for orientation only; the notebooks report whatever students observe: one year of `TMAX` is about 15 MB of Parquet and about 4.4 million rows; the practice workflow reads about 156 MB of source files and returns a summary of under 3 KB.
 
-1. What your machine actually has
-2. The units of data
-3. The vocabulary of AWS
-4. Where does the code run? (kernel, instance, co-location, opening a SageMaker Studio space)
-5. Reading from S3 without an account
-6. Extraction strategy: filter at the source, plus the fourth lever (Athena)
-7. Cost, space, and ability: what you are actually renting
+### The timing comparison
 
-**In class: the topics-of-practice notebook**, run inside SageMaker Studio. A guided, fill-in-the-blank tour, one block at a time:
-
-- A. Two machines, side by side (laptop numbers versus the rented instance)
-- B. The units of data
-- C. The vocabulary of AWS
-- D. Connect without an account
-- E. Read a size without reading the file
-- F. Peek at a file with a range request
-- G. Extract one station, not one year
-- H. Transform
-- I. Bring the visual
-- J. Ask Athena for the same station (results bucket, table over the Parquet files, query, bytes scanned)
-- K. Stop the meter (empty the bucket, stop the space, end the lab)
-
-**In class or as homework: the practice activity**, run inside SageMaker Studio. Students play an inventory planner for a beverage distributor with two markets, San Luis Obispo and Phoenix, and need each market's weather history before anyone builds a demand model. Thirteen questions across five sets:
-
-- **Set 1 · Capacity.** Report both machines in one table, estimate how many rows fit, and total a decade of by-year files against available RAM.
-- **Set 2 · Vocabulary in action.** List prefixes, explain why a "folder" is not a folder, and read file metadata without downloading.
-- **Set 3 · Extraction.** Write a reusable `load_station()` function, pull both markets, count hot days per year, and compute monthly rainfall.
-- **Set 4 · Visualize and interpret.** Chart both markets and write the business read, including which compute tier the planner would choose for a weekly refresh.
-- **Set 5 · Where the work runs.** Time the same extraction three ways (laptop, SageMaker, Athena), compute hot days straight from the fleet and compare bytes scanned, then a graded cost audit and teardown with evidence that the space is stopped.
+The practice activity's Part B runs **one identical job on both machines**: the 2024 `TMAX` slice, the same four columns, the same filter, the same transformation, the same aggregation, defined once in a function that appears verbatim in both notebooks. It measures reading time and processing time separately, runs twice on each machine to expose caching, checks that the two machines produced equivalent summaries before any times are compared, and asks students to interpret their own numbers. It does not promise that AWS is faster. The larger Part A workflow is kept separate and is not used as a timing comparison.
 
 ### Session 1 documents
 
-| Document | Purpose | Read online | Notebook file | Open in Colab |
-|---|---|---|---|---|
-| 01 · Pre-class reading | Students read before class | [View](session_1/01_preclass_reading.md) | [Markdown source](https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/01_preclass_reading.md) | |
-| 02 · Topics of practice (student) | Fill-in-the-blank, in class | [View](session_1/02_topics_of_practice.ipynb) | [Download](session_1/02_topics_of_practice.ipynb){download="02_topics_of_practice.ipynb"} | [Open](https://colab.research.google.com/github/gato365/aws-gsb-5544-sessions/blob/main/session_1/02_topics_of_practice.ipynb) |
-| 02 · Topics of practice (solutions) | Instructor copy | [View](session_1/02_topics_of_practice_SOLUTIONS.ipynb) | [Download](session_1/02_topics_of_practice_SOLUTIONS.ipynb){download="02_topics_of_practice_SOLUTIONS.ipynb"} | [Open](https://colab.research.google.com/github/gato365/aws-gsb-5544-sessions/blob/main/session_1/02_topics_of_practice_SOLUTIONS.ipynb) |
-| 03 · Practice activity (student) | Guided cloud-to-laptop workflow, then a scenario with 13 questions | [View](session_1/03_practice_activity.ipynb) | [Download](session_1/03_practice_activity.ipynb){download="03_practice_activity.ipynb"} | [Open](https://colab.research.google.com/github/gato365/aws-gsb-5544-sessions/blob/main/session_1/03_practice_activity.ipynb) |
-| 03 · Practice activity (solutions) | Instructor copy | [View](session_1/03_practice_activity_SOLUTIONS.ipynb) | [Download](session_1/03_practice_activity_SOLUTIONS.ipynb){download="03_practice_activity_SOLUTIONS.ipynb"} | [Open](https://colab.research.google.com/github/gato365/aws-gsb-5544-sessions/blob/main/session_1/03_practice_activity_SOLUTIONS.ipynb) |
-| Changelog | Every change made in the local-to-remote conversion, and the assumptions to review | [View](session_1/CHANGELOG.md) | [Markdown source](https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/CHANGELOG.md) | |
-| Build script | Generates the four notebooks from one source | | [build_notebooks.py](https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/build_notebooks.py) | |
+| Document | Purpose | Read online | Download |
+|---|---|---|---|
+| 01 · Pre-class reading | Concepts, laptop measurements, account setup | [View](session_1/01_preclass_reading.md) | [Markdown source](https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/01_preclass_reading.md) |
+| 02 · Topics notebook (student) | Short fill-in-the-blank, on SageMaker | [View](session_1/02_topics_of_practice.ipynb) | [Notebook](session_1/02_topics_of_practice.ipynb){download="02_topics_of_practice.ipynb"} |
+| 02 · Topics notebook (solutions) | Instructor copy | [View](session_1/02_topics_of_practice_SOLUTIONS.ipynb) | [Notebook](session_1/02_topics_of_practice_SOLUTIONS.ipynb){download="02_topics_of_practice_SOLUTIONS.ipynb"} |
+| 03 · Practice, remote notebook (student) | Steps 1 to 6 and the remote half of the timing test, on SageMaker | [View](session_1/03_practice_activity_remote.ipynb) | [Notebook](session_1/03_practice_activity_remote.ipynb){download="03_practice_activity_remote.ipynb"} |
+| 03 · Practice, local notebook (student) | Steps 7 and 8 and the local half of the timing test, in Positron | [View](session_1/03_practice_activity_local.ipynb) | [Notebook](session_1/03_practice_activity_local.ipynb){download="03_practice_activity_local.ipynb"} |
+| 03 · Practice, remote notebook (solutions) | Instructor copy | [View](session_1/03_practice_activity_remote_SOLUTIONS.ipynb) | [Notebook](session_1/03_practice_activity_remote_SOLUTIONS.ipynb){download="03_practice_activity_remote_SOLUTIONS.ipynb"} |
+| 03 · Practice, local notebook (solutions) | Instructor copy | [View](session_1/03_practice_activity_local_SOLUTIONS.ipynb) | [Notebook](session_1/03_practice_activity_local_SOLUTIONS.ipynb){download="03_practice_activity_local_SOLUTIONS.ipynb"} |
+| 04 · Lab, remote notebook (student) | Inventory-planning lab: analyze and export, on SageMaker | [View](session_1/04_lab_remote.ipynb) | [Notebook](session_1/04_lab_remote.ipynb){download="04_lab_remote.ipynb"} |
+| 04 · Lab, local notebook (student) | Inventory-planning lab: visualize and interpret, in Positron | [View](session_1/04_lab_local.ipynb) | [Notebook](session_1/04_lab_local.ipynb){download="04_lab_local.ipynb"} |
+| 04 · Lab, remote notebook (solutions) | Instructor copy | [View](session_1/04_lab_remote_SOLUTIONS.ipynb) | [Notebook](session_1/04_lab_remote_SOLUTIONS.ipynb){download="04_lab_remote_SOLUTIONS.ipynb"} |
+| 04 · Lab, local notebook (solutions) | Instructor copy | [View](session_1/04_lab_local_SOLUTIONS.ipynb) | [Notebook](session_1/04_lab_local_SOLUTIONS.ipynb){download="04_lab_local_SOLUTIONS.ipynb"} |
+| 05 · Athena extension, guide (optional) | What Athena is, its permission step, cost, cleanup | [View](session_1/05_athena_extension_guide.md) | [Markdown source](https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/05_athena_extension_guide.md) |
+| 05 · Athena extension, notebook (optional, student) | Athena queries from SageMaker | [View](session_1/05_athena_extension.ipynb) | [Notebook](session_1/05_athena_extension.ipynb){download="05_athena_extension.ipynb"} |
+| 05 · Athena extension, notebook (optional, solutions) | Instructor copy | [View](session_1/05_athena_extension_SOLUTIONS.ipynb) | [Notebook](session_1/05_athena_extension_SOLUTIONS.ipynb){download="05_athena_extension_SOLUTIONS.ipynb"} |
+| 06 · Extraction strategies and cost detail (optional) | Longer laptop exercises and cost tables moved out of the reading | [View](session_1/06_extraction_strategies_optional.md) | [Markdown source](https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/06_extraction_strategies_optional.md) |
+| Optional challenge lab · Cloudy with a Chance of Parquet | A function-writing lab on the same workflow, for students who want more | [View](session_1/lab/lab_cloudy_with_a_chance_of_parquet.qmd) | [Notebook](session_1/lab/lab_cloudy_with_a_chance_of_parquet.ipynb){download="lab_cloudy_with_a_chance_of_parquet.ipynb"} |
+| Changelog | What was retained, simplified, moved, and corrected | [View](session_1/CHANGELOG.md) | [Markdown source](https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/CHANGELOG.md) |
+| Build script | Generates all twelve notebooks from one source | | [build_notebooks.py](https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/build_notebooks.py) |
 
-The Colab links are for reading and light editing. The notebooks are meant to run inside SageMaker Studio, where the AWS credentials for Athena and the results bucket are already present; the Colab links will run the unsigned S3 blocks but not the Athena blocks.
+The remote notebooks are meant to be uploaded to JupyterLab in the student's SageMaker space. The local notebooks are meant to be opened in Positron. Opening a remote notebook locally will run it locally; its first cell says so.
 
 ### What students need
 
-- On their laptop, for the pre-class reading:
+- **Positron** on their laptop, with a Python environment. The first cell of the reading and of each local notebook installs the packages:
 
 ```bash
-pip install psutil boto3 s3fs pandas matplotlib
+pip install boto3 pandas pyarrow fsspec s3fs psutil matplotlib
 ```
 
-- A free AWS account, created before class by following section 4 of the pre-class reading, with SageMaker Studio set up once. Inside SageMaker Studio the default image already has every library; the setup cell installs `s3fs` in case it is missing.
+- **Their own AWS account** on the Free plan, created before class by following section 5 of the pre-class reading, with SageMaker Studio set up once. Each remote notebook's setup cell installs `s3fs`, `pyarrow`, and `psutil` in case the image lacks them.
 
 ## For collaborators
 
 - **Source repository:** [github.com/gato365/aws-gsb-5544-sessions](https://github.com/gato365/aws-gsb-5544-sessions)
 - **This site:** [gato365.github.io/aws-gsb-5544-sessions](https://gato365.github.io/aws-gsb-5544-sessions/)
-- **Start with the [changelog](session_1/CHANGELOG.md).** It lists every section and cell that changed in the remote-compute revision, and the assumptions that need a decision: Learner Lab versus personal accounts, the prices quoted, and a dry run of the Athena and SageMaker cells in the actual lab.
+- **Start with the [changelog](session_1/CHANGELOG.md).** It lists what was retained, simplified, moved, and corrected in the 2026-10-05 revision, what was tested and how, and what still needs a dry run in a real student account.
 - Every page has a "Source" link in the top right that opens the file on GitHub.
-- To propose changes, open an issue or a pull request on the repository. To rebuild the site after editing, run `quarto render` at the repository root and commit the `docs/` folder.
+- To rebuild: run `python build_notebooks.py` in `session_1/`, then `quarto render` at the repository root, and commit the `docs/` folder.

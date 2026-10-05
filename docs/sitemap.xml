@@ -1,31 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/CHANGELOG.html</loc>
-    <lastmod>2026-09-26T19:47:54.867Z</lastmod>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/lab/lab_cloudy_with_a_chance_of_parquet.html</loc>
+    <lastmod>2026-10-05T21:03:01.030Z</lastmod>
   </url>
   <url>
-    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/03_practice_activity.html</loc>
-    <lastmod>2026-10-05T12:25:43.418Z</lastmod>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/05_athena_extension.html</loc>
+    <lastmod>2026-10-05T21:03:49.866Z</lastmod>
+  </url>
+  <url>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/04_lab_remote.html</loc>
+    <lastmod>2026-10-05T21:03:49.853Z</lastmod>
+  </url>
+  <url>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/04_lab_local.html</loc>
+    <lastmod>2026-10-05T21:03:49.860Z</lastmod>
+  </url>
+  <url>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/03_practice_activity_remote.html</loc>
+    <lastmod>2026-10-05T21:03:49.838Z</lastmod>
+  </url>
+  <url>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/03_practice_activity_local.html</loc>
+    <lastmod>2026-10-05T21:03:49.845Z</lastmod>
   </url>
   <url>
     <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/02_topics_of_practice.html</loc>
-    <lastmod>2026-10-05T12:25:43.411Z</lastmod>
+    <lastmod>2026-10-05T21:03:49.830Z</lastmod>
   </url>
   <url>
-    <loc>https://gato365.github.io/aws-gsb-5544-sessions/index.html</loc>
-    <lastmod>2026-10-05T12:25:31.658Z</lastmod>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/06_extraction_strategies_optional.html</loc>
+    <lastmod>2026-10-05T21:01:43.713Z</lastmod>
   </url>
   <url>
     <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/01_preclass_reading.html</loc>
-    <lastmod>2026-10-04T15:36:45.527Z</lastmod>
+    <lastmod>2026-10-05T21:00:28.668Z</lastmod>
+  </url>
+  <url>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/index.html</loc>
+    <lastmod>2026-10-05T21:03:00.975Z</lastmod>
+  </url>
+  <url>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/05_athena_extension_guide.html</loc>
+    <lastmod>2026-10-05T21:01:43.685Z</lastmod>
+  </url>
+  <url>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/CHANGELOG.html</loc>
+    <lastmod>2026-10-05T21:04:42.986Z</lastmod>
   </url>
   <url>
     <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/02_topics_of_practice_SOLUTIONS.html</loc>
-    <lastmod>2026-10-05T12:25:43.416Z</lastmod>
+    <lastmod>2026-10-05T21:03:49.835Z</lastmod>
   </url>
   <url>
-    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/03_practice_activity_SOLUTIONS.html</loc>
-    <lastmod>2026-10-05T12:25:43.423Z</lastmod>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/03_practice_activity_local_SOLUTIONS.html</loc>
+    <lastmod>2026-10-05T21:03:49.850Z</lastmod>
+  </url>
+  <url>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/03_practice_activity_remote_SOLUTIONS.html</loc>
+    <lastmod>2026-10-05T21:03:49.842Z</lastmod>
+  </url>
+  <url>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/04_lab_local_SOLUTIONS.html</loc>
+    <lastmod>2026-10-05T21:03:49.863Z</lastmod>
+  </url>
+  <url>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/04_lab_remote_SOLUTIONS.html</loc>
+    <lastmod>2026-10-05T21:03:49.858Z</lastmod>
+  </url>
+  <url>
+    <loc>https://gato365.github.io/aws-gsb-5544-sessions/session_1/05_athena_extension_SOLUTIONS.html</loc>
+    <lastmod>2026-10-05T21:03:49.870Z</lastmod>
   </url>
 </urlset>

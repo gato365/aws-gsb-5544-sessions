@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Topics of Practice: Remote Computing on Data You Do Not Download – GSB 5544 · AWS Sessions</title>
+<title>Lab, Remote Notebook: Weather as a Business Covariate – GSB 5544 · AWS Sessions</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../session_1/03_practice_activity_remote_SOLUTIONS.html" rel="next">
-<link href="../session_1/04_lab_local.html" rel="prev">
+<link href="../session_1/04_lab_local.html" rel="next">
+<link href="../session_1/03_practice_activity_local.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -237,7 +237,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../session_1/02_topics_of_practice_SOLUTIONS.html">Solutions (instructor)</a></li><li class="breadcrumb-item"><a href="../session_1/02_topics_of_practice_SOLUTIONS.html">02 · Topics notebook</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../session_1/01_preclass_reading.html">Session 1 · Data Bigger Than Your Laptop</a></li><li class="breadcrumb-item"><a href="../session_1/04_lab_remote.html">04 · Lab: remote notebook (student)</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -298,7 +298,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../session_1/04_lab_remote.html" class="sidebar-item-text sidebar-link">
+  <a href="../session_1/04_lab_remote.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">04 · Lab: remote notebook (student)</span></a>
   </div>
 </li>
@@ -321,7 +321,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../session_1/02_topics_of_practice_SOLUTIONS.html" class="sidebar-item-text sidebar-link active">
+  <a href="../session_1/02_topics_of_practice_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">02 · Topics notebook</span></a>
   </div>
 </li>
@@ -408,23 +408,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#start-here-what-stores-what-computes" id="toc-start-here-what-stores-what-computes" class="nav-link active" data-scroll-target="#start-here-what-stores-what-computes">Start here: what stores, what computes</a></li>
-  <li><a href="#a.-measure-the-remote-machine-and-compare-it-with-your-laptop" id="toc-a.-measure-the-remote-machine-and-compare-it-with-your-laptop" class="nav-link" data-scroll-target="#a.-measure-the-remote-machine-and-compare-it-with-your-laptop">A. Measure the remote machine and compare it with your laptop</a></li>
-  <li><a href="#b.-bucket-object-key-and-why-this-read-is-anonymous" id="toc-b.-bucket-object-key-and-why-this-read-is-anonymous" class="nav-link" data-scroll-target="#b.-bucket-object-key-and-why-this-read-is-anonymous">B. Bucket, object, key, and why this read is anonymous</a></li>
-  <li><a href="#c.-look-at-the-size-before-you-read" id="toc-c.-look-at-the-size-before-you-read" class="nav-link" data-scroll-target="#c.-look-at-the-size-before-you-read">C. Look at the size before you read</a></li>
-  <li><a href="#d.-read-a-manageable-dataset-into-the-remote-machines-ram" id="toc-d.-read-a-manageable-dataset-into-the-remote-machines-ram" class="nav-link" data-scroll-target="#d.-read-a-manageable-dataset-into-the-remote-machines-ram">D. Read a manageable dataset into the remote machine’s RAM</a></li>
-  <li><a href="#e.-filter-transform-and-aggregate-on-the-remote-machine" id="toc-e.-filter-transform-and-aggregate-on-the-remote-machine" class="nav-link" data-scroll-target="#e.-filter-transform-and-aggregate-on-the-remote-machine">E. Filter, transform, and aggregate, on the remote machine</a></li>
-  <li><a href="#f.-save-a-small-summary-on-the-remote-disk-and-compare-four-sizes" id="toc-f.-save-a-small-summary-on-the-remote-disk-and-compare-four-sizes" class="nav-link" data-scroll-target="#f.-save-a-small-summary-on-the-remote-disk-and-compare-four-sizes">F. Save a small summary on the remote disk, and compare four sizes</a></li>
-  <li><a href="#g.-stop-the-meter" id="toc-g.-stop-the-meter" class="nav-link" data-scroll-target="#g.-stop-the-meter">G. Stop the meter</a></li>
+  <li><a href="#l1.-the-machine-you-are-renting" id="toc-l1.-the-machine-you-are-renting" class="nav-link active" data-scroll-target="#l1.-the-machine-you-are-renting">L1. The machine you are renting</a></li>
+  <li><a href="#l2.-size-up-the-job-before-reading-anything" id="toc-l2.-size-up-the-job-before-reading-anything" class="nav-link" data-scroll-target="#l2.-size-up-the-job-before-reading-anything">L2. Size up the job before reading anything</a></li>
+  <li><a href="#l3.-extract-both-markets" id="toc-l3.-extract-both-markets" class="nav-link" data-scroll-target="#l3.-extract-both-markets">L3. Extract both markets</a></li>
+  <li><a href="#l4.-hot-days-per-year" id="toc-l4.-hot-days-per-year" class="nav-link" data-scroll-target="#l4.-hot-days-per-year">L4. Hot days per year</a></li>
+  <li><a href="#l5.-monthly-rainfall" id="toc-l5.-monthly-rainfall" class="nav-link" data-scroll-target="#l5.-monthly-rainfall">L5. Monthly rainfall</a></li>
+  <li><a href="#l6.-export-and-record-what-happened-here" id="toc-l6.-export-and-record-what-happened-here" class="nav-link" data-scroll-target="#l6.-export-and-record-what-happened-here">L6. Export, and record what happened here</a></li>
+  <li><a href="#l7.-what-did-this-session-cost" id="toc-l7.-what-did-this-session-cost" class="nav-link" data-scroll-target="#l7.-what-did-this-session-cost">L7. What did this session cost?</a></li>
+  <li><a href="#download-then-switch-computers" id="toc-download-then-switch-computers" class="nav-link" data-scroll-target="#download-then-switch-computers">Download, then switch computers</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/02_topics_of_practice_SOLUTIONS.ipynb" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/04_lab_remote.ipynb" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../session_1/02_topics_of_practice_SOLUTIONS.html">Solutions (instructor)</a></li><li class="breadcrumb-item"><a href="../session_1/02_topics_of_practice_SOLUTIONS.html">02 · Topics notebook</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../session_1/01_preclass_reading.html">Session 1 · Data Bigger Than Your Laptop</a></li><li class="breadcrumb-item"><a href="../session_1/04_lab_remote.html">04 · Lab: remote notebook (student)</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Topics of Practice: Remote Computing on Data You Do Not Download</h1>
+<h1 class="title">Lab, Remote Notebook: Weather as a Business Covariate</h1>
 </div>
 
 
@@ -442,14 +442,115 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p><strong>GSB 5544 · Computing and Machine Learning for Business Analytics</strong></p>
-<p>This notebook is short on purpose. It practices the middle of the workflow, the part that happens on a computer that is not yours:</p>
-<blockquote class="blockquote">
-<p>measure the remote machine → look at how big the data is → read a manageable piece → summarize it → save a small file</p>
-</blockquote>
-<p><strong>Run this notebook in JupyterLab inside your SageMaker space</strong> (reading, section 5, parts D and E), not in Positron. Replace each <code>____</code> and run the cell with Shift+Enter.</p>
-<p>Every code cell starts with a <code># RUNS ON:</code> comment. <strong>That comment is a label for you. It does not move the code anywhere.</strong> A cell runs on whichever computer the notebook’s kernel is on. The setup cell checks where that really is.</p>
-<p>Bring the laptop numbers you recorded in the reading, section 1.</p>
-<div id="d8aa522c" class="cell">
+<p>You manage inventory planning for a beverage distributor with two markets: <strong>San Luis Obispo, CA</strong> and <strong>Phoenix, AZ</strong>. Before anyone builds a demand model, the team needs each market’s recent weather history in a form small enough to share. The raw history sits in NOAA’s public S3 bucket, mixed in with every other weather station on Earth.</p>
+<p>You will repeat the workflow from the practice activity, with less guidance:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>What you do</th>
+<th>Where you are</th>
+<th>Which computer runs code</th>
+<th>Where the data is</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Sign in to your own AWS account</td>
+<td>Browser, AWS website</td>
+<td>none</td>
+<td>S3 (NOAA’s public bucket)</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Open and start your SageMaker space</td>
+<td>Browser, SageMaker Studio</td>
+<td>none yet</td>
+<td>S3</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Read NOAA data from S3</td>
+<td><strong>Remote notebook</strong> (JupyterLab tab)</td>
+<td><strong>SageMaker</strong></td>
+<td>S3 → SageMaker’s RAM</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Filter, transform, aggregate</td>
+<td><strong>Remote notebook</strong></td>
+<td><strong>SageMaker</strong></td>
+<td>SageMaker’s RAM</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Save a small summary CSV</td>
+<td><strong>Remote notebook</strong></td>
+<td><strong>SageMaker</strong></td>
+<td>SageMaker’s disk</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Download the summary</td>
+<td>Browser, JupyterLab file browser</td>
+<td>none (a file copy)</td>
+<td>SageMaker’s disk → your laptop’s disk</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Open it and make the chart</td>
+<td><strong>Local notebook</strong> (Positron)</td>
+<td><strong>your laptop</strong></td>
+<td>laptop’s disk → laptop’s RAM</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Save your work and stop the space</td>
+<td>Positron, then browser</td>
+<td>none</td>
+<td>your laptop’s disk; SageMaker’s disk</td>
+</tr>
+</tbody>
+</table>
+<p>This lab has <strong>two notebooks</strong>. This one runs in <strong>JupyterLab inside your SageMaker space</strong> and covers steps 1 to 6. <code>04_lab_local.ipynb</code> runs in <strong>Positron on your laptop</strong> and covers steps 7 and 8, the charts, and the business interpretation.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Market</th>
+<th>Station id</th>
+<th>Station name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>San Luis Obispo</td>
+<td><code>USC00047851</code></td>
+<td>SAN LUIS OBISPO POLY, CA</td>
+</tr>
+<tr class="even">
+<td>Phoenix</td>
+<td><code>USW00023183</code></td>
+<td>PHOENIX AIRPORT, AZ</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rules for this lab</strong></p>
+<ul>
+<li>All reading from S3 and all summarizing happens <strong>here, on the remote machine</strong>. Downloading raw NOAA files to your laptop and analyzing them there does not satisfy the lab.</li>
+<li>All charts are made <strong>locally, in Positron</strong>. Do not plot in this notebook.</li>
+<li>A missing or quality-flagged observation is <strong>missing</strong>. Never count it as zero.</li>
+<li>No additional AWS services. SageMaker and the public bucket are all you need.</li>
+</ul>
+<p>Sign in, start your <code>gsb5544</code> space, open JupyterLab, upload this notebook, and open it there (practice activity, steps 1 and 2). Then run the setup cell.</p>
+<div id="5e2bd33f" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q s3fs pyarrow psutil      <span class="co"># harmless if already present</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -525,225 +626,156 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"NOTE: this notebook is written to run in your SageMaker space, and this kernel is somewhere else."</span>)</span>
 <span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"      The RUNS ON comments describe the plan. They do not move the code. Open this file in JupyterLab on SageMaker."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The setup cell supplied the routine pieces so you do not have to rebuild them: <code>human()</code> for readable sizes, <code>where_am_i()</code>, <code>machine_report()</code>, <code>slice_prefix()</code>, and <code>prefix_size()</code>. Read their docstrings above; you will call them below.</p>
-<section id="start-here-what-stores-what-computes" class="level2">
-<h2 class="anchored" data-anchor-id="start-here-what-stores-what-computes">Start here: what stores, what computes</h2>
+<div id="081327b9" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>STATIONS <span class="op">=</span> {<span class="st">"San Luis Obispo"</span>: <span class="st">"USC00047851"</span>, <span class="st">"Phoenix"</span>: <span class="st">"USW00023183"</span>}</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>YEARS    <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">2015</span>, <span class="dv">2025</span>))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>ELEMENTS <span class="op">=</span> [<span class="st">"TMAX"</span>, <span class="st">"PRCP"</span>]        <span class="co"># daily high (tenths of °C) and daily precipitation (tenths of mm)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="l1.-the-machine-you-are-renting" class="level2">
+<h2 class="anchored" data-anchor-id="l1.-the-machine-you-are-renting">L1. The machine you are renting</h2>
+<p>Store <code>machine_report()</code> for this machine as <code>REMOTE_MACHINE</code> and display it.</p>
+<div id="23d6424e" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="l2.-size-up-the-job-before-reading-anything" class="level2">
+<h2 class="anchored" data-anchor-id="l2.-size-up-the-job-before-reading-anything">L2. Size up the job before reading anything</h2>
+<p>Use <code>prefix_size()</code> and <code>slice_prefix()</code> to find the size of every slice you need: both elements, all ten years. Print one line per slice and store the total in <code>SOURCE_BYTES</code>. Print the total in readable units next to this machine’s available RAM.</p>
+<p>Then, in the markdown cell: can you tell from these numbers alone whether all of it would fit in RAM at once? What will you do instead?</p>
+<div id="414c91c0" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><em>Your answer:</em></p>
+</section>
+<section id="l3.-extract-both-markets" class="level2">
+<h2 class="anchored" data-anchor-id="l3.-extract-both-markets">L3. Extract both markets</h2>
+<p>Write <code>load_market_weather(stations, years, elements)</code>. For every year and element it reads that one slice from S3, keeps only the stations you asked for, and returns a single tidy DataFrame <code>wx</code> with exactly these columns:</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
+<col style="width: 50%">
+<col style="width: 50%">
 </colgroup>
 <thead>
 <tr class="header">
-<th></th>
-<th>What it is</th>
-<th>Stores data?</th>
-<th>Runs your code?</th>
-<th>What you pay for</th>
+<th>Column</th>
+<th>Contents</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Your laptop</strong></td>
-<td>The computer in front of you</td>
-<td>Yes, on its disk</td>
-<td>Yes, with its own CPU and RAM</td>
-<td>Nothing extra</td>
+<td><code>market</code></td>
+<td>the market name from <code>stations</code></td>
 </tr>
 <tr class="even">
-<td><strong>SageMaker space</strong></td>
-<td>A computer you rent in an AWS data center, with its own CPU, RAM, and a small disk</td>
-<td>A little: notebooks and small files</td>
-<td>Yes, with <em>its</em> CPU and RAM, not yours</td>
-<td>Each hour its status is <em>Running</em></td>
+<td><code>station_id</code></td>
+<td>the station id</td>
 </tr>
 <tr class="odd">
-<td><strong>S3 bucket</strong></td>
-<td>Storage only. Files kept in AWS, readable from your laptop or from SageMaker</td>
-<td>Yes</td>
-<td><strong>No.</strong> It can only hand over bytes</td>
-<td>Each GB stored per month (NOAA’s bucket is paid for by AWS’s open-data program, not by you)</td>
+<td><code>date</code></td>
+<td>a real date</td>
+</tr>
+<tr class="even">
+<td><code>element</code></td>
+<td><code>"TMAX"</code> or <code>"PRCP"</code></td>
+</tr>
+<tr class="odd">
+<td><code>value</code></td>
+<td>the measurement in real units: °C for <code>TMAX</code>, mm for <code>PRCP</code> (the file stores tenths)</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Storing is not processing.</strong> Data in S3 does nothing until some computer reads it. The bytes travel to wherever the code runs, and what that code loads must fit in <strong>that</strong> computer’s RAM.</p>
-<p><strong>Disk is not RAM.</strong> Disk keeps files when the machine is off. RAM is the working space of a running program. S3, the remote machine’s disk, and the remote machine’s RAM are three different places.</p>
-<p>Fill in each blank with <code>laptop</code>, <code>SageMaker</code>, or <code>S3</code>.</p>
-<div id="625bd68b" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>where <span class="op">=</span> {</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Stores the NOAA weather files we read today"</span>:             <span class="st">"S3"</span>,</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Runs the cells of this notebook"</span>:                         <span class="st">"SageMaker"</span>,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Shows you this notebook in a browser tab"</span>:                <span class="st">"laptop"</span>,</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Can store data but cannot run any code"</span>:                  <span class="st">"S3"</span>,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Bills by the hour while Running, even when you are idle"</span>:  <span class="st">"SageMaker"</span>,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Will run Positron and draw the final chart"</span>:              <span class="st">"laptop"</span>,</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>expected <span class="op">=</span> [<span class="st">"s3"</span>, <span class="st">"sagemaker"</span>, <span class="st">"laptop"</span>, <span class="st">"s3"</span>, <span class="st">"sagemaker"</span>, <span class="st">"laptop"</span>]</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>given <span class="op">=</span> [v.strip().lower() <span class="cf">for</span> v <span class="kw">in</span> where.values()]</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>wrong <span class="op">=</span> [q <span class="cf">for</span> q, g, e <span class="kw">in</span> <span class="bu">zip</span>(where, given, expected) <span class="cf">if</span> g <span class="op">!=</span> e]</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"All correct"</span> <span class="cf">if</span> <span class="kw">not</span> wrong <span class="cf">else</span> <span class="st">"Check these: "</span> <span class="op">+</span> <span class="st">"; "</span>.join(wrong))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-<section id="a.-measure-the-remote-machine-and-compare-it-with-your-laptop" class="level2">
-<h2 class="anchored" data-anchor-id="a.-measure-the-remote-machine-and-compare-it-with-your-laptop">A. Measure the remote machine and compare it with your laptop</h2>
-<p><em>Reading, section 1.</em> <code>machine_report()</code> measures the computer running this cell. Its disk numbers describe the filesystem that holds this notebook, which on SageMaker is the space’s own small disk, <strong>not S3</strong>.</p>
+<p>Requirements:</p>
 <ul>
-<li><strong>Physical cores</strong> are real processor cores. <strong>Logical CPUs</strong> count what the operating system can schedule on; with hyper-threading one physical core appears as two. A cloud <strong>vCPU</strong> is one logical CPU, so “2 vCPUs” does not mean two physical cores.</li>
-<li><strong>Total RAM</strong> is what is installed. <strong>Available RAM</strong> is what a new program could use right now. Available is the smaller number and the one that matters.</li>
+<li>Drop rows whose <code>Q_FLAG</code> is not empty before anything else.</li>
+<li>Read one slice at a time, and let Parquet do the station filter <strong>during</strong> the read, so that only matching rows reach this machine’s RAM. This starter call shows how; <code>ids</code> is a list of station ids:</li>
 </ul>
-<p>Fill in the function call, then paste in your laptop’s numbers from the reading.</p>
-<div id="08850ae4" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>remote <span class="op">=</span> machine_report()</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>remote</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="819cd5b8" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>laptop <span class="op">=</span> {                                   <span class="co"># &lt;- replace every value with what you recorded in the reading, section 1</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"computer name"</span>:                     <span class="st">"my laptop"</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"physical CPU cores"</span>:                <span class="dv">0</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"logical CPUs (vCPUs in the cloud)"</span>: <span class="dv">0</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"total RAM (GB)"</span>:                    <span class="fl">0.0</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"available RAM right now (GB)"</span>:      <span class="fl">0.0</span>,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"work disk, total (GB)"</span>:             <span class="fl">0.0</span>,</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"work disk, free (GB)"</span>:              <span class="fl">0.0</span>,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>compare <span class="op">=</span> pd.DataFrame({<span class="st">"laptop"</span>: laptop, <span class="st">"SageMaker (remote)"</span>: remote})</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>compare</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p><strong>Check yourself.</strong> Do not assume the rented machine is bigger or faster. Look at your table. Which machine has more available RAM? More logical CPUs? Answer in one comment, using your own numbers.</p>
-<div id="f2080574" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: my laptop has 16 GB total and 5.1 GB available with 8 logical CPUs; the remote machine has about 4 GB total with 2 vCPUs. The remote machine is smaller. What it offers is location (next to the data) and that it can be resized, not size.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-<section id="b.-bucket-object-key-and-why-this-read-is-anonymous" class="level2">
-<h2 class="anchored" data-anchor-id="b.-bucket-object-key-and-why-this-read-is-anonymous">B. Bucket, object, key, and why this read is anonymous</h2>
-<p><em>Reading, sections 3 and 4.</em> A <strong>bucket</strong> is a named container. An <strong>object</strong> is one stored file plus its metadata. A <strong>key</strong> is the object’s full name inside the bucket. A <strong>prefix</strong> is the beginning of a key, which is how S3 imitates folders.</p>
-<p>The <code>s3</code> client in the setup cell is <strong>unsigned</strong>: it sends no credentials. NOAA’s bucket is public, so it answers anyone. You still needed your own AWS account today, but for a different reason: the account is what lets you <strong>rent this computer</strong>. The data is free to read; the computing is yours to pay for.</p>
-<p>Fill in the delimiter that makes S3 group keys like folders, and the metadata field that holds an object’s size.</p>
-<div id="0004040d" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>part <span class="op">=</span> pd.read_parquet(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"s3://</span><span class="sc">{</span>BUCKET<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>slice_prefix(year, element)<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"ID"</span>, <span class="st">"DATE"</span>, <span class="st">"DATA_VALUE"</span>, <span class="st">"Q_FLAG"</span>],</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    filters<span class="op">=</span>[(<span class="st">"ID"</span>, <span class="st">"in"</span>, ids)],</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    storage_options<span class="op">=</span>{<span class="st">"anon"</span>: <span class="va">True</span>},</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Call your function, time it, and print how many rows <code>wx</code> has for each market and element. Store the elapsed seconds in <code>EXTRACT_SECONDS</code> and the DataFrame’s memory use in <code>WX_BYTES</code>.</p>
+<div id="256c5c9f" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> s3.list_objects_v2(Bucket<span class="op">=</span>BUCKET, Delimiter<span class="op">=</span><span class="st">"/"</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Top-level prefixes:"</span>, [p[<span class="st">"Prefix"</span>] <span class="cf">for</span> p <span class="kw">in</span> resp.get(<span class="st">"CommonPrefixes"</span>, [])])</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> <span class="st">"csv/by_year/2024.csv"</span>                          <span class="co"># one object: a whole year, every station, as text</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>meta <span class="op">=</span> s3.head_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key)         <span class="co"># metadata only; the file is not downloaded</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Bucket:"</span>, BUCKET)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Key   :"</span>, key)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Size  :"</span>, human(meta[<span class="st">"ContentLength"</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="c.-look-at-the-size-before-you-read" class="level2">
-<h2 class="anchored" data-anchor-id="c.-look-at-the-size-before-you-read">C. Look at the size before you read</h2>
-<p><em>Reading, section 2.</em> The same year exists in the bucket twice: as one large CSV object, and as Parquet files split by year and element. Today we read the Parquet slice for 2024 daily highs (<code>TMAX</code>).</p>
-<p>Fill in the helper that builds the slice’s prefix, and the base that gives binary units.</p>
-<div id="67dd15fe" class="cell">
+<section id="l4.-hot-days-per-year" class="level2">
+<h2 class="anchored" data-anchor-id="l4.-hot-days-per-year">L4. Hot days per year</h2>
+<p>For each market and year, count the days with a daily high of <strong>35 °C or higher</strong> (95 °F). Build <code>hot_days</code> with one row per market and year and these columns: <code>market</code>, <code>year</code>, <code>days_reported</code>, <code>hot_days</code>.</p>
+<p><code>days_reported</code> is the number of days that year with a valid <code>TMAX</code>. It is there so that a reader can tell a year with few hot days from a year with few <em>observations</em>.</p>
+<div id="6136a2c9" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>prefix <span class="op">=</span> slice_prefix(<span class="dv">2024</span>, <span class="st">"TMAX"</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>objects, SOURCE_BYTES <span class="op">=</span> prefix_size(prefix)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Prefix          :"</span>, prefix)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Objects         :"</span>, objects)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Size, decimal   :"</span>, human(SOURCE_BYTES))               <span class="co"># 1 MB = 1,000,000 bytes</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Size, binary    :"</span>, human(SOURCE_BYTES, base<span class="op">=</span><span class="dv">1024</span>))  <span class="co"># 1 MiB = 1,048,576 bytes</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"The CSV year was:"</span>, human(meta[<span class="st">"ContentLength"</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The two size lines describe the same bytes in two unit systems. Storage and cloud consoles mostly use decimal units; operating systems often use binary ones.</p>
-<p>Source-file size is <strong>not</strong> how much RAM the data will need. Text CSVs often grow when loaded and compressed Parquet often grows much more. There is no multiplier you can trust in advance, so the honest method is: start with a slice you know is small, load it, and <strong>measure</strong>.</p>
 </section>
-<section id="d.-read-a-manageable-dataset-into-the-remote-machines-ram" class="level2">
-<h2 class="anchored" data-anchor-id="d.-read-a-manageable-dataset-into-the-remote-machines-ram">D. Read a manageable dataset into the remote machine’s RAM</h2>
-<p>The bytes now travel from S3 to this SageMaker machine. Nothing reaches your laptop except the text printed below.</p>
-<p>Fill in the setting that makes the read anonymous, and the argument that makes pandas count text columns honestly.</p>
-<div id="c521606a" class="cell">
+<section id="l5.-monthly-rainfall" class="level2">
+<h2 class="anchored" data-anchor-id="l5.-monthly-rainfall">L5. Monthly rainfall</h2>
+<p>For each market, find the <strong>typical rainfall of each calendar month</strong>:</p>
+<ol type="1">
+<li>Total the precipitation for every market, year, and month, and count the days that reported.</li>
+<li>A monthly total is only trustworthy if nearly every day reported. Keep a month only if at least <strong>90% of its days</strong> have a valid <code>PRCP</code> value. (<code>date.dt.days_in_month</code> gives the length of a month.) Discarding an incomplete month is different from treating its missing days as dry.</li>
+<li>Average the kept monthly totals over the years.</li>
+</ol>
+<p>Build <code>monthly_rain</code> with twelve rows per market and these columns: <code>market</code>, <code>month</code>, <code>years_used</code>, <code>avg_monthly_prcp_mm</code> (rounded to 1 decimal).</p>
+<div id="c4ede505" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.perf_counter()</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> pd.read_parquet(</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"s3://</span><span class="sc">{</span>BUCKET<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>prefix<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"ID"</span>, <span class="st">"DATE"</span>, <span class="st">"DATA_VALUE"</span>, <span class="st">"Q_FLAG"</span>],       <span class="co"># only the columns we need</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    storage_options<span class="op">=</span>{<span class="st">"anon"</span>: <span class="va">True</span>},</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>READ_SECONDS <span class="op">=</span> time.perf_counter() <span class="op">-</span> t0</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>ROWS_READ <span class="op">=</span> <span class="bu">len</span>(raw)</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>DF_BYTES <span class="op">=</span> <span class="bu">int</span>(raw.memory_usage(deep<span class="op">=</span><span class="va">True</span>).<span class="bu">sum</span>())</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Rows read          : </span><span class="sc">{</span>ROWS_READ<span class="sc">:,}</span><span class="ss"> in </span><span class="sc">{</span>READ_SECONDS<span class="sc">:.1f}</span><span class="ss"> s"</span>)</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Source files in S3 : </span><span class="sc">{</span>human(SOURCE_BYTES)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"DataFrame in RAM   : </span><span class="sc">{</span>human(DF_BYTES)<span class="sc">}</span><span class="ss">   (</span><span class="sc">{</span>DF_BYTES <span class="op">/</span> SOURCE_BYTES<span class="sc">:.0f}</span><span class="ss"> times the source size, measured, not predicted)"</span>)</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>raw.head(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="e.-filter-transform-and-aggregate-on-the-remote-machine" class="level2">
-<h2 class="anchored" data-anchor-id="e.-filter-transform-and-aggregate-on-the-remote-machine">E. Filter, transform, and aggregate, on the remote machine</h2>
-<p>GHCN-Daily has three conventions you must handle:</p>
+<section id="l6.-export-and-record-what-happened-here" class="level2">
+<h2 class="anchored" data-anchor-id="l6.-export-and-record-what-happened-here">L6. Export, and record what happened here</h2>
+<p>Save the two summaries on this machine’s disk as <code>lab_hot_days.csv</code> and <code>lab_monthly_rain.csv</code>. Then write <code>lab_remote_measurements.json</code> containing a dictionary with:</p>
 <ul>
-<li><code>DATE</code> is text like <code>20240131</code>.</li>
-<li><code>DATA_VALUE</code> for <code>TMAX</code> is in <strong>tenths of a degree Celsius</strong>: <code>183</code> means 18.3 °C.</li>
-<li><code>Q_FLAG</code> is empty when a value passed NOAA’s quality checks and holds a letter when it <strong>failed</strong>. Failed values are dropped. A day with no valid value is <em>missing</em>; it is never zero.</li>
+<li><code>"machine"</code>: <code>REMOTE_MACHINE</code></li>
+<li><code>"source bytes in S3"</code>: <code>SOURCE_BYTES</code></li>
+<li><code>"rows kept"</code>: the number of rows in <code>wx</code></li>
+<li><code>"DataFrame bytes"</code>: <code>WX_BYTES</code></li>
+<li><code>"extract seconds"</code>: <code>EXTRACT_SECONDS</code>, rounded</li>
+<li><code>"exported bytes"</code>: the combined size on disk of the two CSV files</li>
 </ul>
-<p>Summarize one station, the Cal Poly station in San Luis Obispo (<code>USC00047851</code>), by month.</p>
-<p>Fill in the quality filter, the unit conversion, and the grouping column.</p>
-<div id="d6846497" class="cell">
+<p>Print the size of each of the three files.</p>
+<div id="b2ca8497" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>STATION <span class="op">=</span> <span class="st">"USC00047851"</span>                        <span class="co"># SAN LUIS OBISPO POLY, CA</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>one <span class="op">=</span> raw[(raw[<span class="st">"ID"</span>] <span class="op">==</span> STATION) <span class="op">&amp;</span> raw[<span class="st">"Q_FLAG"</span>].isna()].copy()</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>one[<span class="st">"date"</span>]   <span class="op">=</span> pd.to_datetime(one[<span class="st">"DATE"</span>].astype(<span class="bu">str</span>), <span class="bu">format</span><span class="op">=</span><span class="st">"%Y%m</span><span class="sc">%d</span><span class="st">"</span>)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>one[<span class="st">"tmax_c"</span>] <span class="op">=</span> one[<span class="st">"DATA_VALUE"</span>] <span class="op">/</span> <span class="dv">10</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>one[<span class="st">"month"</span>]  <span class="op">=</span> one[<span class="st">"date"</span>].dt.month</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> (one.groupby(<span class="st">"month"</span>)[<span class="st">"tmax_c"</span>]</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>              .agg(days_reported<span class="op">=</span><span class="st">"count"</span>, mean_tmax_c<span class="op">=</span><span class="st">"mean"</span>, hottest_c<span class="op">=</span><span class="st">"max"</span>)</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>              .<span class="bu">round</span>(<span class="dv">1</span>)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>              .reset_index())</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>ROWS_READ<span class="sc">:,}</span><span class="ss"> rows read, </span><span class="sc">{</span><span class="bu">len</span>(one)<span class="sc">:,}</span><span class="ss"> kept for this station, </span><span class="sc">{</span><span class="bu">len</span>(summary)<span class="sc">}</span><span class="ss"> rows in the summary"</span>)</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="f.-save-a-small-summary-on-the-remote-disk-and-compare-four-sizes" class="level2">
-<h2 class="anchored" data-anchor-id="f.-save-a-small-summary-on-the-remote-disk-and-compare-four-sizes">F. Save a small summary on the remote disk, and compare four sizes</h2>
-<p>The summary is written to <strong>this machine’s disk</strong>, next to this notebook. It is not in S3 and not on your laptop yet. In the practice activity you will download a file like this and chart it in Positron; there is no chart here because the charting belongs on your laptop.</p>
-<p>Fill in the method that writes a CSV and the function that reads a file’s size from disk.</p>
-<div id="cfc2a291" class="cell">
+<section id="l7.-what-did-this-session-cost" class="level2">
+<h2 class="anchored" data-anchor-id="l7.-what-did-this-session-cost">L7. What did this session cost?</h2>
+<p>Estimate the compute cost of this session: hours the space has been running, times the hourly price of its instance type. Use about <strong>$0.05 per hour</strong> for <code>ml.t3.medium</code> in <code>us-east-1</code>, and check the <a href="https://aws.amazon.com/sagemaker/ai/pricing/">SageMaker pricing page</a> if you chose a different instance. Reading NOAA’s public bucket from inside the same region adds no data-transfer charge, and you created nothing in S3.</p>
+<p>The starter below tries to read the space’s start time. If that lookup fails, set <code>hours</code> by hand from the time you clicked <strong>Run space</strong>.</p>
+<div id="2a904ec8" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>OUT <span class="op">=</span> <span class="st">"slo_tmax_2024_monthly.csv"</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>summary.to_csv(OUT, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>CSV_BYTES <span class="op">=</span> os.path.getsize(OUT)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime <span class="im">as</span> dt</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>PRICE_PER_HOUR <span class="op">=</span> <span class="fl">0.05</span>            <span class="co"># ml.t3.medium, us-east-1, approximate; change it if your instance type differs</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>sizes <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"where it lives"</span>: [<span class="st">"S3 (NOAA's bucket)"</span>, <span class="st">"this machine's RAM"</span>, <span class="st">"this machine's disk"</span>, <span class="st">"this machine's disk"</span>],</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"size"</span>:           [human(SOURCE_BYTES), human(DF_BYTES), human(CSV_BYTES), human(machine_report()[<span class="st">"work disk, free (GB)"</span>] <span class="op">*</span> <span class="fl">1e9</span>)],</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>[<span class="st">"source files"</span>, <span class="st">"loaded DataFrame"</span>, <span class="st">"exported summary CSV"</span>, <span class="st">"free space on the work disk"</span>],</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>sizes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p><strong>Check yourself.</strong> In one comment: which of those four numbers would also be the size of the file you download to your laptop, and which one disappears when the space stops?</p>
-<div id="a3ae7e1f" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The exported summary CSV is what I would download; it is the same few hundred bytes on either disk. The loaded DataFrame lives only in RAM and disappears when the space stops. The source files stay in S3 untouched.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    meta <span class="op">=</span> json.load(<span class="bu">open</span>(<span class="st">"/opt/ml/metadata/resource-metadata.json"</span>))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    sm <span class="op">=</span> boto3.client(<span class="st">"sagemaker"</span>, region_name<span class="op">=</span>REGION)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    app <span class="op">=</span> sm.describe_app(DomainId<span class="op">=</span>meta[<span class="st">"DomainId"</span>], SpaceName<span class="op">=</span>meta[<span class="st">"SpaceName"</span>],</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                          AppType<span class="op">=</span>meta[<span class="st">"AppType"</span>], AppName<span class="op">=</span>meta[<span class="st">"ResourceName"</span>])</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    hours <span class="op">=</span> (dt.datetime.now(dt.timezone.utc) <span class="op">-</span> app[<span class="st">"CreationTime"</span>]).total_seconds() <span class="op">/</span> <span class="dv">3600</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Could not read the space's start time:"</span>, <span class="bu">type</span>(e).<span class="va">__name__</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    hours <span class="op">=</span> ____                  <span class="co"># &lt;- set by hand: hours since you clicked Run space</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Running for about </span><span class="sc">{</span>hours<span class="sc">:.2f}</span><span class="ss"> h  ×  $</span><span class="sc">{</span>PRICE_PER_HOUR<span class="sc">}</span><span class="ss">/h  =  $</span><span class="sc">{</span>hours <span class="op">*</span> PRICE_PER_HOUR<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="g.-stop-the-meter" class="level2">
-<h2 class="anchored" data-anchor-id="g.-stop-the-meter">G. Stop the meter</h2>
-<p>A space bills for every hour its status is <em>Running</em>, whether or not you are typing and whether or not this tab is open. A cell cannot stop the machine it is running on, so this happens in the Studio tab.</p>
-<ul class="task-list">
-<li><label><input type="checkbox"><strong>Remote notebook:</strong> File → <strong>Save Notebook</strong>. Right-click it in the JupyterLab file browser and <strong>Download</strong> a copy.</label></li>
-<li><label><input type="checkbox"><strong>Studio tab:</strong> on the <code>gsb5544</code> space page click <strong>Stop space</strong>, confirm in the dialog, and wait until the status reads <strong>Stopped</strong>. Closing the browser tab does not stop it.</label></li>
-<li><label><input type="checkbox"><strong>Console Home</strong> (open <a href="https://console.aws.amazon.com">console.aws.amazon.com</a> in a new tab): read <strong>Credits remaining</strong> and note it. The panel can lag by several hours.</label></li>
-<li><label><input type="checkbox"><strong>Laptop:</strong> save your local notebook in Positron (Cmd+S, or Ctrl+S on Windows).</label></li>
-</ul>
-<p>If you are going straight on to the practice activity, leave the space running and do this checklist at the end of that activity instead.</p>
+<section id="download-then-switch-computers" class="level2">
+<h2 class="anchored" data-anchor-id="download-then-switch-computers">Download, then switch computers</h2>
+<ol type="1">
+<li>In JupyterLab’s file browser click the refresh arrow, then right-click and <strong>Download</strong> each of: <code>lab_hot_days.csv</code>, <code>lab_monthly_rain.csv</code>, <code>lab_remote_measurements.json</code>.</li>
+<li>File → <strong>Save Notebook</strong>, then download this notebook too.</li>
+<li>Move all four files into your lab folder on your laptop, next to <code>04_lab_local.ipynb</code>.</li>
+<li>Open <strong>Positron</strong> and continue in <code>04_lab_local.ipynb</code>.</li>
+</ol>
+<p>Nothing after this point needs the remote machine. Stop the space now, or at the end of the local notebook, but do stop it.</p>
 
 
 </section>
@@ -1156,13 +1188,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../session_1/04_lab_local.html" class="pagination-link" aria-label="04 · Lab: local notebook (student)">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">04 · Lab: local notebook (student)</span>
+      <a href="../session_1/03_practice_activity_local.html" class="pagination-link" aria-label="03 · Practice: local notebook (student)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">03 · Practice: local notebook (student)</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../session_1/03_practice_activity_remote_SOLUTIONS.html" class="pagination-link" aria-label="03 · Practice: remote notebook">
-        <span class="nav-page-text">03 · Practice: remote notebook</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../session_1/04_lab_local.html" class="pagination-link" aria-label="04 · Lab: local notebook (student)">
+        <span class="nav-page-text">04 · Lab: local notebook (student)</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1174,7 +1206,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/02_topics_of_practice_SOLUTIONS.ipynb" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/04_lab_remote.ipynb" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>Built with Quarto · Hosted on GitHub Pages</p>
 </div>

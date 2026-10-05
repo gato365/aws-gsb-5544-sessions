@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Optional Reading: Extraction Strategies and Cost Detail – GSB 5544 · AWS Sessions</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../session_1/lab/lab_cloudy_with_a_chance_of_parquet.html" rel="next">
+<link href="../session_1/05_athena_extension.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b4acf84f37d6d68f6a15c6fe27913e81.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">GSB 5544 · AWS Sessions</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-session-1" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Session 1</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-session-1">    
+        <li>
+    <a class="dropdown-item" href="../session_1/01_preclass_reading.html">
+ <span class="dropdown-text">01 · Pre-class reading</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/02_topics_of_practice.html">
+ <span class="dropdown-text">02 · Topics notebook (student)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/03_practice_activity_remote.html">
+ <span class="dropdown-text">03 · Practice: remote notebook (student)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/03_practice_activity_local.html">
+ <span class="dropdown-text">03 · Practice: local notebook (student)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/04_lab_remote.html">
+ <span class="dropdown-text">04 · Lab: remote notebook (student)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/04_lab_local.html">
+ <span class="dropdown-text">04 · Lab: local notebook (student)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/CHANGELOG.html">
+ <span class="dropdown-text">Changelog</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-solutions" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Solutions</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-solutions">    
+        <li>
+    <a class="dropdown-item" href="../session_1/02_topics_of_practice_SOLUTIONS.html">
+ <span class="dropdown-text">02 · Topics notebook</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/03_practice_activity_remote_SOLUTIONS.html">
+ <span class="dropdown-text">03 · Practice: remote notebook</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/03_practice_activity_local_SOLUTIONS.html">
+ <span class="dropdown-text">03 · Practice: local notebook</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/04_lab_remote_SOLUTIONS.html">
+ <span class="dropdown-text">04 · Lab: remote notebook</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/04_lab_local_SOLUTIONS.html">
+ <span class="dropdown-text">04 · Lab: local notebook</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/05_athena_extension_SOLUTIONS.html">
+ <span class="dropdown-text">05 · Athena extension notebook</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-optional" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Optional</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-optional">    
+        <li>
+    <a class="dropdown-item" href="../session_1/05_athena_extension_guide.html">
+ <span class="dropdown-text">05 · Athena extension: guide</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/05_athena_extension.html">
+ <span class="dropdown-text">05 · Athena extension: notebook (student)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/06_extraction_strategies_optional.html">
+ <span class="dropdown-text">06 · Extraction strategies and cost detail</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../session_1/lab/lab_cloudy_with_a_chance_of_parquet.html">
+ <span class="dropdown-text">Challenge lab · Cloudy with a Chance of Parquet</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/gato365/aws-gsb-5544-sessions"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../session_1/05_athena_extension_guide.html">Optional extensions</a></li><li class="breadcrumb-item"><a href="../session_1/06_extraction_strategies_optional.html">06 · Extraction strategies and cost detail</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AWS Sessions for GSB 5544</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Session 1 · Data Bigger Than Your Laptop</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/01_preclass_reading.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01 · Pre-class reading</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/02_topics_of_practice.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 · Topics notebook (student)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/03_practice_activity_remote.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 · Practice: remote notebook (student)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/03_practice_activity_local.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 · Practice: local notebook (student)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/04_lab_remote.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 · Lab: remote notebook (student)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/04_lab_local.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 · Lab: local notebook (student)</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Solutions (instructor)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/02_topics_of_practice_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 · Topics notebook</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/03_practice_activity_remote_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 · Practice: remote notebook</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/03_practice_activity_local_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 · Practice: local notebook</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/04_lab_remote_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 · Lab: remote notebook</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/04_lab_local_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 · Lab: local notebook</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/05_athena_extension_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 · Athena extension notebook</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Optional extensions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/05_athena_extension_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 · Athena extension: guide</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/05_athena_extension.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 · Athena extension: notebook (student)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/06_extraction_strategies_optional.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">06 · Extraction strategies and cost detail</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/lab/lab_cloudy_with_a_chance_of_parquet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Challenge lab · Cloudy with a Chance of Parquet</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/CHANGELOG.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Changelog</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#looking-before-you-read" id="toc-looking-before-you-read" class="nav-link active" data-scroll-target="#looking-before-you-read">1. Looking before you read</a>
+  <ul class="collapse">
+  <li><a href="#listing-not-downloading" id="toc-listing-not-downloading" class="nav-link" data-scroll-target="#listing-not-downloading">Listing, not downloading</a></li>
+  <li><a href="#reading-a-size-without-reading-the-file" id="toc-reading-a-size-without-reading-the-file" class="nav-link" data-scroll-target="#reading-a-size-without-reading-the-file">Reading a size without reading the file</a></li>
+  <li><a href="#reading-a-slice-of-a-file" id="toc-reading-a-slice-of-a-file" class="nav-link" data-scroll-target="#reading-a-slice-of-a-file">Reading a slice of a file</a></li>
+  </ul></li>
+  <li><a href="#three-levers-for-data-that-does-not-fit" id="toc-three-levers-for-data-that-does-not-fit" class="nav-link" data-scroll-target="#three-levers-for-data-that-does-not-fit">2. Three levers for data that does not fit</a>
+  <ul class="collapse">
+  <li><a href="#one-station-straight-from-s3" id="toc-one-station-straight-from-s3" class="nav-link" data-scroll-target="#one-station-straight-from-s3">One station, straight from S3</a></li>
+  <li><a href="#filtering-a-large-file-in-chunks" id="toc-filtering-a-large-file-in-chunks" class="nav-link" data-scroll-target="#filtering-a-large-file-in-chunks">Filtering a large file in chunks</a></li>
+  <li><a href="#the-units-trap" id="toc-the-units-trap" class="nav-link" data-scroll-target="#the-units-trap">The units trap</a></li>
+  </ul></li>
+  <li><a href="#cost-in-more-detail" id="toc-cost-in-more-detail" class="nav-link" data-scroll-target="#cost-in-more-detail">3. Cost in more detail</a>
+  <ul class="collapse">
+  <li><a href="#storage" id="toc-storage" class="nav-link" data-scroll-target="#storage">Storage</a></li>
+  <li><a href="#computing" id="toc-computing" class="nav-link" data-scroll-target="#computing">Computing</a></li>
+  <li><a href="#how-you-code-is-how-you-spend" id="toc-how-you-code-is-how-you-spend" class="nav-link" data-scroll-target="#how-you-code-is-how-you-spend">How you code is how you spend</a></li>
+  <li><a href="#say-it-in-your-own-words" id="toc-say-it-in-your-own-words" class="nav-link" data-scroll-target="#say-it-in-your-own-words">Say it in your own words</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/06_extraction_strategies_optional.md" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../session_1/05_athena_extension_guide.html">Optional extensions</a></li><li class="breadcrumb-item"><a href="../session_1/06_extraction_strategies_optional.html">06 · Extraction strategies and cost detail</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Optional Reading: Extraction Strategies and Cost Detail</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><strong>GSB 5544 · Optional. Not required for the first session.</strong></p>
+<p><em>These exercises and cost tables were part of the pre-class reading and were moved here to keep that reading manageable. They are worth your time once the required workflow feels comfortable. Everything on this page runs on your laptop, in Positron, in the same notebook you used for the reading: it needs the <code>human()</code> helper from section 2 and the <code>s3</code> client and <code>BUCKET</code> from section 4.</em></p>
+<div class="callout callout-style-default callout-note callout-titled" title="This is not the required workflow">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>This is not the required workflow
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The cells here read from S3 straight into your laptop. That is useful for learning how S3 behaves, and it is fine for small objects. It is <strong>not</strong> the remote-computation workflow that the practice activity and the lab require, where a SageMaker machine does the reading and summarizing.</p>
+</div>
+</div>
+<hr>
+<section id="looking-before-you-read" class="level2">
+<h2 class="anchored" data-anchor-id="looking-before-you-read">1. Looking before you read</h2>
+<section id="listing-not-downloading" class="level3">
+<h3 class="anchored" data-anchor-id="listing-not-downloading">Listing, not downloading</h3>
+<p>The first thing to do with any bucket is look at what is in it. <code>Delimiter="/"</code> asks S3 to group keys by their first path segment, which is how you see the “folders”:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> s3.list_objects_v2(Bucket<span class="op">=</span>BUCKET, Delimiter<span class="op">=</span><span class="st">"/"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([p[<span class="st">"Prefix"</span>] <span class="cf">for</span> p <span class="kw">in</span> resp.get(<span class="st">"CommonPrefixes"</span>, [])])</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([o[<span class="st">"Key"</span>] <span class="cf">for</span> o <span class="kw">in</span> resp.get(<span class="st">"Contents"</span>, [])][:<span class="dv">6</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>What this code does.</strong></p>
+<ul>
+<li><code>s3.list_objects_v2(Bucket=BUCKET, Delimiter="/")</code> sends one request that asks, “what is at the top level of this bucket?” The answer comes back as a Python dictionary. No file contents are transferred, only names and metadata.</li>
+<li><code>resp["CommonPrefixes"]</code> holds the “folders”: every distinct beginning of a key up to the first <code>/</code>.</li>
+<li><code>resp["Contents"]</code> holds the objects that sit at the top level with no <code>/</code> in their key.</li>
+<li><code>.get("CommonPrefixes", [])</code> is a safe lookup: if the response has no such entry, you get an empty list instead of an error.</li>
+</ul>
+<p>The <code>csv/</code> prefix contains two layouts of the same data:</p>
+<ul>
+<li><code>csv/by_year/YYYY.csv</code>: every station, one year per file</li>
+<li><code>csv/by_station/STATIONID.csv</code>: one station, every year in one file</li>
+</ul>
+<p>The <code>parquet/</code> prefix contains the same data a third time, in a columnar format split by year and element. That is the copy the required notebooks read.</p>
+</section>
+<section id="reading-a-size-without-reading-the-file" class="level3">
+<h3 class="anchored" data-anchor-id="reading-a-size-without-reading-the-file">Reading a size without reading the file</h3>
+<p>Every object carries its size as metadata:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> s3.list_objects_v2(Bucket<span class="op">=</span>BUCKET, Prefix<span class="op">=</span><span class="st">"csv/by_year/202"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> obj <span class="kw">in</span> resp[<span class="st">"Contents"</span>]:</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>obj[<span class="st">'Key'</span>]<span class="sc">:&lt;28}</span><span class="ss"> </span><span class="sc">{</span>human(obj[<span class="st">'Size'</span>])<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>What this code does.</strong></p>
+<ul>
+<li><code>Prefix="csv/by_year/202"</code> narrows the listing to keys that <em>begin with</em> that text, which here means the files for 2020 onward. A prefix is a filter that S3 applies on its side, before it answers.</li>
+<li>Each item in <code>resp["Contents"]</code> describes one object. <code>obj["Key"]</code> is its name and <code>obj["Size"]</code> is its size in bytes.</li>
+<li><code>{obj['Key']:&lt;28}</code> pads the name to 28 characters so the sizes line up in a column.</li>
+<li>You learn that these files are over a gigabyte each, and you have downloaded none of them.</li>
+</ul>
+<p>One listing call returns at most 1,000 objects. For larger prefixes, a <em>paginator</em> keeps asking until there are no more; the class notebooks’ <code>prefix_size()</code> helper uses one.</p>
+</section>
+<section id="reading-a-slice-of-a-file" class="level3">
+<h3 class="anchored" data-anchor-id="reading-a-slice-of-a-file">Reading a slice of a file</h3>
+<p>S3 supports range requests, so you can read the first few hundred bytes of a gigabyte file to see its shape:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span><span class="st">"csv/by_year/2024.csv"</span>, Range<span class="op">=</span><span class="st">"bytes=0-299"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(obj[<span class="st">"Body"</span>].read().decode())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>What this code does.</strong></p>
+<ul>
+<li><code>get_object</code> is the request that actually fetches file contents. Without <code>Range</code> it would start sending the whole file.</li>
+<li><code>Range="bytes=0-299"</code> asks for the first 300 bytes only.</li>
+<li><code>obj["Body"]</code> is a <em>stream</em> that you read from. <code>.read()</code> pulls the bytes off it, and <code>.decode()</code> turns them into text.</li>
+</ul>
+<p>Use this to check whether a file has a header row before you read it. Never assume either way; the check costs 300 bytes.</p>
+<hr>
+</section>
+</section>
+<section id="three-levers-for-data-that-does-not-fit" class="level2">
+<h2 class="anchored" data-anchor-id="three-levers-for-data-that-does-not-fit">2. Three levers for data that does not fit</h2>
+<p>When data does not fit, there are three levers, and they all express one principle: <strong>move the filter to the data instead of moving the data to the filter.</strong></p>
+<p><strong>Lever 1: pick the right object.</strong> GHCN offers the same data by year (over a gigabyte, all stations) and by station (a few megabytes, all years). If you need one location, read the station file. Choosing the object is the cheapest filter there is. Reading one Parquet year-and-element slice, as the class notebooks do, is the same lever.</p>
+<p><strong>Lever 2: read fewer columns.</strong> <code>usecols</code> (for CSV) or <code>columns</code> (for Parquet) tells pandas to discard columns while reading, so they never take memory.</p>
+<p><strong>Lever 3: read fewer rows at a time.</strong> <code>chunksize</code> returns an iterator of DataFrames; you filter each chunk and keep only what survives.</p>
+<section id="one-station-straight-from-s3" class="level3">
+<h3 class="anchored" data-anchor-id="one-station-straight-from-s3">One station, straight from S3</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>COLS <span class="op">=</span> [<span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"element"</span>, <span class="st">"value"</span>, <span class="st">"m_flag"</span>, <span class="st">"q_flag"</span>, <span class="st">"s_flag"</span>, <span class="st">"obs_time"</span>]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>STATION <span class="op">=</span> <span class="st">"USC00047851"</span>          <span class="co"># SAN LUIS OBISPO POLY, CA; records since 1893</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> <span class="ss">f"csv/by_station/</span><span class="sc">{</span>STATION<span class="sc">}</span><span class="ss">.csv"</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Does the file have a header row? Read 100 bytes and look.</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>first <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key, Range<span class="op">=</span><span class="st">"bytes=0-99"</span>)[<span class="st">"Body"</span>].read().decode()</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>has_header <span class="op">=</span> first.upper().startswith(<span class="st">"ID,"</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    obj[<span class="st">"Body"</span>],</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    header<span class="op">=</span><span class="dv">0</span> <span class="cf">if</span> has_header <span class="cf">else</span> <span class="va">None</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    names<span class="op">=</span>COLS,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    usecols<span class="op">=</span>[<span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"element"</span>, <span class="st">"value"</span>, <span class="st">"q_flag"</span>],     <span class="co"># lever 2</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    dtype<span class="op">=</span>{<span class="st">"id"</span>: <span class="st">"string"</span>, <span class="st">"element"</span>: <span class="st">"string"</span>, <span class="st">"q_flag"</span>: <span class="st">"string"</span>},</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[df[<span class="st">"q_flag"</span>].isna()]         <span class="co"># drop values that failed NOAA's quality checks</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape, human(df.memory_usage(deep<span class="op">=</span><span class="va">True</span>).<span class="bu">sum</span>()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>What this code does.</strong></p>
+<ul>
+<li><code>key</code> builds the name of that station’s file. This is <strong>lever 1</strong>: you chose the small object.</li>
+<li>The two lines after the comment read the first 100 bytes and set <code>has_header</code>.</li>
+<li><code>pd.read_csv(obj["Body"], ...)</code> reads the table straight off the stream. Nothing is saved to your disk.</li>
+<li><code>usecols=[...]</code> is <strong>lever 2</strong>: pandas discards the other columns as it parses.</li>
+<li>The quality-flag filter drops values that failed NOAA’s checks, so they become missing rather than wrong.</li>
+<li>The last line prints the shape and the measured memory use.</li>
+</ul>
+</section>
+<section id="filtering-a-large-file-in-chunks" class="level3">
+<h3 class="anchored" data-anchor-id="filtering-a-large-file-in-chunks">Filtering a large file in chunks</h3>
+<p>The 2024 by-year file holds every station in the world. The cell below reads only its <strong>first 300 MB</strong>, a million rows at a time, keeps the SLO rows, and reports how long that took. Expect a few minutes on a home connection. Do not run the cell twice while it is working.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> <span class="st">"csv/by_year/2024.csv"</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>first <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key, Range<span class="op">=</span><span class="st">"bytes=0-99"</span>)[<span class="st">"Body"</span>].read().decode()</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>has_header <span class="op">=</span> first.upper().startswith(<span class="st">"ID,"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>SAMPLE_BYTES <span class="op">=</span> <span class="dv">300_000_000</span>                          <span class="co"># the first 300 MB, not the whole file</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> s3.get_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key, Range<span class="op">=</span><span class="ss">f"bytes=0-</span><span class="sc">{</span>SAMPLE_BYTES <span class="op">-</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>chunks <span class="op">=</span> pd.read_csv(</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    obj[<span class="st">"Body"</span>],</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    header<span class="op">=</span><span class="dv">0</span> <span class="cf">if</span> has_header <span class="cf">else</span> <span class="va">None</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    names<span class="op">=</span>COLS,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    usecols<span class="op">=</span>[<span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"element"</span>, <span class="st">"value"</span>],</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    dtype<span class="op">=</span>{<span class="st">"id"</span>: <span class="st">"string"</span>, <span class="st">"element"</span>: <span class="st">"string"</span>},</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    chunksize<span class="op">=</span><span class="dv">1_000_000</span>,                            <span class="co"># lever 3</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>keep <span class="op">=</span> pd.concat(c[c[<span class="st">"id"</span>] <span class="op">==</span> STATION] <span class="cf">for</span> c <span class="kw">in</span> chunks)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>seconds <span class="op">=</span> time.perf_counter() <span class="op">-</span> t0</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(keep)<span class="sc">:,}</span><span class="ss"> rows for </span><span class="sc">{</span>STATION<span class="sc">}</span><span class="ss"> in </span><span class="sc">{</span>seconds<span class="sc">:,.0f}</span><span class="ss"> s, after reading </span><span class="sc">{</span>human(SAMPLE_BYTES)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>What this code does.</strong></p>
+<ul>
+<li><code>Range=...</code> limits the read to the first 300 MB. The file is sorted by date, so that covers roughly January to mid-March.</li>
+<li><code>chunksize=1_000_000</code> is <strong>lever 3</strong>. <code>pd.read_csv</code> returns an <em>iterator</em> that hands over one table of a million rows at a time.</li>
+<li><code>pd.concat(c[c["id"] == STATION] for c in chunks)</code> keeps only the SLO rows from each chunk and stitches them together. Your memory holds one chunk at a time.</li>
+<li>The time printed is a <strong>measurement of this 300 MB sample on your connection</strong>. It is not an estimate for the whole file, and it should not be compared with a different job on a different machine.</li>
+</ul>
+<p>Chunking protects your memory, not your time: every byte still travels to your laptop to be inspected. Compare the two cells. The by-station cell read a few megabytes and returned every SLO row since 1893. This one read 300 MB to find a few hundred. Lever 1 was the one that mattered.</p>
+</section>
+<section id="the-units-trap" class="level3">
+<h3 class="anchored" data-anchor-id="the-units-trap">The units trap</h3>
+<p>GHCN stores temperatures in <strong>tenths of a degree Celsius</strong> and precipitation in <strong>tenths of a millimeter</strong>. A <code>TMAX</code> value of <code>266</code> means 26.6 °C. Divide by 10 before you do anything else.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>].astype(<span class="bu">str</span>), <span class="bu">format</span><span class="op">=</span><span class="st">"%Y%m</span><span class="sc">%d</span><span class="st">"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>tmax <span class="op">=</span> df[df[<span class="st">"element"</span>] <span class="op">==</span> <span class="st">"TMAX"</span>].copy()</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>tmax[<span class="st">"tmax_c"</span>] <span class="op">=</span> tmax[<span class="st">"value"</span>] <span class="op">/</span> <span class="dv">10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="cost-in-more-detail" class="level2">
+<h2 class="anchored" data-anchor-id="cost-in-more-detail">3. Cost in more detail</h2>
+<p>Approximate prices for <code>us-east-1</code> at the time of writing. Check the pricing pages for current numbers.</p>
+<section id="storage" class="level3">
+<h3 class="anchored" data-anchor-id="storage">Storage</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>What</th>
+<th>Approx. price</th>
+<th>What it means for you</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>S3 Standard storage</td>
+<td>$0.023 per GB per month</td>
+<td>The NOAA bucket is paid for by the AWS Open Data program, not by you. A bucket of your own is charged at this rate</td>
+</tr>
+<tr class="even">
+<td>S3 requests</td>
+<td>Fractions of a cent per thousand</td>
+<td>Every listing and metadata call in this module together: well under a cent</td>
+</tr>
+<tr class="odd">
+<td>Data transfer, S3 to your laptop</td>
+<td>A monthly free allowance, then about $0.09 per GB</td>
+<td>For a public bucket like NOAA’s, the bucket owner’s program covers this. For data in your own bucket, large repeated downloads to a laptop add up</td>
+</tr>
+<tr class="even">
+<td>Data transfer, S3 to SageMaker in the same region</td>
+<td>No charge</td>
+<td>One reason to put the computer next to the data</td>
+</tr>
+<tr class="odd">
+<td>SageMaker space disk</td>
+<td>About $0.10 per GB per month</td>
+<td>A stopped space with the default 5 GB: about 50 cents a month</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="computing" class="level3">
+<h3 class="anchored" data-anchor-id="computing">Computing</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>What</th>
+<th>Approx. price</th>
+<th>What it means for you</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ml.t3.medium</code> (2 vCPUs, 4 GB)</td>
+<td>$0.05 per hour</td>
+<td>A three-hour session: 15 cents</td>
+</tr>
+<tr class="even">
+<td><code>ml.t3.xlarge</code> (4 vCPUs, 16 GB)</td>
+<td>$0.20 per hour</td>
+<td>Four times the memory for four times the price</td>
+</tr>
+<tr class="odd">
+<td><code>ml.m5.4xlarge</code> (16 vCPUs, 64 GB)</td>
+<td>$0.92 per hour</td>
+<td>A machine that could load a whole by-year CSV. An hour costs less than a coffee, a forgotten month costs hundreds of dollars</td>
+</tr>
+</tbody>
+</table>
+<p>Computing is rented in hours, not bought in years. If a job needs 64 GB of RAM once a quarter, you rent 64 GB for that hour. Larger instance types may not be available on every account plan; check before you plan around one.</p>
+</section>
+<section id="how-you-code-is-how-you-spend" class="level3">
+<h3 class="anchored" data-anchor-id="how-you-code-is-how-you-spend">How you code is how you spend</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>A choice you make</th>
+<th>What it reduces</th>
+<th>Which charge that is</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Read one slice or one station file instead of a whole year (lever 1)</td>
+<td>Bytes read</td>
+<td>Time the instance is running; transfer, if the code runs outside the region</td>
+</tr>
+<tr class="even">
+<td>Read only the columns you need, or read in chunks (levers 2 and 3)</td>
+<td>Memory the job needs</td>
+<td>Instance size: the job fits on a small machine instead of a large one</td>
+</tr>
+<tr class="odd">
+<td>Run the notebook in the same region as the bucket</td>
+<td>Distance the data travels</td>
+<td>Data transfer</td>
+</tr>
+<tr class="even">
+<td>Code that finishes in seconds instead of minutes</td>
+<td>Hours the instance is running</td>
+<td>Instance price per hour</td>
+</tr>
+<tr class="odd">
+<td>Stopping the space when you finish</td>
+<td>Hours the instance is running</td>
+<td>Instance price per hour</td>
+</tr>
+</tbody>
+</table>
+<p>An analysis costs roughly (how much machine) × (how long it runs) + (how many bytes are stored or moved), and every lever above pushes one of those numbers down.</p>
+</section>
+<section id="say-it-in-your-own-words" class="level3">
+<h3 class="anchored" data-anchor-id="say-it-in-your-own-words">Say it in your own words</h3>
+<ol type="1">
+<li>In your own words, what are you paying for when a JupyterLab space is <em>Running</em>? What are you paying for when it is <em>Stopped</em>?</li>
+<li>A colleague says, “The data doesn’t fit in memory, so let’s just rent the 64 GB machine.” Explain what they should try first, and why that order saves money.</li>
+<li>Pick one row of the “forgot to stop it” table in the reading. Describe what went wrong, what it cost, and the habit that prevents it.</li>
+<li>Finish this sentence with a specific example: “Writing efficient code reduces cloud cost because …”</li>
+</ol>
+</section>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li>GHCN-Daily by-year file format: <a href="https://www.ncei.noaa.gov/pub/data/ghcn/daily/readme-by_year.txt" class="uri">https://www.ncei.noaa.gov/pub/data/ghcn/daily/readme-by_year.txt</a></li>
+<li>pandas <code>read_csv</code> (<code>usecols</code>, <code>chunksize</code>): <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html" class="uri">https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html</a></li>
+<li>S3 pricing: <a href="https://aws.amazon.com/s3/pricing/" class="uri">https://aws.amazon.com/s3/pricing/</a></li>
+<li>SageMaker AI pricing: <a href="https://aws.amazon.com/sagemaker/ai/pricing/" class="uri">https://aws.amazon.com/sagemaker/ai/pricing/</a></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/gato365\.github\.io\/aws-gsb-5544-sessions\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../session_1/05_athena_extension.html" class="pagination-link" aria-label="05 · Athena extension: notebook (student)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">05 · Athena extension: notebook (student)</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../session_1/lab/lab_cloudy_with_a_chance_of_parquet.html" class="pagination-link" aria-label="Challenge lab · Cloudy with a Chance of Parquet">
+        <span class="nav-page-text">Challenge lab · Cloudy with a Chance of Parquet</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>GSB 5544 · Computing and Machine Learning for Business Analytics</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/06_extraction_strategies_optional.md" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with Quarto · Hosted on GitHub Pages</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

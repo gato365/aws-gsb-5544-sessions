@@ -3,12 +3,14 @@ project:
   output-dir: docs
   render:
     - index.qmd
-    - session_1/01_preclass_reading.md
+    - session_1/*.md
     - session_1/*.ipynb
-    - session_1/CHANGELOG.md
+    - session_1/lab/lab_cloudy_with_a_chance_of_parquet.qmd
   resources:
     - "session_1/*.ipynb"
     - "session_1/build_notebooks.py"
+    - "session_1/lab/stations.csv"
+    - "session_1/lab/lab_cloudy_with_a_chance_of_parquet.ipynb"
 
 execute:
   enabled: false
@@ -28,16 +30,42 @@ website:
         menu:
           - text: "01 · Pre-class reading"
             href: session_1/01_preclass_reading.md
-          - text: "02 · Topics of practice (student)"
+          - text: "02 · Topics notebook (student)"
             href: session_1/02_topics_of_practice.ipynb
-          - text: "02 · Topics of practice (solutions)"
-            href: session_1/02_topics_of_practice_SOLUTIONS.ipynb
-          - text: "03 · Practice activity (student)"
-            href: session_1/03_practice_activity.ipynb
-          - text: "03 · Practice activity (solutions)"
-            href: session_1/03_practice_activity_SOLUTIONS.ipynb
-          - text: "Changelog · local → remote compute"
+          - text: "03 · Practice: remote notebook (student)"
+            href: session_1/03_practice_activity_remote.ipynb
+          - text: "03 · Practice: local notebook (student)"
+            href: session_1/03_practice_activity_local.ipynb
+          - text: "04 · Lab: remote notebook (student)"
+            href: session_1/04_lab_remote.ipynb
+          - text: "04 · Lab: local notebook (student)"
+            href: session_1/04_lab_local.ipynb
+          - text: "Changelog"
             href: session_1/CHANGELOG.md
+      - text: "Solutions"
+        menu:
+          - text: "02 · Topics notebook"
+            href: session_1/02_topics_of_practice_SOLUTIONS.ipynb
+          - text: "03 · Practice: remote notebook"
+            href: session_1/03_practice_activity_remote_SOLUTIONS.ipynb
+          - text: "03 · Practice: local notebook"
+            href: session_1/03_practice_activity_local_SOLUTIONS.ipynb
+          - text: "04 · Lab: remote notebook"
+            href: session_1/04_lab_remote_SOLUTIONS.ipynb
+          - text: "04 · Lab: local notebook"
+            href: session_1/04_lab_local_SOLUTIONS.ipynb
+          - text: "05 · Athena extension notebook"
+            href: session_1/05_athena_extension_SOLUTIONS.ipynb
+      - text: "Optional"
+        menu:
+          - text: "05 · Athena extension: guide"
+            href: session_1/05_athena_extension_guide.md
+          - text: "05 · Athena extension: notebook (student)"
+            href: session_1/05_athena_extension.ipynb
+          - text: "06 · Extraction strategies and cost detail"
+            href: session_1/06_extraction_strategies_optional.md
+          - text: "Challenge lab · Cloudy with a Chance of Parquet"
+            href: session_1/lab/lab_cloudy_with_a_chance_of_parquet.qmd
     right:
       - icon: github
         href: https://github.com/gato365/aws-gsb-5544-sessions
@@ -50,16 +78,42 @@ website:
         contents:
           - text: "01 · Pre-class reading"
             href: session_1/01_preclass_reading.md
-          - text: "02 · Topics of practice (student)"
+          - text: "02 · Topics notebook (student)"
             href: session_1/02_topics_of_practice.ipynb
-          - text: "02 · Topics of practice (solutions)"
+          - text: "03 · Practice: remote notebook (student)"
+            href: session_1/03_practice_activity_remote.ipynb
+          - text: "03 · Practice: local notebook (student)"
+            href: session_1/03_practice_activity_local.ipynb
+          - text: "04 · Lab: remote notebook (student)"
+            href: session_1/04_lab_remote.ipynb
+          - text: "04 · Lab: local notebook (student)"
+            href: session_1/04_lab_local.ipynb
+      - section: "Solutions (instructor)"
+        contents:
+          - text: "02 · Topics notebook"
             href: session_1/02_topics_of_practice_SOLUTIONS.ipynb
-          - text: "03 · Practice activity (student)"
-            href: session_1/03_practice_activity.ipynb
-          - text: "03 · Practice activity (solutions)"
-            href: session_1/03_practice_activity_SOLUTIONS.ipynb
-          - text: "Changelog · local → remote compute"
-            href: session_1/CHANGELOG.md
+          - text: "03 · Practice: remote notebook"
+            href: session_1/03_practice_activity_remote_SOLUTIONS.ipynb
+          - text: "03 · Practice: local notebook"
+            href: session_1/03_practice_activity_local_SOLUTIONS.ipynb
+          - text: "04 · Lab: remote notebook"
+            href: session_1/04_lab_remote_SOLUTIONS.ipynb
+          - text: "04 · Lab: local notebook"
+            href: session_1/04_lab_local_SOLUTIONS.ipynb
+          - text: "05 · Athena extension notebook"
+            href: session_1/05_athena_extension_SOLUTIONS.ipynb
+      - section: "Optional extensions"
+        contents:
+          - text: "05 · Athena extension: guide"
+            href: session_1/05_athena_extension_guide.md
+          - text: "05 · Athena extension: notebook (student)"
+            href: session_1/05_athena_extension.ipynb
+          - text: "06 · Extraction strategies and cost detail"
+            href: session_1/06_extraction_strategies_optional.md
+          - text: "Challenge lab · Cloudy with a Chance of Parquet"
+            href: session_1/lab/lab_cloudy_with_a_chance_of_parquet.qmd
+      - text: "Changelog"
+        href: session_1/CHANGELOG.md
   page-footer:
     left: "GSB 5544 · Computing and Machine Learning for Business Analytics"
     right: "Built with Quarto · Hosted on GitHub Pages"

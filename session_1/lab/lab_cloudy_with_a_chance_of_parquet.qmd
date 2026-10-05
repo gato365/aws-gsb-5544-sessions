@@ -1,0 +1,522 @@
+---
+title: "Optional Challenge Lab: Cloudy with a Chance of Parquet"
+subtitle: "GSB 5544 · Computing and Machine Learning for Business Analytics"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-copy: true
+jupyter: python3
+execute:
+  eval: false
+---
+
+## Introduction
+
+Your friend wants to open a rooftop patio bar and has asked you one question: **which city has the most good patio days?** They have a shortlist of cities and a strong opinion that the answer is Phoenix.
+
+You have something better than an opinion. NOAA keeps daily weather for every station on Earth in a public S3 bucket. A single year of it is millions of rows, far more than you want on your laptop. So you will do what the reading and the practice activity taught: **measure it where it sits, read only the slice you need on a cloud machine, shrink it there, and carry home something small.**
+
+A **patio day** is a day when the high temperature is between 20 °C and 30 °C inclusive and no rain fell.
+
+By the end you will have built one pipeline out of three functions:
+
+| Function | What it does | Used by |
+|---|---|---|
+| `size_up(prefix)` | Measures a slice of the bucket without reading it | Function 2 |
+| `read_slice(year, element, station_ids)` | Reads one slice, for only the stations you ask for, cleaned | Function 3 |
+| `patio_summary(stations, year)` | Turns a list of cities into a monthly patio-day table | The finale |
+
+**What runs where.** Every code chunk in this lab starts with a `# RUNS ON:` line. The line is a label; it does not move the code, which runs wherever the notebook is opened. Functions 1 to 3 and the finale run in **your SageMaker JupyterLab space** (`gsb5544`, an `ml.t3.medium` with 4 GB of RAM). Only the last chart runs on **your laptop**. The data starts in **S3** and stays there; you are only ever reading it.
+
+**What you turn in**
+
+1. This notebook, run top to bottom on SageMaker, with all output showing.
+2. `patio_summary.csv` and `patio_summary_surprise.csv`.
+3. `patio_days.png`, the chart you make on your laptop.
+4. A screenshot showing your space with status **Stopped**.
+
+## Data set
+
+The stations to compare come from a small file. The weather comes from the bucket `noaa-ghcn-pds`, which you already know from the practice activity.
+
+```{python}
+# RUNS ON: SageMaker (remote)
+import os
+import socket
+import boto3
+import pandas as pd
+from botocore import UNSIGNED
+from botocore.config import Config
+
+BUCKET = "noaa-ghcn-pds"
+s3 = boto3.client("s3", region_name="us-east-1", config=Config(signature_version=UNSIGNED))
+
+STATIONS_URL = "https://raw.githubusercontent.com/gato365/aws-gsb-5544-sessions/main/session_1/lab/stations.csv"
+stations = pd.read_csv(STATIONS_URL)
+
+print("This code is running on:", socket.gethostname())
+stations
+```
+
+`stations` has two columns, `city` and `station_id`. Look at it closely before you write anything. It was typed by a person.
+
+The weather is stored as Parquet files, one folder per year and element:
+
+```
+parquet/by_year/YEAR=2024/ELEMENT=TMAX/   daily high temperature
+parquet/by_year/YEAR=2024/ELEMENT=PRCP/   daily precipitation
+```
+
+Each file has these columns. You need only the first four.
+
+| Column | Meaning |
+|---|---|
+| `ID` | Station id, eleven characters, uppercase |
+| `DATE` | The day, as text like `20240131` |
+| `DATA_VALUE` | The measurement in **tenths**: tenths of a degree Celsius for `TMAX`, tenths of a millimeter for `PRCP` |
+| `Q_FLAG` | Empty if the value passed NOAA's quality checks; a letter if it **failed** |
+| `M_FLAG`, `S_FLAG`, `OBS_TIME` | Not needed |
+
+You are also given this helper from the practice activity. Use it; do not rewrite it.
+
+```{python}
+# RUNS ON: SageMaker (remote)
+def human(n, base=1000):
+    for unit in ["B", "KB", "MB", "GB", "TB", "PB"]:
+        if n < base:
+            return f"{n:,.1f} {unit}"
+        n /= base
+    return f"{n:,.1f} EB"
+```
+
+### The known special cases
+
+Real data is messy. These are **all** the irregular cases in this lab. Your code must handle each one, and the surprise data at the end contains these and no others.
+
+1. **Messy ids.** Some `station_id` values in the stations file have stray spaces or are lowercase. The bucket uses clean uppercase ids.
+2. **Missing days.** Some stations did not report every day. A missing day is simply not in the data.
+3. **Failed quality checks.** Rows where `Q_FLAG` is not empty must be thrown away. After that, the day counts as missing.
+4. **A station with no temperature.** Some stations are rain gauges and have `PRCP` but no `TMAX` at all.
+5. **A station that does not exist.** One id in the list matches nothing in the bucket.
+6. **Units.** Values are stored in tenths. A `DATA_VALUE` of `183` for `TMAX` means 18.3 °C.
+
+Trace rainfall is stored as `0`. Treat it as a dry day; there is nothing extra to do.
+
+::: {.callout-tip title="Advice"}
+- **Solve one case first.** Get each function working for San Luis Obispo (`USC00047851`) before you think about the whole list.
+- **Reuse your functions.** Function 2 must call Function 1, and Function 3 must call Function 2. If you find yourself pasting code from an earlier function into a later one, call it instead.
+- **Test small before big.** `TMAX` is the small slice (about 15 MB). Develop against it, then bring in `PRCP`.
+- **Do not sweat small formatting details.** Row order, index values, and whether a text column shows as `object` or `str` do not matter. Column names, values, and row counts do.
+- **Your numbers may differ slightly from mine.** NOAA revises the archive. The expected outputs below were produced on October 5, 2026. A difference of a row or a few bytes is fine; a difference of thousands is a bug.
+:::
+
+::: {.callout-important title="Not allowed in this lab"}
+- **No whole-year CSV files** (`csv/by_year/` or `csv.gz/by_year/`). Reading 1.3 GB to keep a few hundred rows is the mistake this lab exists to cure.
+- **No per-station files** (`csv/by_station/`). They would let you skip slicing a shared table, which is the skill being practiced.
+- **No Athena.** It hides the size check and the filter that you are meant to write yourself.
+- **No reading a slice and filtering afterwards.** The station filter must be passed *into* `pd.read_parquet`, so that only matching rows ever reach the machine's 4 GB of RAM.
+- **No single call to `list_objects_v2`.** One call returns at most 1,000 objects, and your function must be right for prefixes that hold more.
+- **No hard-coded sizes, station ids, years, or row counts inside a function.** Functions must work for any prefix, year, element, and station list, not only the ones in this handout.
+- **No loops over rows** (`iterrows`, `itertuples`, `for` over a DataFrame). Use `groupby`, boolean columns, and merges. A short loop over the two elements is fine.
+- **No running Functions 1 to 3 on your laptop.** The computer name printed by the first chunk is part of your submission.
+:::
+
+## Function 1: `size_up`
+
+Before reading anything from a bucket, find out how big it is. Listing a prefix costs almost nothing and moves no data.
+
+Write `size_up(prefix)`. It lists every object in `BUCKET` whose key starts with `prefix` and returns a dictionary with exactly these four keys:
+
+| Key | Value |
+|---|---|
+| `"prefix"` | the prefix you were given |
+| `"objects"` | how many objects are under it |
+| `"bytes"` | their total size in bytes, as an integer |
+| `"readable"` | that size passed through `human()` |
+
+A prefix that matches nothing returns zero objects and zero bytes. It does not raise an error.
+
+**Hint.** One listing call returns at most 1,000 objects. A *paginator* keeps asking until there are no more. This snippet counts the pages under a different prefix; it does not solve the task.
+
+```{python}
+# RUNS ON: SageMaker (remote)
+pages = s3.get_paginator("list_objects_v2").paginate(Bucket=BUCKET, Prefix="csv/by_station/US1CA")
+for number, page in enumerate(pages, start=1):
+    print("page", number, "has", len(page.get("Contents", [])), "objects")
+```
+
+Each object in `page["Contents"]` is a dictionary with a `"Key"` and a `"Size"`. A page with no matches has no `"Contents"` key at all, which is why the snippet uses `.get`.
+
+```{python}
+# RUNS ON: SageMaker (remote)
+def size_up(prefix):
+    """Measure everything under a prefix without reading it.
+
+    Parameters
+    ----------
+    prefix : str
+        ____
+
+    Returns
+    -------
+    dict
+        ____
+    """
+    # 1. start two counters at zero
+    ____
+    # 2. go through every page of the listing
+    for page in ____:
+        # 3. add this page's objects and sizes to the counters
+        ____
+    # 4. return the four-key dictionary
+    return ____
+```
+
+### Test your function
+
+```{python}
+# RUNS ON: SageMaker (remote)
+size_up("parquet/by_year/YEAR=2024/ELEMENT=TMAX/")
+```
+
+Expected:
+
+```
+{'prefix': 'parquet/by_year/YEAR=2024/ELEMENT=TMAX/', 'objects': 9, 'bytes': 14797263, 'readable': '14.8 MB'}
+```
+
+Now two harder checks. The first has more than 1,000 objects. The second matches nothing.
+
+```{python}
+# RUNS ON: SageMaker (remote)
+print(size_up("csv/by_station/USC0004")["objects"])              # expect 1190
+print(size_up("parquet/by_year/YEAR=2031/ELEMENT=TMAX/"))        # expect 0 objects, 0 bytes, '0.0 B'
+```
+
+If the first line prints `1000`, you are not paginating.
+
+## Function 2: `read_slice`
+
+Now read one slice, but only the rows for the stations you want, and hand back something clean.
+
+Write `read_slice(year, element, station_ids, budget_mb=100)`. It must, in this order:
+
+1. Build the prefix for that year and element.
+2. Call `size_up` on it. If the slice is larger than `budget_mb` megabytes (1 MB = 1,000,000 bytes), raise a `ValueError` whose message includes the readable size. This is your guard against reading something that will not fit.
+3. Clean the station ids (special case 1).
+4. Read the slice with `pd.read_parquet`, asking for only the four columns you need and passing the station filter into the read.
+5. Drop rows that failed quality checks (special case 3).
+6. Return a DataFrame with exactly these columns:
+
+| Column | Type | Contents |
+|---|---|---|
+| `station_id` | text | the clean uppercase id |
+| `date` | datetime | the day |
+| `element` | text | the element you asked for, such as `"TMAX"` |
+| `value` | float | the measurement in real units: `DATA_VALUE / 10` |
+
+If no rows match, return an **empty** DataFrame that still has those four columns (special cases 4 and 5). Do not raise an error.
+
+**Hint: filtering inside the read.** `pd.read_parquet` accepts `filters`, a list of `(column, operator, value)` rules. Parquet applies them while reading, so rows that fail never reach memory. This snippet filters on a different column; it does not solve the task.
+
+```{python}
+# RUNS ON: SageMaker (remote)
+hot = pd.read_parquet(
+    f"s3://{BUCKET}/parquet/by_year/YEAR=2024/ELEMENT=TMAX/",
+    columns=["ID", "DATE", "DATA_VALUE"],
+    filters=[("DATA_VALUE", ">", 520)],          # other operators include "==" and "in"
+    storage_options={"anon": True},              # unsigned: the bucket is public
+)
+len(hot)
+```
+
+**Hint: cleaning text.** `"  abc ".strip().upper()` gives `"ABC"`. On a pandas column the same methods live under `.str`.
+
+**Hint: dates.** `pd.to_datetime(column.astype(str), format="%Y%m%d")` turns `20240131` into a real date.
+
+```{python}
+# RUNS ON: SageMaker (remote)
+def read_slice(year, element, station_ids, budget_mb=100):
+    """____
+
+    Parameters
+    ----------
+    year : int
+    element : str
+    station_ids : list-like of str
+    budget_mb : float
+
+    Returns
+    -------
+    pandas.DataFrame
+        ____
+    """
+    # 1. build the prefix
+    prefix = ____
+    # 2. measure it with Function 1 and refuse if it is over budget
+    report = ____
+    if ____:
+        raise ValueError(____)
+    # 3. clean the ids
+    ids = ____
+    # 4. read only the needed columns, only for these stations
+    raw = pd.read_parquet(____)
+    # 5. drop rows that failed quality checks
+    ____
+    # 6. build and return the four-column result
+    return ____
+```
+
+### Test your function
+
+Start with one station, then two with a messy id.
+
+```{python}
+# RUNS ON: SageMaker (remote)
+slo = read_slice(2024, "TMAX", ["USC00047851"])
+print(slo.shape)                 # expect (366, 4)
+slo.head(3)
+```
+
+Expected first rows:
+
+```
+    station_id       date element  value
+0  USC00047851 2024-01-01    TMAX   18.3
+1  USC00047851 2024-01-02    TMAX   17.8
+2  USC00047851 2024-01-03    TMAX   16.1
+```
+
+```{python}
+# RUNS ON: SageMaker (remote)
+two = read_slice(2024, "TMAX", [" usw00023183", "USC00047851"])
+print(two.groupby("station_id").size().to_dict())      # expect {'USC00047851': 366, 'USW00023183': 366}
+
+print(len(read_slice(2024, "TMAX", ["USC00305606"])))  # expect 285: this station had 362 rows, 77 failed checks
+print(read_slice(2024, "TMAX", ["USW00000000"]).shape) # expect (0, 4)
+```
+
+Finally, check the guard. This call **should** fail:
+
+```{python}
+# RUNS ON: SageMaker (remote)
+read_slice(2024, "PRCP", ["USC00047851"], budget_mb=10)
+```
+
+Expected:
+
+```
+ValueError: parquet/by_year/YEAR=2024/ELEMENT=PRCP/ is 42.5 MB, over the 10 MB budget
+```
+
+## Function 3: `patio_summary`
+
+Now answer the question. Write `patio_summary(stations, year)`, where `stations` is a DataFrame with `city` and `station_id` columns, like the one you loaded.
+
+It must call `read_slice` once for `"TMAX"` and once for `"PRCP"`, and return **one row per city per month**: twelve rows for every city in `stations`, including cities with no data. The columns are exactly:
+
+| Column | Contents |
+|---|---|
+| `city` | from `stations` |
+| `station_id` | the clean uppercase id |
+| `month` | 1 to 12 |
+| `days_reported` | days that month with **both** a valid high temperature and a valid precipitation value |
+| `avg_tmax_c` | mean high temperature over the days that have one, rounded to 1 decimal; `NaN` if there are none |
+| `total_prcp_mm` | total precipitation over the days that have one, rounded to 1 decimal; `NaN` if there are none |
+| `patio_days` | days with a high between 20 and 30 inclusive **and** precipitation exactly 0 |
+
+A day with a missing temperature or a missing precipitation value is never a patio day. `days_reported` and `patio_days` are whole numbers, and they are `0`, not `NaN`, for a city with no data.
+
+**Hint: long to wide.** `read_slice` returns one row per station, day, and element. You want one row per station and day with a temperature column and a precipitation column. Stack the two results with `pd.concat`, then spread them:
+
+```{python}
+# RUNS ON: SageMaker (remote)
+toy = pd.DataFrame({"who": ["a", "a", "b"], "what": ["x", "y", "x"], "n": [1, 2, 3]})
+toy.pivot_table(index="who", columns="what", values="n").reindex(columns=["x", "y"])
+```
+
+Notice that `b` has no `y`, so it gets `NaN`. The `.reindex(columns=...)` at the end guarantees both columns exist even when an element has no rows at all.
+
+**Hint: twelve rows for everyone.** A cross merge pairs every row of one table with every row of another. Merge that grid with your monthly results using `how="left"` and cities with no data keep their rows.
+
+```{python}
+# RUNS ON: SageMaker (remote)
+pd.DataFrame({"city": ["A", "B"]}).merge(pd.DataFrame({"month": [1, 2, 3]}), how="cross")
+```
+
+**Hint: a sum that admits it has nothing.** `pd.Series([None, None]).sum()` is `0.0`, which would claim a rain gauge that reported nothing had a dry month. `.sum(min_count=1)` gives `NaN` instead.
+
+**Hint: ranges.** `column.between(20, 30)` is `True` from 20 to 30 inclusive and `False` for `NaN`.
+
+```{python}
+# RUNS ON: SageMaker (remote)
+def patio_summary(stations, year):
+    """____"""
+    # 1. copy `stations` and clean its ids so they match what read_slice returns
+    ____
+    # 2. read TMAX and PRCP with Function 2 and stack them
+    long = ____
+    # 3. spread to one row per station and day: tmax_c and prcp_mm
+    wide = ____
+    # 4. add month, a both-values-present flag, and a patio-day flag
+    ____
+    # 5. group by station and month and compute the four summary columns
+    monthly = ____
+    # 6. build the city-by-month grid and left-merge the summary onto it
+    ____
+    # 7. fill the two count columns with 0, round, order the columns, return
+    return ____
+```
+
+### Test your function
+
+Test on one city before the whole list.
+
+```{python}
+# RUNS ON: SageMaker (remote)
+one = patio_summary(stations[stations["city"] == "San Luis Obispo"], 2024)
+print(one.shape)                 # expect (12, 7)
+one.head(3)
+```
+
+Expected first rows:
+
+```
+              city   station_id  month  days_reported  avg_tmax_c  total_prcp_mm  patio_days
+0  San Luis Obispo  USC00047851      1             31        18.0           98.9           5
+1  San Luis Obispo  USC00047851      2             29        17.9          171.0           6
+2  San Luis Obispo  USC00047851      3             31        18.7          128.7          10
+```
+
+Then the two awkward cities:
+
+```{python}
+# RUNS ON: SageMaker (remote)
+odd = patio_summary(stations[stations["city"].isin(["Atascadero rain gauge", "Atlantis"])], 2024)
+odd[odd["month"] == 1]
+```
+
+Expected:
+
+```
+                    city   station_id  month  days_reported  avg_tmax_c  total_prcp_mm  patio_days
+0  Atascadero rain gauge  US1CASL0033      1              0         NaN           73.4           0
+1               Atlantis  USW00000000      1              0         NaN            NaN           0
+```
+
+## Use your functions
+
+### 1. The full list, on the cloud machine
+
+```{python}
+# RUNS ON: SageMaker (remote)
+summary = patio_summary(stations, 2024)
+print(summary.shape)             # expect (84, 7)
+
+summary.to_csv("patio_summary.csv", index=False)          # written to the SageMaker disk
+
+(summary.groupby("city", sort=False)[["days_reported", "patio_days"]].sum()
+        .sort_values("patio_days", ascending=False))
+```
+
+Expected:
+
+```
+                       days_reported  patio_days
+city
+San Luis Obispo                  366         209
+Miami                            366         142
+Phoenix                          366         132
+Mount Sinai NY                   282          98
+Seattle                          364          86
+Atascadero rain gauge              0           0
+Atlantis                           0           0
+```
+
+Tell your friend about Phoenix gently.
+
+### 2. The receipt
+
+Use `size_up` and `os.path.getsize` to fill in this dictionary **with code, not typed numbers**. It records how much data sat in S3, and how much you are about to carry home.
+
+```{python}
+# RUNS ON: SageMaker (remote)
+receipt = {
+    "ran on":              socket.gethostname(),
+    "bytes in S3 slices":  ____,     # TMAX slice + PRCP slice for 2024, from size_up
+    "bytes carried home":  ____,     # size of patio_summary.csv on this machine's disk
+}
+receipt["shrink factor"] = round(receipt["bytes in S3 slices"] / receipt["bytes carried home"])
+receipt
+```
+
+The shrink factor should be in the tens of thousands.
+
+### 3. The surprise
+
+Your instructor will post a second file, `stations_surprise.csv`, with the same two columns and the same kinds of mess. Change **only** the URL below and rerun. If your functions are general, nothing else needs to change.
+
+```{python}
+# RUNS ON: SageMaker (remote)
+SURPRISE_URL = "____"
+surprise = pd.read_csv(SURPRISE_URL)
+
+summary_surprise = patio_summary(surprise, 2024)
+summary_surprise.to_csv("patio_summary_surprise.csv", index=False)
+
+(summary_surprise.groupby("city", sort=False)[["days_reported", "patio_days"]].sum()
+                 .sort_values("patio_days", ascending=False))
+```
+
+### 4. Carry it home and chart it
+
+In the JupyterLab file browser, right-click `patio_summary.csv` and choose **Download**. Do the same for `patio_summary_surprise.csv` and for this notebook.
+
+On **your laptop**, open **Positron**, create a new notebook in the folder with the downloaded file, and run the block below. It is shown as text, not as a chunk, so that it cannot be run on the cloud machine by accident.
+
+```python
+# RUNS ON: laptop (Positron)
+import socket
+import pandas as pd
+import matplotlib.pyplot as plt
+
+print("This code is running on:", socket.gethostname())
+
+small = pd.read_csv("patio_summary.csv")
+have_data = small.groupby("city")["days_reported"].transform("sum") > 0
+
+fig, ax = plt.subplots(figsize=(9, 4.5))
+for city, rows in small[have_data].groupby("city", sort=False):
+    ax.plot(rows["month"], rows["patio_days"], marker="o", label=city)
+ax.set_xticks(range(1, 13))
+ax.set_xlabel("Month of 2024")
+ax.set_ylabel("Patio days")
+ax.set_title("Good patio days by month")
+ax.legend(loc="upper left", bbox_to_anchor=(1.01, 1))     # legend outside the plot
+fig.savefig("patio_days.png", dpi=150, bbox_inches="tight")
+```
+
+### 5. Stop the meter
+
+In the Studio tab, open **JupyterLab**, click **Stop** on `gsb5544`, and wait for **Stopped**. Take the screenshot. A running space bills every hour whether or not you are using it.
+
+::: {.callout-warning title="Automatic deductions"}
+- **A function does not work as specified**: wrong return type, wrong column or key names, or it fails one of the "Test your function" checks.
+- **A function fails on a named special case**: messy ids, missing days, failed quality checks, a station with no temperature, a station that does not exist, or the tenths units.
+- **Hard-coding**: a size, id, year, row count, or receipt number typed in where code should have produced it.
+- **A banned shortcut**: whole-year or per-station CSV files, Athena, filtering after the read, a single unpaginated listing call, or a loop over rows.
+- **Functions that do not build on each other**: `read_slice` does not call `size_up`, or `patio_summary` does not call `read_slice`.
+- **Incomplete final output**: a missing CSV, a summary without twelve rows per city, no surprise run, no chart, or no receipt.
+- **Run in the wrong place**: Functions 1 to 3 run on your laptop, or the chart run on SageMaker. The printed computer names show which.
+- **No evidence that the space was stopped.**
+:::
+
+## Make it nice (optional)
+
+None of this is required. Pick anything that interests you.
+
+- **Make the definition adjustable.** Add `low=20`, `high=30`, and `max_prcp_mm=0` arguments to `patio_summary` and see how the ranking changes if your friend tolerates a drizzle.
+- **More than one year.** Write `patio_years(stations, years)` that calls `patio_summary` for each year and stacks the results with a `year` column. Call `size_up` first and print the total you are about to read.
+- **A better chart.** Order the legend by total patio days, or draw a heatmap of city by month.
+- **Fahrenheit for your friend.** Add an `avg_tmax_f` column without changing how patio days are counted.

@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Optional Challenge Lab: Cloudy with a Chance of Parquet – GSB 5544 · AWS Sessions</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../session_1/CHANGELOG.html" rel="next">
+<link href="../../session_1/06_extraction_strategies_optional.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-b4acf84f37d6d68f6a15c6fe27913e81.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">GSB 5544 · AWS Sessions</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-session-1" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Session 1</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-session-1">    
+        <li>
+    <a class="dropdown-item" href="../../session_1/01_preclass_reading.html">
+ <span class="dropdown-text">01 · Pre-class reading</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../session_1/02_topics_of_practice.html">
+ <span class="dropdown-text">02 · Topics notebook (student)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../session_1/03_practice_activity_remote.html">
+ <span class="dropdown-text">03 · Practice: remote notebook (student)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../session_1/03_practice_activity_local.html">
+ <span class="dropdown-text">03 · Practice: local notebook (student)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../session_1/04_lab_remote.html">
+ <span class="dropdown-text">04 · Lab: remote notebook (student)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../session_1/04_lab_local.html">
+ <span class="dropdown-text">04 · Lab: local notebook (student)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../session_1/CHANGELOG.html">
+ <span class="dropdown-text">Changelog</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-solutions" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Solutions</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-solutions">    
+        <li>
+    <a class="dropdown-item" href="../../session_1/02_topics_of_practice_SOLUTIONS.html">
+ <span class="dropdown-text">02 · Topics notebook</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../session_1/03_practice_activity_remote_SOLUTIONS.html">
+ <span class="dropdown-text">03 · Practice: remote notebook</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../session_1/03_practice_activity_local_SOLUTIONS.html">
+ <span class="dropdown-text">03 · Practice: local notebook</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../session_1/04_lab_remote_SOLUTIONS.html">
+ <span class="dropdown-text">04 · Lab: remote notebook</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../session_1/04_lab_local_SOLUTIONS.html">
+ <span class="dropdown-text">04 · Lab: local notebook</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../session_1/05_athena_extension_SOLUTIONS.html">
+ <span class="dropdown-text">05 · Athena extension notebook</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-optional" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Optional</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-optional">    
+        <li>
+    <a class="dropdown-item" href="../../session_1/05_athena_extension_guide.html">
+ <span class="dropdown-text">05 · Athena extension: guide</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../session_1/05_athena_extension.html">
+ <span class="dropdown-text">05 · Athena extension: notebook (student)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../session_1/06_extraction_strategies_optional.html">
+ <span class="dropdown-text">06 · Extraction strategies and cost detail</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../session_1/lab/lab_cloudy_with_a_chance_of_parquet.html">
+ <span class="dropdown-text">Challenge lab · Cloudy with a Chance of Parquet</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/gato365/aws-gsb-5544-sessions"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../session_1/05_athena_extension_guide.html">Optional extensions</a></li><li class="breadcrumb-item"><a href="../../session_1/lab/lab_cloudy_with_a_chance_of_parquet.html">Challenge lab · Cloudy with a Chance of Parquet</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AWS Sessions for GSB 5544</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Session 1 · Data Bigger Than Your Laptop</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../session_1/01_preclass_reading.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01 · Pre-class reading</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../session_1/02_topics_of_practice.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 · Topics notebook (student)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../session_1/03_practice_activity_remote.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 · Practice: remote notebook (student)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../session_1/03_practice_activity_local.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 · Practice: local notebook (student)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../session_1/04_lab_remote.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 · Lab: remote notebook (student)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../session_1/04_lab_local.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 · Lab: local notebook (student)</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Solutions (instructor)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../session_1/02_topics_of_practice_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 · Topics notebook</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../session_1/03_practice_activity_remote_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 · Practice: remote notebook</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../session_1/03_practice_activity_local_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 · Practice: local notebook</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../session_1/04_lab_remote_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 · Lab: remote notebook</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../session_1/04_lab_local_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 · Lab: local notebook</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../session_1/05_athena_extension_SOLUTIONS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 · Athena extension notebook</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Optional extensions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../session_1/05_athena_extension_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 · Athena extension: guide</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../session_1/05_athena_extension.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 · Athena extension: notebook (student)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../session_1/06_extraction_strategies_optional.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">06 · Extraction strategies and cost detail</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../session_1/lab/lab_cloudy_with_a_chance_of_parquet.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Challenge lab · Cloudy with a Chance of Parquet</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../session_1/CHANGELOG.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Changelog</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#data-set" id="toc-data-set" class="nav-link" data-scroll-target="#data-set">Data set</a>
+  <ul class="collapse">
+  <li><a href="#the-known-special-cases" id="toc-the-known-special-cases" class="nav-link" data-scroll-target="#the-known-special-cases">The known special cases</a></li>
+  </ul></li>
+  <li><a href="#function-1-size_up" id="toc-function-1-size_up" class="nav-link" data-scroll-target="#function-1-size_up">Function 1: <code>size_up</code></a>
+  <ul class="collapse">
+  <li><a href="#test-your-function" id="toc-test-your-function" class="nav-link" data-scroll-target="#test-your-function">Test your function</a></li>
+  </ul></li>
+  <li><a href="#function-2-read_slice" id="toc-function-2-read_slice" class="nav-link" data-scroll-target="#function-2-read_slice">Function 2: <code>read_slice</code></a>
+  <ul class="collapse">
+  <li><a href="#test-your-function-1" id="toc-test-your-function-1" class="nav-link" data-scroll-target="#test-your-function-1">Test your function</a></li>
+  </ul></li>
+  <li><a href="#function-3-patio_summary" id="toc-function-3-patio_summary" class="nav-link" data-scroll-target="#function-3-patio_summary">Function 3: <code>patio_summary</code></a>
+  <ul class="collapse">
+  <li><a href="#test-your-function-2" id="toc-test-your-function-2" class="nav-link" data-scroll-target="#test-your-function-2">Test your function</a></li>
+  </ul></li>
+  <li><a href="#use-your-functions" id="toc-use-your-functions" class="nav-link" data-scroll-target="#use-your-functions">Use your functions</a>
+  <ul class="collapse">
+  <li><a href="#the-full-list-on-the-cloud-machine" id="toc-the-full-list-on-the-cloud-machine" class="nav-link" data-scroll-target="#the-full-list-on-the-cloud-machine">1. The full list, on the cloud machine</a></li>
+  <li><a href="#the-receipt" id="toc-the-receipt" class="nav-link" data-scroll-target="#the-receipt">2. The receipt</a></li>
+  <li><a href="#the-surprise" id="toc-the-surprise" class="nav-link" data-scroll-target="#the-surprise">3. The surprise</a></li>
+  <li><a href="#carry-it-home-and-chart-it" id="toc-carry-it-home-and-chart-it" class="nav-link" data-scroll-target="#carry-it-home-and-chart-it">4. Carry it home and chart it</a></li>
+  <li><a href="#stop-the-meter" id="toc-stop-the-meter" class="nav-link" data-scroll-target="#stop-the-meter">5. Stop the meter</a></li>
+  </ul></li>
+  <li><a href="#make-it-nice-optional" id="toc-make-it-nice-optional" class="nav-link" data-scroll-target="#make-it-nice-optional">Make it nice (optional)</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/lab/lab_cloudy_with_a_chance_of_parquet.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../session_1/05_athena_extension_guide.html">Optional extensions</a></li><li class="breadcrumb-item"><a href="../../session_1/lab/lab_cloudy_with_a_chance_of_parquet.html">Challenge lab · Cloudy with a Chance of Parquet</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Optional Challenge Lab: Cloudy with a Chance of Parquet</h1>
+<p class="subtitle lead">GSB 5544 · Computing and Machine Learning for Business Analytics</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Your friend wants to open a rooftop patio bar and has asked you one question: <strong>which city has the most good patio days?</strong> They have a shortlist of cities and a strong opinion that the answer is Phoenix.</p>
+<p>You have something better than an opinion. NOAA keeps daily weather for every station on Earth in a public S3 bucket. A single year of it is millions of rows, far more than you want on your laptop. So you will do what the reading and the practice activity taught: <strong>measure it where it sits, read only the slice you need on a cloud machine, shrink it there, and carry home something small.</strong></p>
+<p>A <strong>patio day</strong> is a day when the high temperature is between 20 °C and 30 °C inclusive and no rain fell.</p>
+<p>By the end you will have built one pipeline out of three functions:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>What it does</th>
+<th>Used by</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>size_up(prefix)</code></td>
+<td>Measures a slice of the bucket without reading it</td>
+<td>Function 2</td>
+</tr>
+<tr class="even">
+<td><code>read_slice(year, element, station_ids)</code></td>
+<td>Reads one slice, for only the stations you ask for, cleaned</td>
+<td>Function 3</td>
+</tr>
+<tr class="odd">
+<td><code>patio_summary(stations, year)</code></td>
+<td>Turns a list of cities into a monthly patio-day table</td>
+<td>The finale</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What runs where.</strong> Every code chunk in this lab starts with a <code># RUNS ON:</code> line. The line is a label; it does not move the code, which runs wherever the notebook is opened. Functions 1 to 3 and the finale run in <strong>your SageMaker JupyterLab space</strong> (<code>gsb5544</code>, an <code>ml.t3.medium</code> with 4 GB of RAM). Only the last chart runs on <strong>your laptop</strong>. The data starts in <strong>S3</strong> and stays there; you are only ever reading it.</p>
+<p><strong>What you turn in</strong></p>
+<ol type="1">
+<li>This notebook, run top to bottom on SageMaker, with all output showing.</li>
+<li><code>patio_summary.csv</code> and <code>patio_summary_surprise.csv</code>.</li>
+<li><code>patio_days.png</code>, the chart you make on your laptop.</li>
+<li>A screenshot showing your space with status <strong>Stopped</strong>.</li>
+</ol>
+</section>
+<section id="data-set" class="level2">
+<h2 class="anchored" data-anchor-id="data-set">Data set</h2>
+<p>The stations to compare come from a small file. The weather comes from the bucket <code>noaa-ghcn-pds</code>, which you already know from the practice activity.</p>
+<div id="81e8f35e" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> socket</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> boto3</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> botocore <span class="im">import</span> UNSIGNED</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> botocore.config <span class="im">import</span> Config</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>BUCKET <span class="op">=</span> <span class="st">"noaa-ghcn-pds"</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>s3 <span class="op">=</span> boto3.client(<span class="st">"s3"</span>, region_name<span class="op">=</span><span class="st">"us-east-1"</span>, config<span class="op">=</span>Config(signature_version<span class="op">=</span>UNSIGNED))</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>STATIONS_URL <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/gato365/aws-gsb-5544-sessions/main/session_1/lab/stations.csv"</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>stations <span class="op">=</span> pd.read_csv(STATIONS_URL)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"This code is running on:"</span>, socket.gethostname())</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>stations</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>stations</code> has two columns, <code>city</code> and <code>station_id</code>. Look at it closely before you write anything. It was typed by a person.</p>
+<p>The weather is stored as Parquet files, one folder per year and element:</p>
+<pre><code>parquet/by_year/YEAR=2024/ELEMENT=TMAX/   daily high temperature
+parquet/by_year/YEAR=2024/ELEMENT=PRCP/   daily precipitation</code></pre>
+<p>Each file has these columns. You need only the first four.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ID</code></td>
+<td>Station id, eleven characters, uppercase</td>
+</tr>
+<tr class="even">
+<td><code>DATE</code></td>
+<td>The day, as text like <code>20240131</code></td>
+</tr>
+<tr class="odd">
+<td><code>DATA_VALUE</code></td>
+<td>The measurement in <strong>tenths</strong>: tenths of a degree Celsius for <code>TMAX</code>, tenths of a millimeter for <code>PRCP</code></td>
+</tr>
+<tr class="even">
+<td><code>Q_FLAG</code></td>
+<td>Empty if the value passed NOAA’s quality checks; a letter if it <strong>failed</strong></td>
+</tr>
+<tr class="odd">
+<td><code>M_FLAG</code>, <code>S_FLAG</code>, <code>OBS_TIME</code></td>
+<td>Not needed</td>
+</tr>
+</tbody>
+</table>
+<p>You are also given this helper from the practice activity. Use it; do not rewrite it.</p>
+<div id="333e585b" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> human(n, base<span class="op">=</span><span class="dv">1000</span>):</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> unit <span class="kw">in</span> [<span class="st">"B"</span>, <span class="st">"KB"</span>, <span class="st">"MB"</span>, <span class="st">"GB"</span>, <span class="st">"TB"</span>, <span class="st">"PB"</span>]:</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n <span class="op">&lt;</span> base:</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>n<span class="sc">:,.1f}</span><span class="ss"> </span><span class="sc">{</span>unit<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        n <span class="op">/=</span> base</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>n<span class="sc">:,.1f}</span><span class="ss"> EB"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="the-known-special-cases" class="level3">
+<h3 class="anchored" data-anchor-id="the-known-special-cases">The known special cases</h3>
+<p>Real data is messy. These are <strong>all</strong> the irregular cases in this lab. Your code must handle each one, and the surprise data at the end contains these and no others.</p>
+<ol type="1">
+<li><strong>Messy ids.</strong> Some <code>station_id</code> values in the stations file have stray spaces or are lowercase. The bucket uses clean uppercase ids.</li>
+<li><strong>Missing days.</strong> Some stations did not report every day. A missing day is simply not in the data.</li>
+<li><strong>Failed quality checks.</strong> Rows where <code>Q_FLAG</code> is not empty must be thrown away. After that, the day counts as missing.</li>
+<li><strong>A station with no temperature.</strong> Some stations are rain gauges and have <code>PRCP</code> but no <code>TMAX</code> at all.</li>
+<li><strong>A station that does not exist.</strong> One id in the list matches nothing in the bucket.</li>
+<li><strong>Units.</strong> Values are stored in tenths. A <code>DATA_VALUE</code> of <code>183</code> for <code>TMAX</code> means 18.3 °C.</li>
+</ol>
+<p>Trace rainfall is stored as <code>0</code>. Treat it as a dry day; there is nothing extra to do.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Advice">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Advice
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Solve one case first.</strong> Get each function working for San Luis Obispo (<code>USC00047851</code>) before you think about the whole list.</li>
+<li><strong>Reuse your functions.</strong> Function 2 must call Function 1, and Function 3 must call Function 2. If you find yourself pasting code from an earlier function into a later one, call it instead.</li>
+<li><strong>Test small before big.</strong> <code>TMAX</code> is the small slice (about 15 MB). Develop against it, then bring in <code>PRCP</code>.</li>
+<li><strong>Do not sweat small formatting details.</strong> Row order, index values, and whether a text column shows as <code>object</code> or <code>str</code> do not matter. Column names, values, and row counts do.</li>
+<li><strong>Your numbers may differ slightly from mine.</strong> NOAA revises the archive. The expected outputs below were produced on October 5, 2026. A difference of a row or a few bytes is fine; a difference of thousands is a bug.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled" title="Not allowed in this lab">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Not allowed in this lab
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>No whole-year CSV files</strong> (<code>csv/by_year/</code> or <code>csv.gz/by_year/</code>). Reading 1.3 GB to keep a few hundred rows is the mistake this lab exists to cure.</li>
+<li><strong>No per-station files</strong> (<code>csv/by_station/</code>). They would let you skip slicing a shared table, which is the skill being practiced.</li>
+<li><strong>No Athena.</strong> It hides the size check and the filter that you are meant to write yourself.</li>
+<li><strong>No reading a slice and filtering afterwards.</strong> The station filter must be passed <em>into</em> <code>pd.read_parquet</code>, so that only matching rows ever reach the machine’s 4 GB of RAM.</li>
+<li><strong>No single call to <code>list_objects_v2</code>.</strong> One call returns at most 1,000 objects, and your function must be right for prefixes that hold more.</li>
+<li><strong>No hard-coded sizes, station ids, years, or row counts inside a function.</strong> Functions must work for any prefix, year, element, and station list, not only the ones in this handout.</li>
+<li><strong>No loops over rows</strong> (<code>iterrows</code>, <code>itertuples</code>, <code>for</code> over a DataFrame). Use <code>groupby</code>, boolean columns, and merges. A short loop over the two elements is fine.</li>
+<li><strong>No running Functions 1 to 3 on your laptop.</strong> The computer name printed by the first chunk is part of your submission.</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="function-1-size_up" class="level2">
+<h2 class="anchored" data-anchor-id="function-1-size_up">Function 1: <code>size_up</code></h2>
+<p>Before reading anything from a bucket, find out how big it is. Listing a prefix costs almost nothing and moves no data.</p>
+<p>Write <code>size_up(prefix)</code>. It lists every object in <code>BUCKET</code> whose key starts with <code>prefix</code> and returns a dictionary with exactly these four keys:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>"prefix"</code></td>
+<td>the prefix you were given</td>
+</tr>
+<tr class="even">
+<td><code>"objects"</code></td>
+<td>how many objects are under it</td>
+</tr>
+<tr class="odd">
+<td><code>"bytes"</code></td>
+<td>their total size in bytes, as an integer</td>
+</tr>
+<tr class="even">
+<td><code>"readable"</code></td>
+<td>that size passed through <code>human()</code></td>
+</tr>
+</tbody>
+</table>
+<p>A prefix that matches nothing returns zero objects and zero bytes. It does not raise an error.</p>
+<p><strong>Hint.</strong> One listing call returns at most 1,000 objects. A <em>paginator</em> keeps asking until there are no more. This snippet counts the pages under a different prefix; it does not solve the task.</p>
+<div id="46536f22" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>pages <span class="op">=</span> s3.get_paginator(<span class="st">"list_objects_v2"</span>).paginate(Bucket<span class="op">=</span>BUCKET, Prefix<span class="op">=</span><span class="st">"csv/by_station/US1CA"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> number, page <span class="kw">in</span> <span class="bu">enumerate</span>(pages, start<span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"page"</span>, number, <span class="st">"has"</span>, <span class="bu">len</span>(page.get(<span class="st">"Contents"</span>, [])), <span class="st">"objects"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Each object in <code>page["Contents"]</code> is a dictionary with a <code>"Key"</code> and a <code>"Size"</code>. A page with no matches has no <code>"Contents"</code> key at all, which is why the snippet uses <code>.get</code>.</p>
+<div id="a75b2a81" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> size_up(prefix):</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Measure everything under a prefix without reading it.</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">    prefix : str</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">        ____</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">    dict</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">        ____</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. start two counters at zero</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    ____</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. go through every page of the listing</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> page <span class="kw">in</span> ____:</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 3. add this page's objects and sizes to the counters</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        ____</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 4. return the four-key dictionary</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ____</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="test-your-function" class="level3">
+<h3 class="anchored" data-anchor-id="test-your-function">Test your function</h3>
+<div id="cb8eac80" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>size_up(<span class="st">"parquet/by_year/YEAR=2024/ELEMENT=TMAX/"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Expected:</p>
+<pre><code>{'prefix': 'parquet/by_year/YEAR=2024/ELEMENT=TMAX/', 'objects': 9, 'bytes': 14797263, 'readable': '14.8 MB'}</code></pre>
+<p>Now two harder checks. The first has more than 1,000 objects. The second matches nothing.</p>
+<div id="bc57b634" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(size_up(<span class="st">"csv/by_station/USC0004"</span>)[<span class="st">"objects"</span>])              <span class="co"># expect 1190</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(size_up(<span class="st">"parquet/by_year/YEAR=2031/ELEMENT=TMAX/"</span>))        <span class="co"># expect 0 objects, 0 bytes, '0.0 B'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>If the first line prints <code>1000</code>, you are not paginating.</p>
+</section>
+</section>
+<section id="function-2-read_slice" class="level2">
+<h2 class="anchored" data-anchor-id="function-2-read_slice">Function 2: <code>read_slice</code></h2>
+<p>Now read one slice, but only the rows for the stations you want, and hand back something clean.</p>
+<p>Write <code>read_slice(year, element, station_ids, budget_mb=100)</code>. It must, in this order:</p>
+<ol type="1">
+<li>Build the prefix for that year and element.</li>
+<li>Call <code>size_up</code> on it. If the slice is larger than <code>budget_mb</code> megabytes (1 MB = 1,000,000 bytes), raise a <code>ValueError</code> whose message includes the readable size. This is your guard against reading something that will not fit.</li>
+<li>Clean the station ids (special case 1).</li>
+<li>Read the slice with <code>pd.read_parquet</code>, asking for only the four columns you need and passing the station filter into the read.</li>
+<li>Drop rows that failed quality checks (special case 3).</li>
+<li>Return a DataFrame with exactly these columns:</li>
+</ol>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>Type</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>station_id</code></td>
+<td>text</td>
+<td>the clean uppercase id</td>
+</tr>
+<tr class="even">
+<td><code>date</code></td>
+<td>datetime</td>
+<td>the day</td>
+</tr>
+<tr class="odd">
+<td><code>element</code></td>
+<td>text</td>
+<td>the element you asked for, such as <code>"TMAX"</code></td>
+</tr>
+<tr class="even">
+<td><code>value</code></td>
+<td>float</td>
+<td>the measurement in real units: <code>DATA_VALUE / 10</code></td>
+</tr>
+</tbody>
+</table>
+<p>If no rows match, return an <strong>empty</strong> DataFrame that still has those four columns (special cases 4 and 5). Do not raise an error.</p>
+<p><strong>Hint: filtering inside the read.</strong> <code>pd.read_parquet</code> accepts <code>filters</code>, a list of <code>(column, operator, value)</code> rules. Parquet applies them while reading, so rows that fail never reach memory. This snippet filters on a different column; it does not solve the task.</p>
+<div id="e3dd3449" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>hot <span class="op">=</span> pd.read_parquet(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"s3://</span><span class="sc">{</span>BUCKET<span class="sc">}</span><span class="ss">/parquet/by_year/YEAR=2024/ELEMENT=TMAX/"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"ID"</span>, <span class="st">"DATE"</span>, <span class="st">"DATA_VALUE"</span>],</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    filters<span class="op">=</span>[(<span class="st">"DATA_VALUE"</span>, <span class="st">"&gt;"</span>, <span class="dv">520</span>)],          <span class="co"># other operators include "==" and "in"</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    storage_options<span class="op">=</span>{<span class="st">"anon"</span>: <span class="va">True</span>},              <span class="co"># unsigned: the bucket is public</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(hot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Hint: cleaning text.</strong> <code>"  abc ".strip().upper()</code> gives <code>"ABC"</code>. On a pandas column the same methods live under <code>.str</code>.</p>
+<p><strong>Hint: dates.</strong> <code>pd.to_datetime(column.astype(str), format="%Y%m%d")</code> turns <code>20240131</code> into a real date.</p>
+<div id="a77f8f8a" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> read_slice(year, element, station_ids, budget_mb<span class="op">=</span><span class="dv">100</span>):</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""____</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">    year : int</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">    element : str</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">    station_ids : list-like of str</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">    budget_mb : float</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">    pandas.DataFrame</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">        ____</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. build the prefix</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    prefix <span class="op">=</span> ____</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. measure it with Function 1 and refuse if it is over budget</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    report <span class="op">=</span> ____</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ____:</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(____)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3. clean the ids</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    ids <span class="op">=</span> ____</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 4. read only the needed columns, only for these stations</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    raw <span class="op">=</span> pd.read_parquet(____)</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 5. drop rows that failed quality checks</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    ____</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 6. build and return the four-column result</span></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ____</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="test-your-function-1" class="level3">
+<h3 class="anchored" data-anchor-id="test-your-function-1">Test your function</h3>
+<p>Start with one station, then two with a messy id.</p>
+<div id="c879c9bd" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>slo <span class="op">=</span> read_slice(<span class="dv">2024</span>, <span class="st">"TMAX"</span>, [<span class="st">"USC00047851"</span>])</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(slo.shape)                 <span class="co"># expect (366, 4)</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>slo.head(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Expected first rows:</p>
+<pre><code>    station_id       date element  value
+0  USC00047851 2024-01-01    TMAX   18.3
+1  USC00047851 2024-01-02    TMAX   17.8
+2  USC00047851 2024-01-03    TMAX   16.1</code></pre>
+<div id="aedc97fd" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>two <span class="op">=</span> read_slice(<span class="dv">2024</span>, <span class="st">"TMAX"</span>, [<span class="st">" usw00023183"</span>, <span class="st">"USC00047851"</span>])</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(two.groupby(<span class="st">"station_id"</span>).size().to_dict())      <span class="co"># expect {'USC00047851': 366, 'USW00023183': 366}</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(read_slice(<span class="dv">2024</span>, <span class="st">"TMAX"</span>, [<span class="st">"USC00305606"</span>])))  <span class="co"># expect 285: this station had 362 rows, 77 failed checks</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(read_slice(<span class="dv">2024</span>, <span class="st">"TMAX"</span>, [<span class="st">"USW00000000"</span>]).shape) <span class="co"># expect (0, 4)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Finally, check the guard. This call <strong>should</strong> fail:</p>
+<div id="3c08aad0" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>read_slice(<span class="dv">2024</span>, <span class="st">"PRCP"</span>, [<span class="st">"USC00047851"</span>], budget_mb<span class="op">=</span><span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Expected:</p>
+<pre><code>ValueError: parquet/by_year/YEAR=2024/ELEMENT=PRCP/ is 42.5 MB, over the 10 MB budget</code></pre>
+</section>
+</section>
+<section id="function-3-patio_summary" class="level2">
+<h2 class="anchored" data-anchor-id="function-3-patio_summary">Function 3: <code>patio_summary</code></h2>
+<p>Now answer the question. Write <code>patio_summary(stations, year)</code>, where <code>stations</code> is a DataFrame with <code>city</code> and <code>station_id</code> columns, like the one you loaded.</p>
+<p>It must call <code>read_slice</code> once for <code>"TMAX"</code> and once for <code>"PRCP"</code>, and return <strong>one row per city per month</strong>: twelve rows for every city in <code>stations</code>, including cities with no data. The columns are exactly:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>city</code></td>
+<td>from <code>stations</code></td>
+</tr>
+<tr class="even">
+<td><code>station_id</code></td>
+<td>the clean uppercase id</td>
+</tr>
+<tr class="odd">
+<td><code>month</code></td>
+<td>1 to 12</td>
+</tr>
+<tr class="even">
+<td><code>days_reported</code></td>
+<td>days that month with <strong>both</strong> a valid high temperature and a valid precipitation value</td>
+</tr>
+<tr class="odd">
+<td><code>avg_tmax_c</code></td>
+<td>mean high temperature over the days that have one, rounded to 1 decimal; <code>NaN</code> if there are none</td>
+</tr>
+<tr class="even">
+<td><code>total_prcp_mm</code></td>
+<td>total precipitation over the days that have one, rounded to 1 decimal; <code>NaN</code> if there are none</td>
+</tr>
+<tr class="odd">
+<td><code>patio_days</code></td>
+<td>days with a high between 20 and 30 inclusive <strong>and</strong> precipitation exactly 0</td>
+</tr>
+</tbody>
+</table>
+<p>A day with a missing temperature or a missing precipitation value is never a patio day. <code>days_reported</code> and <code>patio_days</code> are whole numbers, and they are <code>0</code>, not <code>NaN</code>, for a city with no data.</p>
+<p><strong>Hint: long to wide.</strong> <code>read_slice</code> returns one row per station, day, and element. You want one row per station and day with a temperature column and a precipitation column. Stack the two results with <code>pd.concat</code>, then spread them:</p>
+<div id="c012d4b9" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>toy <span class="op">=</span> pd.DataFrame({<span class="st">"who"</span>: [<span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>], <span class="st">"what"</span>: [<span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"x"</span>], <span class="st">"n"</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]})</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>toy.pivot_table(index<span class="op">=</span><span class="st">"who"</span>, columns<span class="op">=</span><span class="st">"what"</span>, values<span class="op">=</span><span class="st">"n"</span>).reindex(columns<span class="op">=</span>[<span class="st">"x"</span>, <span class="st">"y"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Notice that <code>b</code> has no <code>y</code>, so it gets <code>NaN</code>. The <code>.reindex(columns=...)</code> at the end guarantees both columns exist even when an element has no rows at all.</p>
+<p><strong>Hint: twelve rows for everyone.</strong> A cross merge pairs every row of one table with every row of another. Merge that grid with your monthly results using <code>how="left"</code> and cities with no data keep their rows.</p>
+<div id="73f75240" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({<span class="st">"city"</span>: [<span class="st">"A"</span>, <span class="st">"B"</span>]}).merge(pd.DataFrame({<span class="st">"month"</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]}), how<span class="op">=</span><span class="st">"cross"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Hint: a sum that admits it has nothing.</strong> <code>pd.Series([None, None]).sum()</code> is <code>0.0</code>, which would claim a rain gauge that reported nothing had a dry month. <code>.sum(min_count=1)</code> gives <code>NaN</code> instead.</p>
+<p><strong>Hint: ranges.</strong> <code>column.between(20, 30)</code> is <code>True</code> from 20 to 30 inclusive and <code>False</code> for <code>NaN</code>.</p>
+<div id="0e866eb4" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> patio_summary(stations, year):</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""____"""</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. copy `stations` and clean its ids so they match what read_slice returns</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    ____</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. read TMAX and PRCP with Function 2 and stack them</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">long</span> <span class="op">=</span> ____</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3. spread to one row per station and day: tmax_c and prcp_mm</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    wide <span class="op">=</span> ____</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 4. add month, a both-values-present flag, and a patio-day flag</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    ____</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 5. group by station and month and compute the four summary columns</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    monthly <span class="op">=</span> ____</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 6. build the city-by-month grid and left-merge the summary onto it</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    ____</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 7. fill the two count columns with 0, round, order the columns, return</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ____</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="test-your-function-2" class="level3">
+<h3 class="anchored" data-anchor-id="test-your-function-2">Test your function</h3>
+<p>Test on one city before the whole list.</p>
+<div id="b3230d3d" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>one <span class="op">=</span> patio_summary(stations[stations[<span class="st">"city"</span>] <span class="op">==</span> <span class="st">"San Luis Obispo"</span>], <span class="dv">2024</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(one.shape)                 <span class="co"># expect (12, 7)</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>one.head(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Expected first rows:</p>
+<pre><code>              city   station_id  month  days_reported  avg_tmax_c  total_prcp_mm  patio_days
+0  San Luis Obispo  USC00047851      1             31        18.0           98.9           5
+1  San Luis Obispo  USC00047851      2             29        17.9          171.0           6
+2  San Luis Obispo  USC00047851      3             31        18.7          128.7          10</code></pre>
+<p>Then the two awkward cities:</p>
+<div id="b7abd3cc" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>odd <span class="op">=</span> patio_summary(stations[stations[<span class="st">"city"</span>].isin([<span class="st">"Atascadero rain gauge"</span>, <span class="st">"Atlantis"</span>])], <span class="dv">2024</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>odd[odd[<span class="st">"month"</span>] <span class="op">==</span> <span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Expected:</p>
+<pre><code>                    city   station_id  month  days_reported  avg_tmax_c  total_prcp_mm  patio_days
+0  Atascadero rain gauge  US1CASL0033      1              0         NaN           73.4           0
+1               Atlantis  USW00000000      1              0         NaN            NaN           0</code></pre>
+</section>
+</section>
+<section id="use-your-functions" class="level2">
+<h2 class="anchored" data-anchor-id="use-your-functions">Use your functions</h2>
+<section id="the-full-list-on-the-cloud-machine" class="level3">
+<h3 class="anchored" data-anchor-id="the-full-list-on-the-cloud-machine">1. The full list, on the cloud machine</h3>
+<div id="844215b2" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> patio_summary(stations, <span class="dv">2024</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(summary.shape)             <span class="co"># expect (84, 7)</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>summary.to_csv(<span class="st">"patio_summary.csv"</span>, index<span class="op">=</span><span class="va">False</span>)          <span class="co"># written to the SageMaker disk</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>(summary.groupby(<span class="st">"city"</span>, sort<span class="op">=</span><span class="va">False</span>)[[<span class="st">"days_reported"</span>, <span class="st">"patio_days"</span>]].<span class="bu">sum</span>()</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>        .sort_values(<span class="st">"patio_days"</span>, ascending<span class="op">=</span><span class="va">False</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Expected:</p>
+<pre><code>                       days_reported  patio_days
+city
+San Luis Obispo                  366         209
+Miami                            366         142
+Phoenix                          366         132
+Mount Sinai NY                   282          98
+Seattle                          364          86
+Atascadero rain gauge              0           0
+Atlantis                           0           0</code></pre>
+<p>Tell your friend about Phoenix gently.</p>
+</section>
+<section id="the-receipt" class="level3">
+<h3 class="anchored" data-anchor-id="the-receipt">2. The receipt</h3>
+<p>Use <code>size_up</code> and <code>os.path.getsize</code> to fill in this dictionary <strong>with code, not typed numbers</strong>. It records how much data sat in S3, and how much you are about to carry home.</p>
+<div id="5f97a252" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>receipt <span class="op">=</span> {</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ran on"</span>:              socket.gethostname(),</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bytes in S3 slices"</span>:  ____,     <span class="co"># TMAX slice + PRCP slice for 2024, from size_up</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bytes carried home"</span>:  ____,     <span class="co"># size of patio_summary.csv on this machine's disk</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>receipt[<span class="st">"shrink factor"</span>] <span class="op">=</span> <span class="bu">round</span>(receipt[<span class="st">"bytes in S3 slices"</span>] <span class="op">/</span> receipt[<span class="st">"bytes carried home"</span>])</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>receipt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The shrink factor should be in the tens of thousands.</p>
+</section>
+<section id="the-surprise" class="level3">
+<h3 class="anchored" data-anchor-id="the-surprise">3. The surprise</h3>
+<p>Your instructor will post a second file, <code>stations_surprise.csv</code>, with the same two columns and the same kinds of mess. Change <strong>only</strong> the URL below and rerun. If your functions are general, nothing else needs to change.</p>
+<div id="1886f0ee" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>SURPRISE_URL <span class="op">=</span> <span class="st">"____"</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>surprise <span class="op">=</span> pd.read_csv(SURPRISE_URL)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>summary_surprise <span class="op">=</span> patio_summary(surprise, <span class="dv">2024</span>)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>summary_surprise.to_csv(<span class="st">"patio_summary_surprise.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>(summary_surprise.groupby(<span class="st">"city"</span>, sort<span class="op">=</span><span class="va">False</span>)[[<span class="st">"days_reported"</span>, <span class="st">"patio_days"</span>]].<span class="bu">sum</span>()</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>                 .sort_values(<span class="st">"patio_days"</span>, ascending<span class="op">=</span><span class="va">False</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="carry-it-home-and-chart-it" class="level3">
+<h3 class="anchored" data-anchor-id="carry-it-home-and-chart-it">4. Carry it home and chart it</h3>
+<p>In the JupyterLab file browser, right-click <code>patio_summary.csv</code> and choose <strong>Download</strong>. Do the same for <code>patio_summary_surprise.csv</code> and for this notebook.</p>
+<p>On <strong>your laptop</strong>, open <strong>Positron</strong>, create a new notebook in the folder with the downloaded file, and run the block below. It is shown as text, not as a chunk, so that it cannot be run on the cloud machine by accident.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> socket</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"This code is running on:"</span>, socket.gethostname())</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>small <span class="op">=</span> pd.read_csv(<span class="st">"patio_summary.csv"</span>)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>have_data <span class="op">=</span> small.groupby(<span class="st">"city"</span>)[<span class="st">"days_reported"</span>].transform(<span class="st">"sum"</span>) <span class="op">&gt;</span> <span class="dv">0</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">4.5</span>))</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> city, rows <span class="kw">in</span> small[have_data].groupby(<span class="st">"city"</span>, sort<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    ax.plot(rows[<span class="st">"month"</span>], rows[<span class="st">"patio_days"</span>], marker<span class="op">=</span><span class="st">"o"</span>, label<span class="op">=</span>city)</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">13</span>))</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Month of 2024"</span>)</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Patio days"</span>)</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Good patio days by month"</span>)</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>ax.legend(loc<span class="op">=</span><span class="st">"upper left"</span>, bbox_to_anchor<span class="op">=</span>(<span class="fl">1.01</span>, <span class="dv">1</span>))     <span class="co"># legend outside the plot</span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">"patio_days.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="stop-the-meter" class="level3">
+<h3 class="anchored" data-anchor-id="stop-the-meter">5. Stop the meter</h3>
+<p>In the Studio tab, open <strong>JupyterLab</strong>, click <strong>Stop</strong> on <code>gsb5544</code>, and wait for <strong>Stopped</strong>. Take the screenshot. A running space bills every hour whether or not you are using it.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Automatic deductions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Automatic deductions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>A function does not work as specified</strong>: wrong return type, wrong column or key names, or it fails one of the “Test your function” checks.</li>
+<li><strong>A function fails on a named special case</strong>: messy ids, missing days, failed quality checks, a station with no temperature, a station that does not exist, or the tenths units.</li>
+<li><strong>Hard-coding</strong>: a size, id, year, row count, or receipt number typed in where code should have produced it.</li>
+<li><strong>A banned shortcut</strong>: whole-year or per-station CSV files, Athena, filtering after the read, a single unpaginated listing call, or a loop over rows.</li>
+<li><strong>Functions that do not build on each other</strong>: <code>read_slice</code> does not call <code>size_up</code>, or <code>patio_summary</code> does not call <code>read_slice</code>.</li>
+<li><strong>Incomplete final output</strong>: a missing CSV, a summary without twelve rows per city, no surprise run, no chart, or no receipt.</li>
+<li><strong>Run in the wrong place</strong>: Functions 1 to 3 run on your laptop, or the chart run on SageMaker. The printed computer names show which.</li>
+<li><strong>No evidence that the space was stopped.</strong></li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="make-it-nice-optional" class="level2">
+<h2 class="anchored" data-anchor-id="make-it-nice-optional">Make it nice (optional)</h2>
+<p>None of this is required. Pick anything that interests you.</p>
+<ul>
+<li><strong>Make the definition adjustable.</strong> Add <code>low=20</code>, <code>high=30</code>, and <code>max_prcp_mm=0</code> arguments to <code>patio_summary</code> and see how the ranking changes if your friend tolerates a drizzle.</li>
+<li><strong>More than one year.</strong> Write <code>patio_years(stations, years)</code> that calls <code>patio_summary</code> for each year and stacks the results with a <code>year</code> column. Call <code>size_up</code> first and print the total you are about to read.</li>
+<li><strong>A better chart.</strong> Order the legend by total patio days, or draw a heatmap of city by month.</li>
+<li><strong>Fahrenheit for your friend.</strong> Add an <code>avg_tmax_f</code> column without changing how patio days are counted.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/gato365\.github\.io\/aws-gsb-5544-sessions\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../session_1/06_extraction_strategies_optional.html" class="pagination-link" aria-label="06 · Extraction strategies and cost detail">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">06 · Extraction strategies and cost detail</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../session_1/CHANGELOG.html" class="pagination-link" aria-label="Changelog">
+        <span class="nav-page-text">Changelog</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>GSB 5544 · Computing and Machine Learning for Business Analytics</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/lab/lab_cloudy_with_a_chance_of_parquet.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with Quarto · Hosted on GitHub Pages</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
