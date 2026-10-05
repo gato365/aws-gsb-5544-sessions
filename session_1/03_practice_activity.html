@@ -262,7 +262,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#set-1-capacity" id="toc-set-1-capacity" class="nav-link active" data-scroll-target="#set-1-capacity">Set 1 · Capacity</a>
+  <li><a href="#part-1-guided-workflow-from-the-cloud-to-your-laptop" id="toc-part-1-guided-workflow-from-the-cloud-to-your-laptop" class="nav-link active" data-scroll-target="#part-1-guided-workflow-from-the-cloud-to-your-laptop">Part 1 · Guided workflow: from the cloud to your laptop</a>
+  <ul class="collapse">
+  <li><a href="#step-1.-sign-in-and-open-your-sagemaker-space" id="toc-step-1.-sign-in-and-open-your-sagemaker-space" class="nav-link" data-scroll-target="#step-1.-sign-in-and-open-your-sagemaker-space">Step 1. Sign in and open your SageMaker space</a></li>
+  <li><a href="#step-2.-read-from-s3-and-summarize-on-the-cloud-machine" id="toc-step-2.-read-from-s3-and-summarize-on-the-cloud-machine" class="nav-link" data-scroll-target="#step-2.-read-from-s3-and-summarize-on-the-cloud-machine">Step 2. Read from S3 and summarize, on the cloud machine</a></li>
+  <li><a href="#step-3.-download-the-small-file-to-your-computer" id="toc-step-3.-download-the-small-file-to-your-computer" class="nav-link" data-scroll-target="#step-3.-download-the-small-file-to-your-computer">Step 3. Download the small file to your computer</a></li>
+  <li><a href="#step-4.-read-it-and-chart-it-on-your-own-computer" id="toc-step-4.-read-it-and-chart-it-on-your-own-computer" class="nav-link" data-scroll-target="#step-4.-read-it-and-chart-it-on-your-own-computer">Step 4. Read it and chart it, on your own computer</a></li>
+  <li><a href="#step-5.-save-your-work-and-stop-the-cloud-machine" id="toc-step-5.-save-your-work-and-stop-the-cloud-machine" class="nav-link" data-scroll-target="#step-5.-save-your-work-and-stop-the-cloud-machine">Step 5. Save your work and stop the cloud machine</a></li>
+  <li><a href="#two-questions" id="toc-two-questions" class="nav-link" data-scroll-target="#two-questions">Two questions</a></li>
+  </ul></li>
+  <li><a href="#part-2-the-inventory-questions" id="toc-part-2-the-inventory-questions" class="nav-link" data-scroll-target="#part-2-the-inventory-questions">Part 2 · The inventory questions</a></li>
+  <li><a href="#set-1-capacity" id="toc-set-1-capacity" class="nav-link" data-scroll-target="#set-1-capacity">Set 1 · Capacity</a>
   <ul class="collapse">
   <li><a href="#q1.-two-machines" id="toc-q1.-two-machines" class="nav-link" data-scroll-target="#q1.-two-machines">Q1. Two machines</a></li>
   <li><a href="#q2.-rows-that-fit" id="toc-q2.-rows-that-fit" class="nav-link" data-scroll-target="#q2.-rows-that-fit">Q2. Rows that fit</a></li>
@@ -340,8 +350,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>Run the two setup cells first.</p>
-<div id="9330d2b0" class="cell">
+<p>Run the first setup cell, then do <strong>Part 1</strong>, a short guided trip from the cloud to your laptop. Part 2 (the Athena setup cell and Q1 to Q13) follows it.</p>
+<div id="95e23b0c" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q s3fs             <span class="co"># harmless if already present</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -372,92 +382,237 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        n <span class="op">/=</span> base</span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>n<span class="sc">:,.1f}</span><span class="ss"> EB"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>Athena setup</strong> (given; it is block J of the topics-of-practice notebook, unchanged). It creates your results bucket if needed, defines the helpers, and defines the <code>gsb5544.ghcn</code> table over the public Parquet files. DDL is free.</p>
-<div id="5fb1daf3" class="cell">
+<section id="part-1-guided-workflow-from-the-cloud-to-your-laptop" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-guided-workflow-from-the-cloud-to-your-laptop">Part 1 · Guided workflow: from the cloud to your laptop</h2>
+<p>A full year of daily high temperatures for every weather station on Earth is 4.4 million rows. You will let a cloud machine read and shrink it, then carry the small result home and chart it on your own computer. Nothing here uses Athena or creates a bucket.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Where the code runs</th>
+<th>Where the data is stored</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Sign in and open your space</td>
+<td>nowhere yet</td>
+<td>S3 (NOAA’s public bucket)</td>
+</tr>
+<tr class="even">
+<td>2. Read and summarize</td>
+<td><strong>SageMaker</strong> instance</td>
+<td>S3 → SageMaker RAM → SageMaker disk</td>
+</tr>
+<tr class="odd">
+<td>3. Download the summary</td>
+<td>no code; your browser copies a file</td>
+<td>SageMaker disk → <strong>your laptop’s</strong> disk</td>
+</tr>
+<tr class="even">
+<td>4. Read and chart</td>
+<td><strong>your laptop</strong></td>
+<td>laptop disk → laptop RAM</td>
+</tr>
+<tr class="odd">
+<td>5. Save and stop</td>
+<td>nowhere</td>
+<td>your work stays on the SageMaker disk and your laptop</td>
+</tr>
+</tbody>
+</table>
+<section id="step-1.-sign-in-and-open-your-sagemaker-space" class="level3">
+<h3 class="anchored" data-anchor-id="step-1.-sign-in-and-open-your-sagemaker-space">Step 1. Sign in and open your SageMaker space</h3>
+<p><em>Code runs: nowhere yet. Data is stored: in S3.</em></p>
+<ol type="1">
+<li>Go to <a href="https://console.aws.amazon.com">console.aws.amazon.com</a> and sign in as <strong>root user</strong> with the email and password of the account you already created.</li>
+<li>Check that the region, top right, reads <strong>N. Virginia</strong>.</li>
+<li>Search for <strong>SageMaker AI</strong> and open it. In the left menu choose <strong>SageMaker Studio</strong>, then <strong>Open Studio</strong>.</li>
+<li>In Studio click <strong>JupyterLab</strong>. In the row for <code>gsb5544</code> click <strong>Run</strong> and wait for <em>Running</em>, then <strong>Open</strong>. The meter is now on.</li>
+<li>Upload this notebook with the upload arrow in the file browser, open it, and run the first setup cell above.</li>
+</ol>
+</section>
+<section id="step-2.-read-from-s3-and-summarize-on-the-cloud-machine" class="level3">
+<h3 class="anchored" data-anchor-id="step-2.-read-from-s3-and-summarize-on-the-cloud-machine">Step 2. Read from S3 and summarize, on the cloud machine</h3>
+<p><em>Code runs: on the SageMaker instance. Data is stored: in S3, then in this instance’s RAM, then as a small file on this instance’s disk.</em></p>
+<p>First, prove to yourself which machine this is.</p>
+<div id="20aa8931" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>sts     <span class="op">=</span> boto3.client(<span class="st">"sts"</span>,    region_name<span class="op">=</span>REGION)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>athena  <span class="op">=</span> boto3.client(<span class="st">"athena"</span>, region_name<span class="op">=</span>REGION)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>s3_mine <span class="op">=</span> boto3.client(<span class="st">"s3"</span>,     region_name<span class="op">=</span>REGION)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>ACCOUNT        <span class="op">=</span> sts.get_caller_identity()[<span class="st">"Account"</span>]</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>RESULTS_BUCKET <span class="op">=</span> <span class="ss">f"gsb5544-athena-</span><span class="sc">{</span>ACCOUNT<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>RESULTS        <span class="op">=</span> <span class="ss">f"s3://</span><span class="sc">{</span>RESULTS_BUCKET<span class="sc">}</span><span class="ss">/athena/"</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>s3_mine.create_bucket(Bucket<span class="op">=</span>RESULTS_BUCKET)</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>ATHENA_BYTES <span class="op">=</span> <span class="dv">0</span>                                  <span class="co"># running total of everything scanned today; Q13 audits it</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_athena(sql, database<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Start a query, wait for it, return (query id, statistics)."""</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> ATHENA_BYTES</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    kwargs <span class="op">=</span> {<span class="st">"QueryString"</span>: sql, <span class="st">"ResultConfiguration"</span>: {<span class="st">"OutputLocation"</span>: RESULTS}}</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> database:</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        kwargs[<span class="st">"QueryExecutionContext"</span>] <span class="op">=</span> {<span class="st">"Database"</span>: database}</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    qid <span class="op">=</span> athena.start_query_execution(<span class="op">**</span>kwargs)[<span class="st">"QueryExecutionId"</span>]</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        q <span class="op">=</span> athena.get_query_execution(QueryExecutionId<span class="op">=</span>qid)[<span class="st">"QueryExecution"</span>]</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        state <span class="op">=</span> q[<span class="st">"Status"</span>][<span class="st">"State"</span>]</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> state <span class="kw">in</span> (<span class="st">"SUCCEEDED"</span>, <span class="st">"FAILED"</span>, <span class="st">"CANCELLED"</span>):</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        time.sleep(<span class="dv">1</span>)</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> state <span class="op">!=</span> <span class="st">"SUCCEEDED"</span>:</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">RuntimeError</span>(q[<span class="st">"Status"</span>].get(<span class="st">"StateChangeReason"</span>, state))</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    ATHENA_BYTES <span class="op">+=</span> q[<span class="st">"Statistics"</span>].get(<span class="st">"DataScannedInBytes"</span>, <span class="dv">0</span>)</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> qid, q[<span class="st">"Statistics"</span>]</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> athena_df(qid):</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Read a finished query's result CSV from the results bucket."""</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    obj <span class="op">=</span> s3_mine.get_object(Bucket<span class="op">=</span>RESULTS_BUCKET, Key<span class="op">=</span><span class="ss">f"athena/</span><span class="sc">{</span>qid<span class="sc">}</span><span class="ss">.csv"</span>)</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.read_csv(io.BytesIO(obj[<span class="st">"Body"</span>].read()))</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>run_athena(<span class="st">"CREATE DATABASE IF NOT EXISTS gsb5544"</span>)</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>run_athena(<span class="st">'''</span></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="st">CREATE EXTERNAL TABLE IF NOT EXISTS gsb5544.ghcn (</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="st">    id string, `date` string, data_value bigint,</span></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="st">    m_flag string, q_flag string, s_flag string, obs_time string</span></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="st">)</span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="st">PARTITIONED BY (year int, element string)</span></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="st">STORED AS PARQUET</span></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="st">LOCATION 's3://noaa-ghcn-pds/parquet/by_year/'</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="st">TBLPROPERTIES (</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="st">    'projection.enabled'        = 'true',</span></span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="st">    'projection.year.type'      = 'integer',</span></span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="st">    'projection.year.range'     = '1750,2030',</span></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="st">    'projection.element.type'   = 'enum',</span></span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="st">    'projection.element.values' = 'TMAX,TMIN,PRCP,SNOW,SNWD,TAVG',</span></span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="st">    'storage.location.template' = 's3://noaa-ghcn-pds/parquet/by_year/YEAR=$</span><span class="sc">{year}</span><span class="st">/ELEMENT=$</span><span class="sc">{element}</span><span class="st">/'</span></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="st">)</span></span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="st">'''</span>, database<span class="op">=</span><span class="st">"gsb5544"</span>)</span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Ready. Results bucket:"</span>, RESULTS_BUCKET)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> socket</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"This code is running on:"</span>, socket.gethostname())</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"RAM on this machine    :"</span>, <span class="bu">round</span>(psutil.virtual_memory().total <span class="op">/</span> <span class="fl">1e9</span>, <span class="dv">1</span>), <span class="st">"GB"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>Now read every station’s 2024 daily highs straight from S3, keep California, and reduce it to one row per day. Fill in the three blanks.</p>
+<div id="2b4ec921" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> pd.read_parquet(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"s3://noaa-ghcn-pds/parquet/by_year/YEAR=2024/ELEMENT=TMAX/"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"ID"</span>, <span class="st">"DATE"</span>, <span class="st">"DATA_VALUE"</span>],          <span class="co"># read only the columns we need</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    storage_options<span class="op">=</span>{<span class="st">"anon"</span>: ____},              <span class="co"># unsigned: the bucket is public</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Read </span><span class="sc">{</span><span class="bu">len</span>(raw)<span class="sc">:,}</span><span class="ss"> rows from S3 in </span><span class="sc">{</span>time<span class="sc">.</span>perf_counter() <span class="op">-</span> t0<span class="sc">:.0f}</span><span class="ss"> s"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"They occupy </span><span class="sc">{</span>human(raw.memory_usage(deep<span class="op">=</span><span class="va">True</span>).<span class="bu">sum</span>())<span class="sc">}</span><span class="ss"> of this machine's RAM"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>ca <span class="op">=</span> raw[raw[<span class="st">"ID"</span>].<span class="bu">str</span>.startswith(<span class="st">"USC0004"</span>)].copy()          <span class="co"># California cooperative stations</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>ca[<span class="st">"date"</span>]   <span class="op">=</span> pd.to_datetime(ca[<span class="st">"DATE"</span>].astype(<span class="bu">str</span>), <span class="bu">format</span><span class="op">=</span><span class="st">"%Y%m</span><span class="sc">%d</span><span class="st">"</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>ca[<span class="st">"tmax_c"</span>] <span class="op">=</span> ca[<span class="st">"DATA_VALUE"</span>] <span class="op">/</span> ____                        <span class="co"># stored in tenths of a degree C</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> (ca.groupby(____)[<span class="st">"tmax_c"</span>]</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>             .agg(stations<span class="op">=</span><span class="st">"count"</span>, coolest<span class="op">=</span><span class="st">"min"</span>, average<span class="op">=</span><span class="st">"mean"</span>, hottest<span class="op">=</span><span class="st">"max"</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>             .<span class="bu">round</span>(<span class="dv">1</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>             .reset_index())</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>summary.to_csv(<span class="st">"ca_tmax_2024_daily.csv"</span>, index<span class="op">=</span><span class="va">False</span>)          <span class="co"># written to THIS machine's disk</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Summary: </span><span class="sc">{</span><span class="bu">len</span>(summary)<span class="sc">}</span><span class="ss"> rows, saved to the SageMaker disk"</span>)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>summary.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>You should see about 4.4 million rows read in a few seconds and a summary of 366 rows. The big table lives only in this machine’s RAM and disappears when the space stops. The small file is on this machine’s disk.</p>
+</section>
+<section id="step-3.-download-the-small-file-to-your-computer" class="level3">
+<h3 class="anchored" data-anchor-id="step-3.-download-the-small-file-to-your-computer">Step 3. Download the small file to your computer</h3>
+<p><em>Code runs: none. Data is stored: on the SageMaker disk, and after this step also on your laptop’s disk.</em></p>
+<ol type="1">
+<li>In the file browser on the left, click the refresh arrow. <code>ca_tmax_2024_daily.csv</code> appears next to this notebook.</li>
+<li>Right-click it and choose <strong>Download</strong>. It lands in your laptop’s Downloads folder. It is about 11 KB.</li>
+</ol>
+</section>
+<section id="step-4.-read-it-and-chart-it-on-your-own-computer" class="level3">
+<h3 class="anchored" data-anchor-id="step-4.-read-it-and-chart-it-on-your-own-computer">Step 4. Read it and chart it, on your own computer</h3>
+<p><em>Code runs: on your laptop. Data is stored: on your laptop’s disk, then in your laptop’s RAM.</em></p>
+<p>On your laptop, open Jupyter or VS Code, start a <strong>new</strong> notebook in the folder that holds the downloaded file, and paste this in. It is text here, not a cell, so that you cannot run it on the cloud machine by accident.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> socket</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"This code is running on:"</span>, socket.gethostname())</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>small <span class="op">=</span> pd.read_csv(<span class="st">"ca_tmax_2024_daily.csv"</span>, parse_dates<span class="op">=</span>[<span class="st">"date"</span>])</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">4</span>))</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>ax.fill_between(small[<span class="st">"date"</span>], small[<span class="st">"coolest"</span>], small[<span class="st">"hottest"</span>], alpha<span class="op">=</span><span class="fl">0.2</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                label<span class="op">=</span><span class="st">"coolest to hottest station"</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>ax.plot(small[<span class="st">"date"</span>], small[<span class="st">"average"</span>], label<span class="op">=</span><span class="st">"average of all stations"</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Daily high temperature across California stations, 2024"</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"°C"</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">"ca_tmax_2024.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The computer name it prints should be your own, not the one from step 2. If <code>pandas</code> or <code>matplotlib</code> is missing, run <code>pip install pandas matplotlib</code> first.</p>
+</section>
+<section id="step-5.-save-your-work-and-stop-the-cloud-machine" class="level3">
+<h3 class="anchored" data-anchor-id="step-5.-save-your-work-and-stop-the-cloud-machine">Step 5. Save your work and stop the cloud machine</h3>
+<p><em>Code runs: nowhere. Data is stored: this notebook and the CSV on the SageMaker disk; the CSV, the chart, and your local notebook on your laptop.</em></p>
+<ol type="1">
+<li><strong>Laptop:</strong> save your local notebook. Keep <code>ca_tmax_2024.png</code>; you submit it with this notebook.</li>
+<li><strong>SageMaker:</strong> File → <strong>Save Notebook</strong>. Right-click this notebook in the file browser and <strong>Download</strong> a copy.</li>
+<li><strong>Stop the instance.</strong> If you are going straight on to Part 2, leave it running and stop it at Q13, which uses these same steps. Otherwise go to the Studio tab, open <strong>JupyterLab</strong>, click <strong>Stop</strong> on <code>gsb5544</code>, and wait for <em>Stopped</em>.</li>
+</ol>
+<p>A stopped space keeps its disk, so your files are there next time. Its RAM is wiped, so <code>raw</code> and <code>summary</code> are gone and that is fine. You created nothing in S3, so there is nothing to delete there.</p>
+</section>
+<section id="two-questions" class="level3">
+<h3 class="anchored" data-anchor-id="two-questions">Two questions</h3>
+<p><strong>P1. What happened in the cloud?</strong> In two or three sentences, name which service <em>stored</em> the 4.4 million rows and which one <em>processed</em> them, and say why you did not have to pay to store them.</p>
+<p><em>Your answer:</em></p>
+<p><strong>P2. What happened on your own computer?</strong> In two or three sentences, say what your laptop stored and processed, how large the file was that travelled between the two machines, and why that made the laptop step easy.</p>
+<p><em>Your answer:</em></p>
+<hr>
+</section>
+</section>
+<section id="part-2-the-inventory-questions" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-the-inventory-questions">Part 2 · The inventory questions</h2>
+<p><strong>Athena setup</strong> (given; it is block J of the topics-of-practice notebook, unchanged). It creates your results bucket if needed, defines the helpers, and defines the <code>gsb5544.ghcn</code> table over the public Parquet files. DDL is free.</p>
+<div id="54d4af2b" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>sts     <span class="op">=</span> boto3.client(<span class="st">"sts"</span>,    region_name<span class="op">=</span>REGION)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>athena  <span class="op">=</span> boto3.client(<span class="st">"athena"</span>, region_name<span class="op">=</span>REGION)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>s3_mine <span class="op">=</span> boto3.client(<span class="st">"s3"</span>,     region_name<span class="op">=</span>REGION)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>ACCOUNT        <span class="op">=</span> sts.get_caller_identity()[<span class="st">"Account"</span>]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>RESULTS_BUCKET <span class="op">=</span> <span class="ss">f"gsb5544-athena-</span><span class="sc">{</span>ACCOUNT<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>RESULTS        <span class="op">=</span> <span class="ss">f"s3://</span><span class="sc">{</span>RESULTS_BUCKET<span class="sc">}</span><span class="ss">/athena/"</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>s3_mine.create_bucket(Bucket<span class="op">=</span>RESULTS_BUCKET)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>ATHENA_BYTES <span class="op">=</span> <span class="dv">0</span>                                  <span class="co"># running total of everything scanned today; Q13 audits it</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_athena(sql, database<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Start a query, wait for it, return (query id, statistics)."""</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> ATHENA_BYTES</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    kwargs <span class="op">=</span> {<span class="st">"QueryString"</span>: sql, <span class="st">"ResultConfiguration"</span>: {<span class="st">"OutputLocation"</span>: RESULTS}}</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> database:</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        kwargs[<span class="st">"QueryExecutionContext"</span>] <span class="op">=</span> {<span class="st">"Database"</span>: database}</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    qid <span class="op">=</span> athena.start_query_execution(<span class="op">**</span>kwargs)[<span class="st">"QueryExecutionId"</span>]</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        q <span class="op">=</span> athena.get_query_execution(QueryExecutionId<span class="op">=</span>qid)[<span class="st">"QueryExecution"</span>]</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        state <span class="op">=</span> q[<span class="st">"Status"</span>][<span class="st">"State"</span>]</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> state <span class="kw">in</span> (<span class="st">"SUCCEEDED"</span>, <span class="st">"FAILED"</span>, <span class="st">"CANCELLED"</span>):</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>        time.sleep(<span class="dv">1</span>)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> state <span class="op">!=</span> <span class="st">"SUCCEEDED"</span>:</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">RuntimeError</span>(q[<span class="st">"Status"</span>].get(<span class="st">"StateChangeReason"</span>, state))</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    ATHENA_BYTES <span class="op">+=</span> q[<span class="st">"Statistics"</span>].get(<span class="st">"DataScannedInBytes"</span>, <span class="dv">0</span>)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> qid, q[<span class="st">"Statistics"</span>]</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> athena_df(qid):</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Read a finished query's result CSV from the results bucket."""</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    obj <span class="op">=</span> s3_mine.get_object(Bucket<span class="op">=</span>RESULTS_BUCKET, Key<span class="op">=</span><span class="ss">f"athena/</span><span class="sc">{</span>qid<span class="sc">}</span><span class="ss">.csv"</span>)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.read_csv(io.BytesIO(obj[<span class="st">"Body"</span>].read()))</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>run_athena(<span class="st">"CREATE DATABASE IF NOT EXISTS gsb5544"</span>)</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>run_athena(<span class="st">'''</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a><span class="st">CREATE EXTERNAL TABLE IF NOT EXISTS gsb5544.ghcn (</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="st">    id string, `date` string, data_value bigint,</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="st">    m_flag string, q_flag string, s_flag string, obs_time string</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="st">)</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="st">PARTITIONED BY (year int, element string)</span></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="st">STORED AS PARQUET</span></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a><span class="st">LOCATION 's3://noaa-ghcn-pds/parquet/by_year/'</span></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a><span class="st">TBLPROPERTIES (</span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a><span class="st">    'projection.enabled'        = 'true',</span></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="st">    'projection.year.type'      = 'integer',</span></span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a><span class="st">    'projection.year.range'     = '1750,2030',</span></span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a><span class="st">    'projection.element.type'   = 'enum',</span></span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a><span class="st">    'projection.element.values' = 'TMAX,TMIN,PRCP,SNOW,SNWD,TAVG',</span></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a><span class="st">    'storage.location.template' = 's3://noaa-ghcn-pds/parquet/by_year/YEAR=$</span><span class="sc">{year}</span><span class="st">/ELEMENT=$</span><span class="sc">{element}</span><span class="st">/'</span></span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a><span class="st">)</span></span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a><span class="st">'''</span>, database<span class="op">=</span><span class="st">"gsb5544"</span>)</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Ready. Results bucket:"</span>, RESULTS_BUCKET)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
 <section id="set-1-capacity" class="level2">
 <h2 class="anchored" data-anchor-id="set-1-capacity">Set 1 · Capacity</h2>
 <section id="q1.-two-machines" class="level3">
 <h3 class="anchored" data-anchor-id="q1.-two-machines">Q1. Two machines</h3>
 <p>Report physical cores, total RAM, available RAM, and free disk in GB for <strong>this</strong> machine (the SageMaker instance) and for <strong>your laptop</strong> (the numbers you wrote down from the reading, §1), as one DataFrame with a row per measure and a column per machine. Store this machine’s available RAM in bytes as <code>MY_RAM</code>.</p>
 <p>Then, in the markdown cell, one sentence: which machine would you rather use to read a 1.3 GB file from <code>noaa-ghcn-pds</code>, and why?</p>
-<div id="ede2d972" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="e95dbc3f" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><em>Your answer:</em></p>
 </section>
 <section id="q2.-rows-that-fit" class="level3">
 <h3 class="anchored" data-anchor-id="q2.-rows-that-fit">Q2. Rows that fit</h3>
 <p>A GHCN row is roughly 50 bytes on disk, and a text-heavy CSV needs about 3× its disk size once loaded in pandas. How many raw rows could this machine’s available RAM hold? Print the number with thousands separators.</p>
-<div id="6e0d9a9c" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="2c264c74" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="q3.-a-decade-of-weather" class="level3">
 <h3 class="anchored" data-anchor-id="q3.-a-decade-of-weather">Q3. A decade of weather</h3>
 <p>List the by-year files for 2016 through 2025 and compute their <strong>total</strong> size. Print the total in readable units, then print how many copies of this machine’s available RAM that is.</p>
 <p><em>Hint: a <code>Prefix</code> of <code>csv/by_year/201</code> returns 2010–2019; you will need two listings or a filter.</em></p>
-<div id="d06037ef" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="bade64d2" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
@@ -466,18 +621,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="q4.-what-is-under-csv" class="level3">
 <h3 class="anchored" data-anchor-id="q4.-what-is-under-csv">Q4. What is under <code>csv/</code>?</h3>
 <p>List the common prefixes directly under <code>csv/</code> in the bucket. Then, in the markdown cell that follows, explain in one or two sentences why <code>by_year/</code> is not a folder and what S3 is actually doing when it shows you one.</p>
-<div id="1c0c9c8e" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="bf76bde3" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><em>Your answer:</em></p>
 </section>
 <section id="q5.-metadata-only" class="level3">
 <h3 class="anchored" data-anchor-id="q5.-metadata-only">Q5. Metadata only</h3>
 <p>Using a single call that does <strong>not</strong> download the file, print the size (readable) and the last-modified date of <code>csv/by_year/2024.csv</code>. Then print whether a plain <code>pd.read_csv</code> of it would fit in this machine’s RAM at 3×.</p>
-<div id="763e9fd4" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="f7e0c694" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
@@ -496,25 +651,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <p>Call it for both stations and combine the results into one DataFrame called <code>wx</code> with a <code>market</code> column.</p>
 <p>This runs on the SageMaker instance: the bytes travel from S3 to this machine over AWS’s network in the same region, and never touch your laptop.</p>
-<div id="fb8dd019" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="0f45f377" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="q7.-hot-days-per-year" class="level3">
 <h3 class="anchored" data-anchor-id="q7.-hot-days-per-year">Q7. Hot days per year</h3>
 <p>Temperatures are stored in tenths of a degree Celsius. For each market and year, count the number of days with a daily maximum of <strong>35 °C or higher</strong> (95 °F). Produce a table with years as rows and markets as columns.</p>
-<div id="f61a4d99" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="107850e2" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="q8.-monthly-rainfall" class="level3">
 <h3 class="anchored" data-anchor-id="q8.-monthly-rainfall">Q8. Monthly rainfall</h3>
 <p>Precipitation is stored in tenths of a millimeter. For each market, compute total precipitation per month in millimeters, then show the <strong>average for each calendar month</strong> across all years (so 12 rows per market). Which month is wettest in each market?</p>
-<div id="8dc376b4" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="474c2fa2" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
@@ -523,9 +678,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="q9.-one-chart-two-markets" class="level3">
 <h3 class="anchored" data-anchor-id="q9.-one-chart-two-markets">Q9. One chart, two markets</h3>
 <p>Plot hot days per year (from Q7) for both markets on a single line chart. Label the axes with units and give the chart a title that says what it shows.</p>
-<div id="1efc9a63" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="169da4e2" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="q10.-the-business-read" class="level3">
@@ -551,13 +706,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Build a DataFrame <code>race</code> with one row per tier and columns for seconds, bytes moved or scanned, and rows returned. Also confirm that (b) and (c) return the same row count as filtering <code>wx</code> to Phoenix and 2024.</p>
 <p>In the markdown cell after, explain which tier you would use for this extraction and why, using the phrase “filter at the source.” Say what changed between (a) and (b), and what changed between (b) and (c).</p>
-<div id="41542952" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="2feb50d3" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="3b356e4e" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: Athena fleet (results land in S3)</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="bd21fe18" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: Athena fleet (results land in S3)</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><em>Your answer:</em></p>
 </section>
@@ -566,9 +721,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Write <strong>one Athena query</strong> that returns the number of hot days (<code>TMAX</code> ≥ 35 °C, i.e.&nbsp;<code>data_value &gt;= 350</code>) per station per year from 2015 onward, for both stations: the same table you built in Q7, but computed entirely on the fleet. Pivot the result to years as rows and markets as columns and check it against <code>hot</code>.</p>
 <p>Then print two numbers side by side: the bytes Athena scanned for this query, and the bytes pandas read in Q6 (the two by-station CSVs).</p>
 <p>In the markdown cell, explain the comparison. One of the two paths read fewer bytes. Which, and why? What does that tell you about when Athena over <code>by_year</code> is the right tool, and when choosing the right object (the by-station file) beats it?</p>
-<div id="dc79b504" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: Athena fleet (results land in S3)</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="e79e9731" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: Athena fleet (results land in S3)</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><em>Your answer:</em></p>
 </section>
@@ -579,23 +734,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>(b) Estimate today’s spend.</strong> Hours this space has been running × the <code>ml.t3.medium</code> hourly price, plus <code>ATHENA_BYTES</code> × the Athena price per TB (10 MB minimum per query). Print the two lines and the total. The cell reads the space’s start time from SageMaker; if that lookup fails, set <code>hours</code> by hand from the time you clicked <strong>Run space</strong> (Learner Lab: from the lab timer).</p>
 <p><strong>(c) Stop the space.</strong> In Studio → JupyterLab spaces, click <strong>Stop</strong> on <code>gsb5544</code> and wait for <em>Stopped</em>. Then read <strong>Credits remaining</strong> on Console Home (Learner Lab: the budget on the lab page).</p>
 <p><strong>(d) Evidence.</strong> Either paste a screenshot into the markdown cell showing the space <em>Stopped</em> and the credits readout, or run the verification cell from your <strong>laptop</strong> (it needs AWS credentials in <code>~/.aws/credentials</code>; Learner Lab users paste the “AWS Details” block there first) and paste its output into the markdown cell.</p>
-<div id="96c7a424" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="0bec892a" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker ml.t3.medium (us-east-1)</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Verification cell</strong> for part (d). This one runs on your laptop <em>after</em> you have stopped the space, because a cell cannot stop the machine it is running on and then report on it.</p>
-<div id="84883883" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Needs AWS credentials in ~/.aws/credentials (Learner Lab: paste the "AWS Details" block there first).</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> boto3</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>sm <span class="op">=</span> boto3.client(<span class="st">"sagemaker"</span>, region_name<span class="op">=</span><span class="st">"us-east-1"</span>)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>apps <span class="op">=</span> sm.list_apps()[<span class="st">"Apps"</span>]</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a <span class="kw">in</span> apps:</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span>a[<span class="st">"AppType"</span>]<span class="sc">:&lt;12}</span><span class="ss"> </span><span class="sc">{</span>a<span class="sc">.</span>get(<span class="st">"SpaceName"</span>, <span class="st">""</span>)<span class="sc">:&lt;12}</span><span class="ss"> </span><span class="sc">{</span>a[<span class="st">"Status"</span>]<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>still_running <span class="op">=</span> [a <span class="cf">for</span> a <span class="kw">in</span> apps <span class="cf">if</span> a[<span class="st">"Status"</span>] <span class="kw">not</span> <span class="kw">in</span> (<span class="st">"Deleted"</span>, <span class="st">"Failed"</span>)]</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"All stopped"</span> <span class="cf">if</span> <span class="kw">not</span> still_running <span class="cf">else</span> <span class="st">"STILL RUNNING: go back to Studio and stop it"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="6b2d43db" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Needs AWS credentials in ~/.aws/credentials (Learner Lab: paste the "AWS Details" block there first).</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> boto3</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>sm <span class="op">=</span> boto3.client(<span class="st">"sagemaker"</span>, region_name<span class="op">=</span><span class="st">"us-east-1"</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>apps <span class="op">=</span> sm.list_apps()[<span class="st">"Apps"</span>]</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a <span class="kw">in</span> apps:</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span>a[<span class="st">"AppType"</span>]<span class="sc">:&lt;12}</span><span class="ss"> </span><span class="sc">{</span>a<span class="sc">.</span>get(<span class="st">"SpaceName"</span>, <span class="st">""</span>)<span class="sc">:&lt;12}</span><span class="ss"> </span><span class="sc">{</span>a[<span class="st">"Status"</span>]<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>still_running <span class="op">=</span> [a <span class="cf">for</span> a <span class="kw">in</span> apps <span class="cf">if</span> a[<span class="st">"Status"</span>] <span class="kw">not</span> <span class="kw">in</span> (<span class="st">"Deleted"</span>, <span class="st">"Failed"</span>)]</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"All stopped"</span> <span class="cf">if</span> <span class="kw">not</span> still_running <span class="cf">else</span> <span class="st">"STILL RUNNING: go back to Studio and stop it"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><em>Evidence (screenshot or pasted output):</em></p>
 <hr>

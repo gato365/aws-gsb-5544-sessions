@@ -111,6 +111,58 @@ BUCKET = "noaa-ghcn-pds"
 REGION = "us-east-1"             # the bucket's region; this instance is in it too
 """),
 
+# ---------------------------------------------------------------- Start here
+md("""
+## Start here: what stores, what computes
+
+Four things take part today. Keep two questions apart for each one: **does it store data?** and **does it run code?**
+
+| | What it is | Stores data? | Runs code? | What you pay for |
+|---|---|---|---|---|
+| **Your computer** | The laptop in front of you | Yes, on its disk | Yes, with its own CPU and RAM | Nothing extra |
+| **SageMaker space** | A computer you rent in an AWS data center. Ours has 2 cores, 4 GB of RAM, and a 5 GB disk | A little: notebooks and small files | Yes, with *its* CPU and RAM, not yours | Every hour it is *Running* |
+| **S3 bucket** | Cloud storage. Files kept in AWS, readable from your computer or from SageMaker | Yes, as much as you like | **No.** It can only hand over bytes | Every GB stored, per month |
+| **Athena** | A query service. AWS's machines run your SQL over files that sit in S3 | No. It reads from S3 and writes its answer back to S3 | Yes, SQL only, on AWS's machines | Every byte it scans |
+
+**Storing is not processing.** Data in S3 does nothing until some computer reads it. The question is always *which* computer: yours, your SageMaker space, or Athena's. The bytes travel to wherever the code runs, and they must fit in **that** machine's RAM.
+
+**Disk is not RAM.** Disk keeps files when the machine is off. RAM is the working space a running program uses, and it is much smaller. A file can fit on a disk and still be too big to open.
+
+**Check your own computer.** You need two numbers, RAM and free disk:
+
+- **Mac:** Apple menu → *About This Mac* shows memory. *System Settings → General → Storage* shows free disk.
+- **Windows:** Ctrl+Shift+Esc → *Performance → Memory* shows RAM. *Settings → System → Storage* shows free disk.
+- **Or in Python on your laptop** (a notebook opened on your laptop, not this one):
+
+```python
+# RUNS ON: laptop
+import psutil
+print("RAM (GB):      ", round(psutil.virtual_memory().total / 1e9, 1))
+print("Free disk (GB):", round(psutil.disk_usage("/").free / 1e9, 1))
+```
+
+That block is text, not a cell, on purpose. If you ran it here it would report the SageMaker machine, because that is where this notebook's code runs.
+
+Fill in each blank with `laptop`, `SageMaker`, `S3`, or `Athena`.
+"""),
+
+code("""
+# RUNS ON: SageMaker ml.t3.medium (us-east-1)
+where = {
+    "Stores the 1.3 GB weather file we use today":         "⟦S3⟧",
+    "Runs the cells of this notebook":                     "⟦SageMaker⟧",
+    "Shows you this notebook in a browser tab":            "⟦laptop⟧",
+    "Runs a SQL WHERE clause over files stored in S3":     "⟦Athena⟧",
+    "Can store data but cannot run any code":              "⟦S3⟧",
+    "Bills by the hour while Running, even if you are idle": "⟦SageMaker⟧",
+}
+
+expected = ["s3", "sagemaker", "laptop", "athena", "s3", "sagemaker"]
+given = [v.strip().lower() for v in where.values()]
+wrong = [q for q, g, e in zip(where, given, expected) if g != e]
+print("All correct" if not wrong else "Check these: " + "; ".join(wrong))
+"""),
+
 # ---------------------------------------------------------------- A
 md("""
 ## A. Two machines, side by side
@@ -579,7 +631,7 @@ You manage inventory planning for a beverage distributor with two markets: **San
 | San Luis Obispo | `USC00047851` | SAN LUIS OBISPO POLY, CA |
 | Phoenix | `USW00023183` | PHOENIX AIRPORT, AZ |
 
-Run the two setup cells first.
+Run the first setup cell, then do **Part 1**, a short guided trip from the cloud to your laptop. Part 2 (the Athena setup cell and Q1 to Q13) follows it.
 """),
 
 code("""
@@ -612,6 +664,136 @@ def human(n, base=1000):
             return f"{n:,.1f} {unit}"
         n /= base
     return f"{n:,.1f} EB"
+"""),
+
+# ---------------------------------------------------------------- Part 1
+md("""
+## Part 1 · Guided workflow: from the cloud to your laptop
+
+A full year of daily high temperatures for every weather station on Earth is 4.4 million rows. You will let a cloud machine read and shrink it, then carry the small result home and chart it on your own computer. Nothing here uses Athena or creates a bucket.
+
+| Step | Where the code runs | Where the data is stored |
+|---|---|---|
+| 1. Sign in and open your space | nowhere yet | S3 (NOAA's public bucket) |
+| 2. Read and summarize | **SageMaker** instance | S3 → SageMaker RAM → SageMaker disk |
+| 3. Download the summary | no code; your browser copies a file | SageMaker disk → **your laptop's** disk |
+| 4. Read and chart | **your laptop** | laptop disk → laptop RAM |
+| 5. Save and stop | nowhere | your work stays on the SageMaker disk and your laptop |
+
+### Step 1. Sign in and open your SageMaker space
+
+*Code runs: nowhere yet. Data is stored: in S3.*
+
+1. Go to [console.aws.amazon.com](https://console.aws.amazon.com) and sign in as **root user** with the email and password of the account you already created.
+2. Check that the region, top right, reads **N. Virginia**.
+3. Search for **SageMaker AI** and open it. In the left menu choose **SageMaker Studio**, then **Open Studio**.
+4. In Studio click **JupyterLab**, then click `gsb5544` in the spaces table. Click **Run space**, wait for the status to read *Running*, then click **Open JupyterLab**. The meter is now on.
+5. Upload this notebook with the upload arrow in the file browser, open it, and run the first setup cell above.
+
+### Step 2. Read from S3 and summarize, on the cloud machine
+
+*Code runs: on the SageMaker instance. Data is stored: in S3, then in this instance's RAM, then as a small file on this instance's disk.*
+
+First, prove to yourself which machine this is.
+"""),
+
+code("""
+# RUNS ON: SageMaker ml.t3.medium (us-east-1)
+import socket
+print("This code is running on:", socket.gethostname())
+print("RAM on this machine    :", round(psutil.virtual_memory().total / 1e9, 1), "GB")
+"""),
+
+md("""
+Now read every station's 2024 daily highs straight from S3, keep California, and reduce it to one row per day. Fill in the three blanks.
+"""),
+
+code("""
+# RUNS ON: SageMaker ml.t3.medium (us-east-1)
+t0 = time.perf_counter()
+raw = pd.read_parquet(
+    "s3://noaa-ghcn-pds/parquet/by_year/YEAR=2024/ELEMENT=TMAX/",
+    columns=["ID", "DATE", "DATA_VALUE"],          # read only the columns we need
+    storage_options={"anon": ⟦True⟧},              # unsigned: the bucket is public
+)
+print(f"Read {len(raw):,} rows from S3 in {time.perf_counter() - t0:.0f} s")
+print(f"They occupy {human(raw.memory_usage(deep=True).sum())} of this machine's RAM")
+
+ca = raw[raw["ID"].str.startswith("USC0004")].copy()          # California cooperative stations
+ca["date"]   = pd.to_datetime(ca["DATE"].astype(str), format="%Y%m%d")
+ca["tmax_c"] = ca["DATA_VALUE"] / ⟦10⟧                        # stored in tenths of a degree C
+
+summary = (ca.groupby(⟦"date"⟧)["tmax_c"]
+             .agg(stations="count", coolest="min", average="mean", hottest="max")
+             .round(1)
+             .reset_index())
+
+summary.to_csv("ca_tmax_2024_daily.csv", index=False)          # written to THIS machine's disk
+print(f"Summary: {len(summary)} rows, saved to the SageMaker disk")
+summary.head()
+"""),
+
+md("""
+You should see about 4.4 million rows read in a few seconds and a summary of 366 rows. The big table lives only in this machine's RAM and disappears when the space stops. The small file is on this machine's disk.
+
+### Step 3. Download the small file to your computer
+
+*Code runs: none. Data is stored: on the SageMaker disk, and after this step also on your laptop's disk.*
+
+1. In the file browser on the left, click the refresh arrow. `ca_tmax_2024_daily.csv` appears next to this notebook.
+2. Right-click it and choose **Download**. It lands in your laptop's Downloads folder. It is about 11 KB.
+
+### Step 4. Read it and chart it, on your own computer
+
+*Code runs: on your laptop. Data is stored: on your laptop's disk, then in your laptop's RAM.*
+
+On your laptop, open Jupyter or VS Code, start a **new** notebook in the folder that holds the downloaded file, and paste this in. It is text here, not a cell, so that you cannot run it on the cloud machine by accident.
+
+```python
+# RUNS ON: laptop
+import socket
+import pandas as pd
+import matplotlib.pyplot as plt
+
+print("This code is running on:", socket.gethostname())
+
+small = pd.read_csv("ca_tmax_2024_daily.csv", parse_dates=["date"])
+
+fig, ax = plt.subplots(figsize=(9, 4))
+ax.fill_between(small["date"], small["coolest"], small["hottest"], alpha=0.2,
+                label="coolest to hottest station")
+ax.plot(small["date"], small["average"], label="average of all stations")
+ax.set_title("Daily high temperature across California stations, 2024")
+ax.set_ylabel("°C")
+ax.legend()
+fig.savefig("ca_tmax_2024.png", dpi=150, bbox_inches="tight")
+```
+
+The computer name it prints should be your own, not the one from step 2. If `pandas` or `matplotlib` is missing, run `pip install pandas matplotlib` first.
+
+### Step 5. Save your work and stop the cloud machine
+
+*Code runs: nowhere. Data is stored: this notebook and the CSV on the SageMaker disk; the CSV, the chart, and your local notebook on your laptop.*
+
+1. **Laptop:** save your local notebook. Keep `ca_tmax_2024.png`; you submit it with this notebook.
+2. **SageMaker:** File → **Save Notebook**. Right-click this notebook in the file browser and **Download** a copy.
+3. **Stop the instance.** If you are going straight on to Part 2, leave it running and stop it at Q13, which uses these same steps. Otherwise go to the Studio tab, open **JupyterLab**, click **Stop** on `gsb5544`, and wait for *Stopped*.
+
+A stopped space keeps its disk, so your files are there next time. Its RAM is wiped, so `raw` and `summary` are gone and that is fine. You created nothing in S3, so there is nothing to delete there.
+
+### Two questions
+
+**P1. What happened in the cloud?** In two or three sentences, name which service *stored* the 4.4 million rows and which one *processed* them, and say why you did not have to pay to store them.
+
+*Your answer:*
+
+**P2. What happened on your own computer?** In two or three sentences, say what your laptop stored and processed, how large the file was that travelled between the two machines, and why that made the laptop step easy.
+
+*Your answer:*
+
+---
+
+## Part 2 · The inventory questions
 """),
 
 md("""
