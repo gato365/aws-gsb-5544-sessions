@@ -5,3 +5,4 @@
 __pycache__/
 
 **/*.quarto_ipynb
+.env
