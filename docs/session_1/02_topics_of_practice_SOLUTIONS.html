@@ -144,6 +144,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">02 · Topics notebook (student)</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="../session_1/02a_remote_machine_reference.html">
+ <span class="dropdown-text">02a · Remote machine reference</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="../session_1/03_practice_activity_remote.html">
  <span class="dropdown-text">03 · Practice: remote notebook (student)</span></a>
   </li>  
@@ -282,6 +286,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../session_1/02_topics_of_practice.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">02 · Topics notebook (student)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/02a_remote_machine_reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02a · Remote machine reference</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -446,10 +456,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <p>measure the remote machine → look at how big the data is → read a manageable piece → summarize it → save a small file</p>
 </blockquote>
-<p><strong>Run this notebook in JupyterLab inside your SageMaker space</strong> (reading, section 5, parts D and E), not in Positron. Replace each <code>____</code> and run the cell with Shift+Enter.</p>
+<p><strong>Run this notebook in JupyterLab inside your SageMaker space</strong> (reading, section 5, parts D and E), not in Positron. Replace each <code>____</code> and run the cell with Shift+Enter. If a cell stops with <code>NameError: name '____' is not defined</code>, you ran it before filling in its blank; fill the blank and run it again.</p>
 <p>Every code cell starts with a <code># RUNS ON:</code> comment. <strong>That comment is a label for you. It does not move the code anywhere.</strong> A cell runs on whichever computer the notebook’s kernel is on. The setup cell checks where that really is.</p>
 <p>Bring the laptop numbers you recorded in the reading, section 1.</p>
-<div id="d8aa522c" class="cell">
+<div id="988cd1ec" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q s3fs pyarrow psutil      <span class="co"># harmless if already present</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -572,7 +582,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Storing is not processing.</strong> Data in S3 does nothing until some computer reads it. The bytes travel to wherever the code runs, and what that code loads must fit in <strong>that</strong> computer’s RAM.</p>
 <p><strong>Disk is not RAM.</strong> Disk keeps files when the machine is off. RAM is the working space of a running program. S3, the remote machine’s disk, and the remote machine’s RAM are three different places.</p>
 <p>Fill in each blank with <code>laptop</code>, <code>SageMaker</code>, or <code>S3</code>.</p>
-<div id="625bd68b" class="cell">
+<div id="360a9e09" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>where <span class="op">=</span> {</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Stores the NOAA weather files we read today"</span>:             <span class="st">"S3"</span>,</span>
@@ -597,12 +607,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Total RAM</strong> is what is installed. <strong>Available RAM</strong> is what a new program could use right now. Available is the smaller number and the one that matters.</li>
 </ul>
 <p>Fill in the function call, then paste in your laptop’s numbers from the reading.</p>
-<div id="08850ae4" class="cell">
+<div id="349a60a5" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>remote <span class="op">=</span> machine_report()</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>remote</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="819cd5b8" class="cell">
+<div id="fcf3503a" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>laptop <span class="op">=</span> {                                   <span class="co"># &lt;- replace every value with what you recorded in the reading, section 1</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"computer name"</span>:                     <span class="st">"my laptop"</span>,</span>
@@ -617,10 +627,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>compare <span class="op">=</span> pd.DataFrame({<span class="st">"laptop"</span>: laptop, <span class="st">"SageMaker (remote)"</span>: remote})</span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>compare</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>Check yourself.</strong> Do not assume the rented machine is bigger or faster. Look at your table. Which machine has more available RAM? More logical CPUs? Answer in one comment, using your own numbers.</p>
-<div id="f2080574" class="cell">
+<p><strong>Save this machine’s details as a markdown file.</strong> The cell below writes the remote report as a small <code>.md</code> table next to this notebook. Download it with the rest of your files; it is the record of which machine did today’s work, and the instructor’s copy of it is the <em>Remote machine reference</em> page on the course site.</p>
+<div id="a4f705b7" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: my laptop has 16 GB total and 5.1 GB available with 8 logical CPUs; the remote machine has about 4 GB total with 2 vCPUs. The remote machine is smaller. What it offers is location (next to the data) and that it can be resized, not size.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime <span class="im">as</span> dt</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:                                                         <span class="co"># the space's own description of itself, if available</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    meta <span class="op">=</span> json.load(<span class="bu">open</span>(<span class="st">"/opt/ml/metadata/resource-metadata.json"</span>))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    space_info <span class="op">=</span> {<span class="st">"space name"</span>: meta.get(<span class="st">"SpaceName"</span>), <span class="st">"domain id"</span>: meta.get(<span class="st">"DomainId"</span>),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"app type"</span>: meta.get(<span class="st">"AppType"</span>), <span class="st">"region (from ARN)"</span>: meta.get(<span class="st">"ResourceArn"</span>, <span class="st">"::::"</span>)[<span class="dv">9</span>:].split(<span class="st">":"</span>)[<span class="dv">2</span>]}</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span>:</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    space_info <span class="op">=</span> {<span class="st">"space name"</span>: <span class="st">"not reported by this image"</span>}</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>lines <span class="op">=</span> [<span class="ss">f"# Remote machine report"</span>, <span class="st">""</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>         <span class="ss">f"Measured on </span><span class="sc">{</span>dt<span class="sc">.</span>date<span class="sc">.</span>today()<span class="sc">.</span>isoformat()<span class="sc">}</span><span class="ss"> by `machine_report()` inside SageMaker."</span>, <span class="st">""</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>         <span class="st">"| Measure | Value |"</span>, <span class="st">"|---|---|"</span>]</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>lines <span class="op">+=</span> [<span class="ss">f"| </span><span class="sc">{</span>k<span class="sc">}</span><span class="ss"> | </span><span class="sc">{</span>v<span class="sc">}</span><span class="ss"> |"</span> <span class="cf">for</span> k, v <span class="kw">in</span> {<span class="op">**</span>space_info, <span class="op">**</span>remote}.items()]</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>report_text <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(lines) <span class="op">+</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"remote_machine_report.md"</span>, <span class="st">"w"</span>) <span class="im">as</span> f:</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    f.write(report_text)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(report_text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Check yourself.</strong> Do not assume the rented machine is bigger or faster. Look at your table. Which machine has more available RAM? More logical CPUs? Answer in one comment, using your own numbers.</p>
+<div id="bf5b9269" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: my laptop has 16 GB total and 5.1 GB available with 8 logical CPUs; the remote machine has about 4 GB total with 2 vCPUs. The remote machine is smaller. What it offers is location (next to the data) and that it can be resized, not size.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="b.-bucket-object-key-and-why-this-read-is-anonymous" class="level2">
@@ -628,32 +660,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Reading, sections 3 and 4.</em> A <strong>bucket</strong> is a named container. An <strong>object</strong> is one stored file plus its metadata. A <strong>key</strong> is the object’s full name inside the bucket. A <strong>prefix</strong> is the beginning of a key, which is how S3 imitates folders.</p>
 <p>The <code>s3</code> client in the setup cell is <strong>unsigned</strong>: it sends no credentials. NOAA’s bucket is public, so it answers anyone. You still needed your own AWS account today, but for a different reason: the account is what lets you <strong>rent this computer</strong>. The data is free to read; the computing is yours to pay for.</p>
 <p>Fill in the delimiter that makes S3 group keys like folders, and the metadata field that holds an object’s size.</p>
-<div id="0004040d" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> s3.list_objects_v2(Bucket<span class="op">=</span>BUCKET, Delimiter<span class="op">=</span><span class="st">"/"</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Top-level prefixes:"</span>, [p[<span class="st">"Prefix"</span>] <span class="cf">for</span> p <span class="kw">in</span> resp.get(<span class="st">"CommonPrefixes"</span>, [])])</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> <span class="st">"csv/by_year/2024.csv"</span>                          <span class="co"># one object: a whole year, every station, as text</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>meta <span class="op">=</span> s3.head_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key)         <span class="co"># metadata only; the file is not downloaded</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Bucket:"</span>, BUCKET)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Key   :"</span>, key)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Size  :"</span>, human(meta[<span class="st">"ContentLength"</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="e406880b" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> s3.list_objects_v2(Bucket<span class="op">=</span>BUCKET, Delimiter<span class="op">=</span><span class="st">"/"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Top-level prefixes:"</span>, [p[<span class="st">"Prefix"</span>] <span class="cf">for</span> p <span class="kw">in</span> resp.get(<span class="st">"CommonPrefixes"</span>, [])])</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> <span class="st">"csv/by_year/2024.csv"</span>                          <span class="co"># one object: a whole year, every station, as text</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>meta <span class="op">=</span> s3.head_object(Bucket<span class="op">=</span>BUCKET, Key<span class="op">=</span>key)         <span class="co"># metadata only; the file is not downloaded</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Bucket:"</span>, BUCKET)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Key   :"</span>, key)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Size  :"</span>, human(meta[<span class="st">"ContentLength"</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="c.-look-at-the-size-before-you-read" class="level2">
 <h2 class="anchored" data-anchor-id="c.-look-at-the-size-before-you-read">C. Look at the size before you read</h2>
 <p><em>Reading, section 2.</em> The same year exists in the bucket twice: as one large CSV object, and as Parquet files split by year and element. Today we read the Parquet slice for 2024 daily highs (<code>TMAX</code>).</p>
 <p>Fill in the helper that builds the slice’s prefix, and the base that gives binary units.</p>
-<div id="67dd15fe" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>prefix <span class="op">=</span> slice_prefix(<span class="dv">2024</span>, <span class="st">"TMAX"</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>objects, SOURCE_BYTES <span class="op">=</span> prefix_size(prefix)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Prefix          :"</span>, prefix)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Objects         :"</span>, objects)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Size, decimal   :"</span>, human(SOURCE_BYTES))               <span class="co"># 1 MB = 1,000,000 bytes</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Size, binary    :"</span>, human(SOURCE_BYTES, base<span class="op">=</span><span class="dv">1024</span>))  <span class="co"># 1 MiB = 1,048,576 bytes</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"The CSV year was:"</span>, human(meta[<span class="st">"ContentLength"</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="5f44f067" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>prefix <span class="op">=</span> slice_prefix(<span class="dv">2024</span>, <span class="st">"TMAX"</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>objects, SOURCE_BYTES <span class="op">=</span> prefix_size(prefix)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Prefix          :"</span>, prefix)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Objects         :"</span>, objects)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Size, decimal   :"</span>, human(SOURCE_BYTES))               <span class="co"># 1 MB = 1,000,000 bytes</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Size, binary    :"</span>, human(SOURCE_BYTES, base<span class="op">=</span><span class="dv">1024</span>))  <span class="co"># 1 MiB = 1,048,576 bytes</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"The CSV year was:"</span>, human(meta[<span class="st">"ContentLength"</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The two size lines describe the same bytes in two unit systems. Storage and cloud consoles mostly use decimal units; operating systems often use binary ones.</p>
 <p>Source-file size is <strong>not</strong> how much RAM the data will need. Text CSVs often grow when loaded and compressed Parquet often grows much more. There is no multiplier you can trust in advance, so the honest method is: start with a slice you know is small, load it, and <strong>measure</strong>.</p>
@@ -662,23 +694,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="d.-read-a-manageable-dataset-into-the-remote-machines-ram">D. Read a manageable dataset into the remote machine’s RAM</h2>
 <p>The bytes now travel from S3 to this SageMaker machine. Nothing reaches your laptop except the text printed below.</p>
 <p>Fill in the setting that makes the read anonymous, and the argument that makes pandas count text columns honestly.</p>
-<div id="c521606a" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.perf_counter()</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> pd.read_parquet(</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"s3://</span><span class="sc">{</span>BUCKET<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>prefix<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"ID"</span>, <span class="st">"DATE"</span>, <span class="st">"DATA_VALUE"</span>, <span class="st">"Q_FLAG"</span>],       <span class="co"># only the columns we need</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    storage_options<span class="op">=</span>{<span class="st">"anon"</span>: <span class="va">True</span>},</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>READ_SECONDS <span class="op">=</span> time.perf_counter() <span class="op">-</span> t0</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>ROWS_READ <span class="op">=</span> <span class="bu">len</span>(raw)</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>DF_BYTES <span class="op">=</span> <span class="bu">int</span>(raw.memory_usage(deep<span class="op">=</span><span class="va">True</span>).<span class="bu">sum</span>())</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Rows read          : </span><span class="sc">{</span>ROWS_READ<span class="sc">:,}</span><span class="ss"> in </span><span class="sc">{</span>READ_SECONDS<span class="sc">:.1f}</span><span class="ss"> s"</span>)</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Source files in S3 : </span><span class="sc">{</span>human(SOURCE_BYTES)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"DataFrame in RAM   : </span><span class="sc">{</span>human(DF_BYTES)<span class="sc">}</span><span class="ss">   (</span><span class="sc">{</span>DF_BYTES <span class="op">/</span> SOURCE_BYTES<span class="sc">:.0f}</span><span class="ss"> times the source size, measured, not predicted)"</span>)</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>raw.head(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="a3b36dfa" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> pd.read_parquet(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"s3://</span><span class="sc">{</span>BUCKET<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>prefix<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"ID"</span>, <span class="st">"DATE"</span>, <span class="st">"DATA_VALUE"</span>, <span class="st">"Q_FLAG"</span>],       <span class="co"># only the columns we need</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    storage_options<span class="op">=</span>{<span class="st">"anon"</span>: <span class="va">True</span>},</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>READ_SECONDS <span class="op">=</span> time.perf_counter() <span class="op">-</span> t0</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>ROWS_READ <span class="op">=</span> <span class="bu">len</span>(raw)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>DF_BYTES <span class="op">=</span> <span class="bu">int</span>(raw.memory_usage(deep<span class="op">=</span><span class="va">True</span>).<span class="bu">sum</span>())</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Rows read          : </span><span class="sc">{</span>ROWS_READ<span class="sc">:,}</span><span class="ss"> in </span><span class="sc">{</span>READ_SECONDS<span class="sc">:.1f}</span><span class="ss"> s"</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Source files in S3 : </span><span class="sc">{</span>human(SOURCE_BYTES)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"DataFrame in RAM   : </span><span class="sc">{</span>human(DF_BYTES)<span class="sc">}</span><span class="ss">   (</span><span class="sc">{</span>DF_BYTES <span class="op">/</span> SOURCE_BYTES<span class="sc">:.0f}</span><span class="ss"> times the source size, measured, not predicted)"</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>raw.head(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="e.-filter-transform-and-aggregate-on-the-remote-machine" class="level2">
@@ -691,47 +723,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Summarize one station, the Cal Poly station in San Luis Obispo (<code>USC00047851</code>), by month.</p>
 <p>Fill in the quality filter, the unit conversion, and the grouping column.</p>
-<div id="d6846497" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>STATION <span class="op">=</span> <span class="st">"USC00047851"</span>                        <span class="co"># SAN LUIS OBISPO POLY, CA</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>one <span class="op">=</span> raw[(raw[<span class="st">"ID"</span>] <span class="op">==</span> STATION) <span class="op">&amp;</span> raw[<span class="st">"Q_FLAG"</span>].isna()].copy()</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>one[<span class="st">"date"</span>]   <span class="op">=</span> pd.to_datetime(one[<span class="st">"DATE"</span>].astype(<span class="bu">str</span>), <span class="bu">format</span><span class="op">=</span><span class="st">"%Y%m</span><span class="sc">%d</span><span class="st">"</span>)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>one[<span class="st">"tmax_c"</span>] <span class="op">=</span> one[<span class="st">"DATA_VALUE"</span>] <span class="op">/</span> <span class="dv">10</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>one[<span class="st">"month"</span>]  <span class="op">=</span> one[<span class="st">"date"</span>].dt.month</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> (one.groupby(<span class="st">"month"</span>)[<span class="st">"tmax_c"</span>]</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>              .agg(days_reported<span class="op">=</span><span class="st">"count"</span>, mean_tmax_c<span class="op">=</span><span class="st">"mean"</span>, hottest_c<span class="op">=</span><span class="st">"max"</span>)</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>              .<span class="bu">round</span>(<span class="dv">1</span>)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>              .reset_index())</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>ROWS_READ<span class="sc">:,}</span><span class="ss"> rows read, </span><span class="sc">{</span><span class="bu">len</span>(one)<span class="sc">:,}</span><span class="ss"> kept for this station, </span><span class="sc">{</span><span class="bu">len</span>(summary)<span class="sc">}</span><span class="ss"> rows in the summary"</span>)</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="62756a3d" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>STATION <span class="op">=</span> <span class="st">"USC00047851"</span>                        <span class="co"># SAN LUIS OBISPO POLY, CA</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>one <span class="op">=</span> raw[(raw[<span class="st">"ID"</span>] <span class="op">==</span> STATION) <span class="op">&amp;</span> raw[<span class="st">"Q_FLAG"</span>].isna()].copy()</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>one[<span class="st">"date"</span>]   <span class="op">=</span> pd.to_datetime(one[<span class="st">"DATE"</span>].astype(<span class="bu">str</span>), <span class="bu">format</span><span class="op">=</span><span class="st">"%Y%m</span><span class="sc">%d</span><span class="st">"</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>one[<span class="st">"tmax_c"</span>] <span class="op">=</span> one[<span class="st">"DATA_VALUE"</span>] <span class="op">/</span> <span class="dv">10</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>one[<span class="st">"month"</span>]  <span class="op">=</span> one[<span class="st">"date"</span>].dt.month</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> (one.groupby(<span class="st">"month"</span>)[<span class="st">"tmax_c"</span>]</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>              .agg(days_reported<span class="op">=</span><span class="st">"count"</span>, mean_tmax_c<span class="op">=</span><span class="st">"mean"</span>, hottest_c<span class="op">=</span><span class="st">"max"</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>              .<span class="bu">round</span>(<span class="dv">1</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>              .reset_index())</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>ROWS_READ<span class="sc">:,}</span><span class="ss"> rows read, </span><span class="sc">{</span><span class="bu">len</span>(one)<span class="sc">:,}</span><span class="ss"> kept for this station, </span><span class="sc">{</span><span class="bu">len</span>(summary)<span class="sc">}</span><span class="ss"> rows in the summary"</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="f.-save-a-small-summary-on-the-remote-disk-and-compare-four-sizes" class="level2">
 <h2 class="anchored" data-anchor-id="f.-save-a-small-summary-on-the-remote-disk-and-compare-four-sizes">F. Save a small summary on the remote disk, and compare four sizes</h2>
 <p>The summary is written to <strong>this machine’s disk</strong>, next to this notebook. It is not in S3 and not on your laptop yet. In the practice activity you will download a file like this and chart it in Positron; there is no chart here because the charting belongs on your laptop.</p>
 <p>Fill in the method that writes a CSV and the function that reads a file’s size from disk.</p>
-<div id="cfc2a291" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>OUT <span class="op">=</span> <span class="st">"slo_tmax_2024_monthly.csv"</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>summary.to_csv(OUT, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>CSV_BYTES <span class="op">=</span> os.path.getsize(OUT)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>sizes <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"where it lives"</span>: [<span class="st">"S3 (NOAA's bucket)"</span>, <span class="st">"this machine's RAM"</span>, <span class="st">"this machine's disk"</span>, <span class="st">"this machine's disk"</span>],</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"size"</span>:           [human(SOURCE_BYTES), human(DF_BYTES), human(CSV_BYTES), human(machine_report()[<span class="st">"work disk, free (GB)"</span>] <span class="op">*</span> <span class="fl">1e9</span>)],</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>[<span class="st">"source files"</span>, <span class="st">"loaded DataFrame"</span>, <span class="st">"exported summary CSV"</span>, <span class="st">"free space on the work disk"</span>],</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>sizes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="a3878d85" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>OUT <span class="op">=</span> <span class="st">"slo_tmax_2024_monthly.csv"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>summary.to_csv(OUT, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>CSV_BYTES <span class="op">=</span> os.path.getsize(OUT)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>sizes <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"where it lives"</span>: [<span class="st">"S3 (NOAA's bucket)"</span>, <span class="st">"this machine's RAM"</span>, <span class="st">"this machine's disk"</span>, <span class="st">"this machine's disk"</span>],</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"size"</span>:           [human(SOURCE_BYTES), human(DF_BYTES), human(CSV_BYTES), human(machine_report()[<span class="st">"work disk, free (GB)"</span>] <span class="op">*</span> <span class="fl">1e9</span>)],</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>[<span class="st">"source files"</span>, <span class="st">"loaded DataFrame"</span>, <span class="st">"exported summary CSV"</span>, <span class="st">"free space on the work disk"</span>],</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>sizes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Check yourself.</strong> In one comment: which of those four numbers would also be the size of the file you download to your laptop, and which one disappears when the space stops?</p>
-<div id="a3ae7e1f" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The exported summary CSV is what I would download; it is the same few hundred bytes on either disk. The loaded DataFrame lives only in RAM and disappears when the space stops. The source files stay in S3 untouched.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="4fed9752" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The exported summary CSV is what I would download; it is the same few hundred bytes on either disk. The loaded DataFrame lives only in RAM and disappears when the space stops. The source files stay in S3 untouched.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="g.-stop-the-meter" class="level2">

@@ -144,6 +144,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">02 · Topics notebook (student)</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="../session_1/02a_remote_machine_reference.html">
+ <span class="dropdown-text">02a · Remote machine reference</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="../session_1/03_practice_activity_remote.html">
  <span class="dropdown-text">03 · Practice: remote notebook (student)</span></a>
   </li>  
@@ -282,6 +286,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../session_1/02_topics_of_practice.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">02 · Topics notebook (student)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../session_1/02a_remote_machine_reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02a · Remote machine reference</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -441,8 +451,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>GSB 5544 · Not part of the required first session</strong></p>
 <p>Everything required in Session 1 runs on SageMaker alone. This notebook is for later, or for the curious. Read the <strong>Athena extension guide</strong> on the course site first. It explains what Athena is, the <strong>one-time permission step</strong> this notebook needs, what it costs, and how to clean up.</p>
 <p>Athena is a query service. You send it SQL; AWS’s own machines scan Parquet files in S3 and write the answer to a bucket <strong>you</strong> own. So this notebook, unlike the others, creates something in your account (a results bucket) and can incur a small per-query charge.</p>
-<p>Run it in JupyterLab inside your SageMaker space.</p>
-<div id="6c47b24d" class="cell">
+<p>Run it in JupyterLab inside your SageMaker space. Cells with <code>____</code> have a blank to fill before you run them. If a cell stops with <code>NameError: name '____' is not defined</code>, you ran it before filling in its blank; fill the blank and run it again.</p>
+<div id="0f7be730" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q s3fs pyarrow psutil      <span class="co"># harmless if already present</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -518,7 +528,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"NOTE: this notebook is written to run in your SageMaker space, and this kernel is somewhere else."</span>)</span>
 <span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"      The RUNS ON comments describe the plan. They do not move the code. Open this file in JupyterLab on SageMaker."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="13899f09" class="cell">
+<div id="d496fef7" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -531,7 +541,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="a-results-bucket-you-own">1. A results bucket you own</h2>
 <p>Athena writes every result to S3, so you need a bucket of your own. These clients are <strong>signed</strong>: they act as you, because this bucket is yours, not public. If this cell stops with <code>AccessDenied</code>, the permission step in the extension reading has not been done.</p>
 <p>Fill in the bucket name in the create call.</p>
-<div id="9b0532f7" class="cell">
+<div id="ac446317" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>sts     <span class="op">=</span> boto3.client(<span class="st">"sts"</span>,    region_name<span class="op">=</span>REGION)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>athena  <span class="op">=</span> boto3.client(<span class="st">"athena"</span>, region_name<span class="op">=</span>REGION)</span>
@@ -549,7 +559,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="helpers-and-a-table-definition">2. Helpers and a table definition</h2>
 <p><code>run_athena</code> starts a query, checks once a second until it finishes, and returns the query id plus Athena’s statistics, which include the bytes scanned. The table definition tells Athena where the Parquet files are and how the <code>YEAR=</code>/<code>ELEMENT=</code> key layout maps to columns (this is called <em>partition projection</em>). Nothing is copied, and these definition statements are free.</p>
 <p>Fill in the <code>boto3</code> call that starts a query.</p>
-<div id="aadccbdb" class="cell">
+<div id="f77d5c4b" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ATHENA_BYTES <span class="op">=</span> <span class="dv">0</span>                                  <span class="co"># running total of everything scanned today</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -577,7 +587,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    obj <span class="op">=</span> s3_mine.get_object(Bucket<span class="op">=</span>RESULTS_BUCKET, Key<span class="op">=</span><span class="ss">f"athena/</span><span class="sc">{</span>qid<span class="sc">}</span><span class="ss">.csv"</span>)</span>
 <span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.read_csv(io.BytesIO(obj[<span class="st">"Body"</span>].read()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="317c0731" class="cell">
+<div id="22c933a0" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: Athena (AWS-managed)</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>run_athena(<span class="st">"CREATE DATABASE IF NOT EXISTS gsb5544"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -610,7 +620,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="one-station-one-year" class="level2">
 <h2 class="anchored" data-anchor-id="one-station-one-year">3. One station, one year</h2>
 <p>The <code>WHERE</code> clause is the extraction. Fill in the year and the name of the statistic that reports bytes scanned.</p>
-<div id="6c96d2e2" class="cell">
+<div id="e581bc72" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: Athena (AWS-managed)</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>SQL <span class="op">=</span> <span class="ss">f'''</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ss">SELECT id, "date", data_value</span></span>
@@ -633,7 +643,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>station_2024.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Athena scanned far less than the by-year CSV. Which feature of the bucket’s layout let it skip every other year and element before reading a row? One sentence, as a comment.</p>
-<div id="e9c8ce31" class="cell">
+<div id="9e71e629" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The YEAR=/ELEMENT= key layout. Athena treats those as partition columns, so the WHERE clause on year and element selects which files to open, and the other years and elements are never read.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -641,7 +651,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="hot-days-computed-entirely-by-athena" class="level2">
 <h2 class="anchored" data-anchor-id="hot-days-computed-entirely-by-athena">4. Hot days, computed entirely by Athena</h2>
 <p>Write <strong>one query</strong> that returns the number of days with <code>TMAX</code> at or above 35 °C (<code>data_value &gt;= 350</code>) per station per year from 2015 through 2024, for both lab stations, ignoring quality-flagged values. Pivot the result to years as rows and markets as columns. It should match the <code>hot_days</code> table from the lab.</p>
-<div id="0602c12b" class="cell">
+<div id="e5a75706" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: Athena (AWS-managed)</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>SQL <span class="op">=</span> <span class="ss">f'''</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ss">SELECT id, year, COUNT(*) AS hot_days</span></span>
@@ -672,7 +682,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="clean-up-empty-the-results-bucket" class="level2">
 <h2 class="anchored" data-anchor-id="clean-up-empty-the-results-bucket">5. Clean up: empty the results bucket</h2>
 <p>Unlike the required session, this notebook created something in S3 that stays after the space stops. Empty it. Fill in the call that lists the bucket and the call that deletes a batch of objects.</p>
-<div id="7c580ca0" class="cell">
+<div id="6a786976" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>listing <span class="op">=</span> s3_mine.list_objects_v2(Bucket<span class="op">=</span>RESULTS_BUCKET)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>objects <span class="op">=</span> listing.get(<span class="st">"Contents"</span>, [])</span>

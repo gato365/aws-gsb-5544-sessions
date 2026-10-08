@@ -277,7 +277,7 @@ This notebook is short on purpose. It practices the middle of the workflow, the 
 
 > measure the remote machine → look at how big the data is → read a manageable piece → summarize it → save a small file
 
-**Run this notebook in JupyterLab inside your SageMaker space** (reading, section 5, parts D and E), not in Positron. Replace each `____` and run the cell with Shift+Enter.
+**Run this notebook in JupyterLab inside your SageMaker space** (reading, section 5, parts D and E), not in Positron. Replace each `____` and run the cell with Shift+Enter. If a cell stops with `NameError: name '____' is not defined`, you ran it before filling in its blank; fill the blank and run it again.
 
 Every code cell starts with a `# RUNS ON:` comment. **That comment is a label for you. It does not move the code anywhere.** A cell runs on whichever computer the notebook's kernel is on. The setup cell checks where that really is.
 
@@ -353,6 +353,32 @@ laptop = {{                                   # <- replace every value with what
 
 compare = pd.DataFrame({{"laptop": laptop, "SageMaker (remote)": ⟦remote⟧}})
 compare
+'''),
+
+md("""
+**Save this machine's details as a markdown file.** The cell below writes the remote report as a small `.md` table next to this notebook. Download it with the rest of your files; it is the record of which machine did today's work, and the instructor's copy of it is the *Remote machine reference* page on the course site.
+"""),
+
+code(f'''
+{REMOTE}
+import datetime as dt
+
+try:                                                         # the space's own description of itself, if available
+    meta = json.load(open("/opt/ml/metadata/resource-metadata.json"))
+    space_info = {{"space name": meta.get("SpaceName"), "domain id": meta.get("DomainId"),
+                  "app type": meta.get("AppType"), "region (from ARN)": meta.get("ResourceArn", "::::")[9:].split(":")[2]}}
+except Exception:
+    space_info = {{"space name": "not reported by this image"}}
+
+lines = [f"# Remote machine report", "",
+         f"Measured on {{dt.date.today().isoformat()}} by `machine_report()` inside SageMaker.", "",
+         "| Measure | Value |", "|---|---|"]
+lines += [f"| {{k}} | {{v}} |" for k, v in {{**space_info, **remote}}.items()]
+report_text = "\\n".join(lines) + "\\n"
+
+with open("remote_machine_report.md", "w") as f:
+    f.write(report_text)
+print(report_text)
 '''),
 
 md("""
@@ -546,7 +572,7 @@ This activity has **two notebooks**. This is the first.
 
 **Part B** is a separate, controlled timing test: the *same* small job run once here and once on your laptop, so the two machines can be compared fairly.
 
-Every code cell starts with a `# RUNS ON:` comment. It names the intended computer. **It does not move the code there.** The setup cell checks where this kernel really is.
+Every code cell starts with a `# RUNS ON:` comment. It names the intended computer. **It does not move the code there.** The setup cell checks where this kernel really is. Cells with `____` have a blank to fill before you run them. If a cell stops with `NameError: name '____' is not defined`, you ran it before filling in its blank; fill the blank and run it again.
 
 By the end you should be able to answer five questions:
 
@@ -802,7 +828,7 @@ This is the **second** notebook of the practice activity. Open it in **Positron,
 
 In Positron: **File → Open Folder** and choose your course folder, then open this notebook from `week_7`. If the notebook asks for a kernel (top right), choose the Python you use for this course.
 
-Every code cell starts with `# RUNS ON: laptop (Positron)`. That comment is a label. It does not move the code. The setup cell checks where this kernel really is.
+Every code cell starts with `# RUNS ON: laptop (Positron)`. That comment is a label. It does not move the code. The setup cell checks where this kernel really is. Cells with `____` have a blank to fill before you run them. If a cell stops with `NameError: name '____' is not defined`, you ran it before filling in its blank; fill the blank and run it again.
 
 ## The workflow, with the part you have finished
 
@@ -1469,7 +1495,7 @@ Everything required in Session 1 runs on SageMaker alone. This notebook is for l
 
 Athena is a query service. You send it SQL; AWS's own machines scan Parquet files in S3 and write the answer to a bucket **you** own. So this notebook, unlike the others, creates something in your account (a results bucket) and can incur a small per-query charge.
 
-Run it in JupyterLab inside your SageMaker space.
+Run it in JupyterLab inside your SageMaker space. Cells with `____` have a blank to fill before you run them. If a cell stops with `NameError: name '____' is not defined`, you ran it before filling in its blank; fill the blank and run it again.
 """),
 
 code(REMOTE_SETUP),

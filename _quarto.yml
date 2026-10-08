@@ -32,6 +32,8 @@ website:
             href: session_1/01_preclass_reading.md
           - text: "02 · Topics notebook (student)"
             href: session_1/02_topics_of_practice.ipynb
+          - text: "02a · Remote machine reference"
+            href: session_1/02a_remote_machine_reference.md
           - text: "03 · Practice: remote notebook (student)"
             href: session_1/03_practice_activity_remote.ipynb
           - text: "03 · Practice: local notebook (student)"
@@ -80,6 +82,8 @@ website:
             href: session_1/01_preclass_reading.md
           - text: "02 · Topics notebook (student)"
             href: session_1/02_topics_of_practice.ipynb
+          - text: "02a · Remote machine reference"
+            href: session_1/02a_remote_machine_reference.md
           - text: "03 · Practice: remote notebook (student)"
             href: session_1/03_practice_activity_remote.ipynb
           - text: "03 · Practice: local notebook (student)"
