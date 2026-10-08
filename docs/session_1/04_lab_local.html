@@ -459,7 +459,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>lab_remote_measurements.json</code></li>
 </ul>
 <p>Everything here runs on your laptop. No cell in this notebook reads from S3.</p>
-<div id="643fc782" class="cell">
+<div id="00421740" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q pandas pyarrow s3fs psutil matplotlib      <span class="co"># harmless if already present</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -514,7 +514,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"NOTE: this notebook is written to run on your laptop, in Positron, and this kernel is on SageMaker."</span>)</span>
 <span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"      Download this file and open it in Positron instead."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="9e9c1b41" class="cell">
+<div id="558595dd" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>NEEDED <span class="op">=</span> [<span class="st">"lab_hot_days.csv"</span>, <span class="st">"lab_monthly_rain.csv"</span>, <span class="st">"lab_remote_measurements.json"</span>]</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>missing <span class="op">=</span> [name <span class="cf">for</span> name <span class="kw">in</span> NEEDED <span class="cf">if</span> <span class="kw">not</span> os.path.exists(name)]</span>
@@ -524,7 +524,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="l8.-read-what-you-downloaded" class="level2">
 <h2 class="anchored" data-anchor-id="l8.-read-what-you-downloaded">L8. Read what you downloaded</h2>
 <p>Read the two CSV files into <code>hot_days</code> and <code>monthly_rain</code>, and the JSON file into <code>REMOTE</code>. Print each table’s shape and the size on disk of each downloaded file.</p>
-<div id="e01fc341" class="cell">
+<div id="52f91833" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -533,7 +533,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="l9.-chart-1-hot-days-per-year">L9. Chart 1: hot days per year</h2>
 <p>One line per market: year on the x-axis, number of days at or above 35 °C on the y-axis. Label both axes with units, give the chart a title that says what it shows, and save it as <code>lab_hot_days.png</code>.</p>
 <p>Before you plot, look at <code>days_reported</code>. If any market-year has far fewer than 365 reported days, say so in your interpretation in L11.</p>
-<div id="c270d797" class="cell">
+<div id="c4c37881" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -541,7 +541,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="l10.-chart-2-typical-rainfall-by-month" class="level2">
 <h2 class="anchored" data-anchor-id="l10.-chart-2-typical-rainfall-by-month">L10. Chart 2: typical rainfall by month</h2>
 <p>Show the average monthly precipitation for both markets across the twelve calendar months, in millimeters, in a form that makes the two markets easy to compare. Save it as <code>lab_monthly_rain.png</code>. Then print the wettest month of each market.</p>
-<div id="62bd963e" class="cell">
+<div id="bea38c31" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -559,7 +559,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="l12.-two-machines-and-four-sizes" class="level2">
 <h2 class="anchored" data-anchor-id="l12.-two-machines-and-four-sizes">L12. Two machines and four sizes</h2>
 <p>Build one table that puts your laptop’s <code>machine_report()</code> beside the remote machine’s (from <code>REMOTE["machine"]</code>). Then print, in readable units: the source size in S3, the size of the remote DataFrame, the combined size of the exported CSVs, and the combined size of the files as downloaded on this laptop.</p>
-<div id="01eecc0b" class="cell">
+<div id="4f70f649" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>

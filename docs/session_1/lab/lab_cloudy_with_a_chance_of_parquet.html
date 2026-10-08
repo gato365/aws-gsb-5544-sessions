@@ -519,7 +519,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="data-set" class="level2">
 <h2 class="anchored" data-anchor-id="data-set">Data set</h2>
 <p>The stations to compare come from a small file. The weather comes from the bucket <code>noaa-ghcn-pds</code>, which you already know from the practice activity.</p>
-<div id="3af3ffa4" class="cell">
+<div id="c3703d13" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> socket</span>
@@ -577,7 +577,7 @@ parquet/by_year/YEAR=2024/ELEMENT=PRCP/   daily precipitation</code></pre>
 </tbody>
 </table>
 <p>You are also given this helper from the practice activity. Use it; do not rewrite it.</p>
-<div id="b01a7d70" class="cell">
+<div id="6f1d1afb" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> human(n, base<span class="op">=</span><span class="dv">1000</span>):</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> unit <span class="kw">in</span> [<span class="st">"B"</span>, <span class="st">"KB"</span>, <span class="st">"MB"</span>, <span class="st">"GB"</span>, <span class="st">"TB"</span>, <span class="st">"PB"</span>]:</span>
@@ -673,14 +673,14 @@ parquet/by_year/YEAR=2024/ELEMENT=PRCP/   daily precipitation</code></pre>
 </table>
 <p>A prefix that matches nothing returns zero objects and zero bytes. It does not raise an error.</p>
 <p><strong>Hint.</strong> One listing call returns at most 1,000 objects. A <em>paginator</em> keeps asking until there are no more. This snippet counts the pages under a different prefix; it does not solve the task.</p>
-<div id="cd86e420" class="cell">
+<div id="ea1f8ccf" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>pages <span class="op">=</span> s3.get_paginator(<span class="st">"list_objects_v2"</span>).paginate(Bucket<span class="op">=</span>BUCKET, Prefix<span class="op">=</span><span class="st">"csv/by_station/US1CA"</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> number, page <span class="kw">in</span> <span class="bu">enumerate</span>(pages, start<span class="op">=</span><span class="dv">1</span>):</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"page"</span>, number, <span class="st">"has"</span>, <span class="bu">len</span>(page.get(<span class="st">"Contents"</span>, [])), <span class="st">"objects"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Each object in <code>page["Contents"]</code> is a dictionary with a <code>"Key"</code> and a <code>"Size"</code>. A page with no matches has no <code>"Contents"</code> key at all, which is why the snippet uses <code>.get</code>.</p>
-<div id="6ae17c23" class="cell">
+<div id="4dc8ef85" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> size_up(prefix):</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Measure everything under a prefix without reading it.</span></span>
@@ -706,14 +706,14 @@ parquet/by_year/YEAR=2024/ELEMENT=PRCP/   daily precipitation</code></pre>
 </div>
 <section id="test-your-function" class="level3">
 <h3 class="anchored" data-anchor-id="test-your-function">Test your function</h3>
-<div id="c4b392ff" class="cell">
+<div id="60418b9e" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>size_up(<span class="st">"parquet/by_year/YEAR=2024/ELEMENT=TMAX/"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Expected:</p>
 <pre><code>{'prefix': 'parquet/by_year/YEAR=2024/ELEMENT=TMAX/', 'objects': 9, 'bytes': 14797263, 'readable': '14.8 MB'}</code></pre>
 <p>Now two harder checks. The first has more than 1,000 objects. The second matches nothing.</p>
-<div id="44ee942d" class="cell">
+<div id="8f4d766a" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(size_up(<span class="st">"csv/by_station/USC0004"</span>)[<span class="st">"objects"</span>])              <span class="co"># expect 1190</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(size_up(<span class="st">"parquet/by_year/YEAR=2031/ELEMENT=TMAX/"</span>))        <span class="co"># expect 0 objects, 0 bytes, '0.0 B'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -766,7 +766,7 @@ parquet/by_year/YEAR=2024/ELEMENT=PRCP/   daily precipitation</code></pre>
 </table>
 <p>If no rows match, return an <strong>empty</strong> DataFrame that still has those four columns (special cases 4 and 5). Do not raise an error.</p>
 <p><strong>Hint: filtering inside the read.</strong> <code>pd.read_parquet</code> accepts <code>filters</code>, a list of <code>(column, operator, value)</code> rules. Parquet applies them while reading, so rows that fail never reach memory. This snippet filters on a different column; it does not solve the task.</p>
-<div id="fd552c29" class="cell">
+<div id="5c5a7dcc" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>hot <span class="op">=</span> pd.read_parquet(</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"s3://</span><span class="sc">{</span>BUCKET<span class="sc">}</span><span class="ss">/parquet/by_year/YEAR=2024/ELEMENT=TMAX/"</span>,</span>
@@ -778,7 +778,7 @@ parquet/by_year/YEAR=2024/ELEMENT=PRCP/   daily precipitation</code></pre>
 </div>
 <p><strong>Hint: cleaning text.</strong> <code>"  abc ".strip().upper()</code> gives <code>"ABC"</code>. On a pandas column the same methods live under <code>.str</code>.</p>
 <p><strong>Hint: dates.</strong> <code>pd.to_datetime(column.astype(str), format="%Y%m%d")</code> turns <code>20240131</code> into a real date.</p>
-<div id="7122fe73" class="cell">
+<div id="d39b398d" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> read_slice(year, element, station_ids, budget_mb<span class="op">=</span><span class="dv">100</span>):</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""____</span></span>
@@ -813,7 +813,7 @@ parquet/by_year/YEAR=2024/ELEMENT=PRCP/   daily precipitation</code></pre>
 <section id="test-your-function-1" class="level3">
 <h3 class="anchored" data-anchor-id="test-your-function-1">Test your function</h3>
 <p>Start with one station, then two with a messy id.</p>
-<div id="1af89421" class="cell">
+<div id="a8b0d9f9" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>slo <span class="op">=</span> read_slice(<span class="dv">2024</span>, <span class="st">"TMAX"</span>, [<span class="st">"USC00047851"</span>])</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(slo.shape)                 <span class="co"># expect (366, 4)</span></span>
@@ -824,7 +824,7 @@ parquet/by_year/YEAR=2024/ELEMENT=PRCP/   daily precipitation</code></pre>
 0  USC00047851 2024-01-01    TMAX   18.3
 1  USC00047851 2024-01-02    TMAX   17.8
 2  USC00047851 2024-01-03    TMAX   16.1</code></pre>
-<div id="50415c73" class="cell">
+<div id="cd132569" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>two <span class="op">=</span> read_slice(<span class="dv">2024</span>, <span class="st">"TMAX"</span>, [<span class="st">" usw00023183"</span>, <span class="st">"USC00047851"</span>])</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(two.groupby(<span class="st">"station_id"</span>).size().to_dict())      <span class="co"># expect {'USC00047851': 366, 'USW00023183': 366}</span></span>
@@ -833,7 +833,7 @@ parquet/by_year/YEAR=2024/ELEMENT=PRCP/   daily precipitation</code></pre>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(read_slice(<span class="dv">2024</span>, <span class="st">"TMAX"</span>, [<span class="st">"USW00000000"</span>]).shape) <span class="co"># expect (0, 4)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Finally, check the guard. This call <strong>should</strong> fail:</p>
-<div id="cc25d2a8" class="cell">
+<div id="a1f5f338" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>read_slice(<span class="dv">2024</span>, <span class="st">"PRCP"</span>, [<span class="st">"USC00047851"</span>], budget_mb<span class="op">=</span><span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -889,20 +889,20 @@ parquet/by_year/YEAR=2024/ELEMENT=PRCP/   daily precipitation</code></pre>
 </table>
 <p>A day with a missing temperature or a missing precipitation value is never a patio day. <code>days_reported</code> and <code>patio_days</code> are whole numbers, and they are <code>0</code>, not <code>NaN</code>, for a city with no data.</p>
 <p><strong>Hint: long to wide.</strong> <code>read_slice</code> returns one row per station, day, and element. You want one row per station and day with a temperature column and a precipitation column. Stack the two results with <code>pd.concat</code>, then spread them:</p>
-<div id="2f72772b" class="cell">
+<div id="865ec2c5" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>toy <span class="op">=</span> pd.DataFrame({<span class="st">"who"</span>: [<span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>], <span class="st">"what"</span>: [<span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"x"</span>], <span class="st">"n"</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]})</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>toy.pivot_table(index<span class="op">=</span><span class="st">"who"</span>, columns<span class="op">=</span><span class="st">"what"</span>, values<span class="op">=</span><span class="st">"n"</span>).reindex(columns<span class="op">=</span>[<span class="st">"x"</span>, <span class="st">"y"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Notice that <code>b</code> has no <code>y</code>, so it gets <code>NaN</code>. The <code>.reindex(columns=...)</code> at the end guarantees both columns exist even when an element has no rows at all.</p>
 <p><strong>Hint: twelve rows for everyone.</strong> A cross merge pairs every row of one table with every row of another. Merge that grid with your monthly results using <code>how="left"</code> and cities with no data keep their rows.</p>
-<div id="1d91f997" class="cell">
+<div id="2c213df2" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({<span class="st">"city"</span>: [<span class="st">"A"</span>, <span class="st">"B"</span>]}).merge(pd.DataFrame({<span class="st">"month"</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]}), how<span class="op">=</span><span class="st">"cross"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Hint: a sum that admits it has nothing.</strong> <code>pd.Series([None, None]).sum()</code> is <code>0.0</code>, which would claim a rain gauge that reported nothing had a dry month. <code>.sum(min_count=1)</code> gives <code>NaN</code> instead.</p>
 <p><strong>Hint: ranges.</strong> <code>column.between(20, 30)</code> is <code>True</code> from 20 to 30 inclusive and <code>False</code> for <code>NaN</code>.</p>
-<div id="a30f6845" class="cell">
+<div id="c453b9a7" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> patio_summary(stations, year):</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""____"""</span></span>
@@ -924,7 +924,7 @@ parquet/by_year/YEAR=2024/ELEMENT=PRCP/   daily precipitation</code></pre>
 <section id="test-your-function-2" class="level3">
 <h3 class="anchored" data-anchor-id="test-your-function-2">Test your function</h3>
 <p>Test on one city before the whole list.</p>
-<div id="a26498e4" class="cell">
+<div id="530e865b" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>one <span class="op">=</span> patio_summary(stations[stations[<span class="st">"city"</span>] <span class="op">==</span> <span class="st">"San Luis Obispo"</span>], <span class="dv">2024</span>)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(one.shape)                 <span class="co"># expect (12, 7)</span></span>
@@ -936,7 +936,7 @@ parquet/by_year/YEAR=2024/ELEMENT=PRCP/   daily precipitation</code></pre>
 1  San Luis Obispo  USC00047851      2             29        17.9          171.0           6
 2  San Luis Obispo  USC00047851      3             31        18.7          128.7          10</code></pre>
 <p>Then the two awkward cities:</p>
-<div id="8c031ff4" class="cell">
+<div id="1eeb1b44" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>odd <span class="op">=</span> patio_summary(stations[stations[<span class="st">"city"</span>].isin([<span class="st">"Atascadero rain gauge"</span>, <span class="st">"Atlantis"</span>])], <span class="dv">2024</span>)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>odd[odd[<span class="st">"month"</span>] <span class="op">==</span> <span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -951,7 +951,7 @@ parquet/by_year/YEAR=2024/ELEMENT=PRCP/   daily precipitation</code></pre>
 <h2 class="anchored" data-anchor-id="use-your-functions">Use your functions</h2>
 <section id="the-full-list-on-the-cloud-machine" class="level3">
 <h3 class="anchored" data-anchor-id="the-full-list-on-the-cloud-machine">1. The full list, on the cloud machine</h3>
-<div id="5e6579b2" class="cell">
+<div id="b8aa0bfd" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> patio_summary(stations, <span class="dv">2024</span>)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(summary.shape)             <span class="co"># expect (84, 7)</span></span>
@@ -976,7 +976,7 @@ Atlantis                           0           0</code></pre>
 <section id="the-receipt" class="level3">
 <h3 class="anchored" data-anchor-id="the-receipt">2. The receipt</h3>
 <p>Use <code>size_up</code> and <code>os.path.getsize</code> to fill in this dictionary <strong>with code, not typed numbers</strong>. It records how much data sat in S3, and how much you are about to carry home.</p>
-<div id="74843475" class="cell">
+<div id="7c1a60b1" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>receipt <span class="op">=</span> {</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ran on"</span>:              socket.gethostname(),</span>
@@ -991,7 +991,7 @@ Atlantis                           0           0</code></pre>
 <section id="the-surprise" class="level3">
 <h3 class="anchored" data-anchor-id="the-surprise">3. The surprise</h3>
 <p>Your instructor will post a second file, <code>stations_surprise.csv</code>, with the same two columns and the same kinds of mess. Change <strong>only</strong> the URL below and rerun. If your functions are general, nothing else needs to change.</p>
-<div id="cd825173" class="cell">
+<div id="690c2570" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>SURPRISE_URL <span class="op">=</span> <span class="st">"____"</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>surprise <span class="op">=</span> pd.read_csv(SURPRISE_URL)</span>

@@ -43,6 +43,8 @@ cd session_1 && python build_notebooks.py     # needs nbformat
 
 Never edit the `.ipynb` files directly; the next build overwrites them.
 
+The build also copies the solution notebooks into the instructor's course folder (`INSTRUCTOR_COPY` in `build_notebooks.py`).
+
 Site: from the repository root
 
 ```bash

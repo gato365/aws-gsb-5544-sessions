@@ -6,3 +6,4 @@ __pycache__/
 
 **/*.quarto_ipynb
 .env
+session_1/_solutions/

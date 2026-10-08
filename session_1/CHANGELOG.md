@@ -2,6 +2,10 @@
 title: "Changelog: Session 1"
 ---
 
+# 2026-10-08: instructor copies
+
+The build script now also copies the six solution notebooks into the instructor's private course folder (`INSTRUCTOR_COPY`). The solutions remain in the repository and on the site as before. A Canvas quiz builder for the session was added under `session_1/quiz/`, and a remote-machine reference page (`02a`) was added beside the topics notebook.
+
 # Revision of 2026-10-05: one remote-to-local workflow
 
 **Scope:** everything in `session_1/`, the home page, the navigation, and the README.

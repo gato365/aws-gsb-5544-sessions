@@ -596,7 +596,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <p>If you are reading this in Positron, stop: you are in the wrong place for steps 3 to 5. Continue only in the JupyterLab tab.</p>
 <p>Run the setup cell. Its last two lines tell you which computer this is.</p>
-<div id="27d88269" class="cell">
+<div id="2f137036" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q s3fs pyarrow psutil      <span class="co"># harmless if already present</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -673,7 +673,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"      The RUNS ON comments describe the plan. They do not move the code. Open this file in JupyterLab on SageMaker."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Record the remote machine’s resources. The local notebook will put your laptop’s numbers beside these.</p>
-<div id="39a04ec8" class="cell">
+<div id="77e9c9ed" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>REMOTE_MACHINE <span class="op">=</span> machine_report()</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>REMOTE_MACHINE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -687,7 +687,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>The data.</strong> NOAA’s GHCN-Daily archive, Parquet copy, daily maximum temperature (<code>TMAX</code>), one slice per year, 2015 through 2024.</p>
 <p><strong>The subset.</strong> Stations whose id begins <code>USC0004</code>: the <strong>California stations of the U.S. Cooperative Observer network</strong>. This is a few hundred volunteer-run stations. It is not every weather station in California, the stations are not evenly spread, and an unweighted average over them is <strong>not</strong> a statewide temperature estimate. It is a consistent, well-defined subset that is the right size for practice.</p>
 <p>First, look before you read. Fill in the helper that measures a prefix.</p>
-<div id="6fdf2405" class="cell">
+<div id="87ca0d5e" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>YEARS <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">2015</span>, <span class="dv">2025</span>))</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -714,7 +714,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>return one row per month: how many stations reported, how many station-days, and the mean daily high.</li>
 </ol>
 <p>Fill in the four blanks.</p>
-<div id="bfc1ce59" class="cell">
+<div id="acd15855" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summarize_year(raw, year):</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    keep <span class="op">=</span> raw[raw[<span class="st">"ID"</span>].<span class="bu">str</span>.startswith(____) <span class="op">&amp;</span> raw[<span class="st">"Q_FLAG"</span>].____()].copy()</span>
@@ -732,7 +732,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now run it for all ten years. This is the heavy part, and the remote machine does all of it. Expect it to take from several seconds to a minute or two; the cell prints one line per year so you can see it working.</p>
-<div id="f7ef3d62" class="cell">
+<div id="00ea59c2" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>pieces <span class="op">=</span> []</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ROWS_READ <span class="op">=</span> <span class="dv">0</span></span>
@@ -762,7 +762,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="step-5.-save-a-small-summary-csv-on-the-remote-machine">Step 5. Save a small summary CSV on the remote machine</h2>
 <p><em>You are in: the remote notebook. Code runs: on SageMaker. Data moves: SageMaker’s RAM → SageMaker’s disk.</em></p>
 <p>The file is written next to this notebook, on the space’s own disk. It is not in S3. Fill in the method that writes a CSV.</p>
-<div id="7b67a38e" class="cell">
+<div id="4b4d35bb" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>SUMMARY_FILE <span class="op">=</span> <span class="st">"ca_coop_tmax_monthly_2015_2024.csv"</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>summary.____(SUMMARY_FILE, index<span class="op">=</span><span class="va">False</span>)</span>
@@ -786,7 +786,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>A second run is often faster than the first because parts of the software and the connection are already warm. That is why you run it twice and keep both.</li>
 <li>These are measurements from one moment on two particular machines. Nothing here promises that the cloud is faster.</li>
 </ul>
-<div id="6bc2e009" class="cell">
+<div id="84b0259b" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>TIMING_YEAR <span class="op">=</span> <span class="dv">2024</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>TIMING_COLUMNS <span class="op">=</span> [<span class="st">"ID"</span>, <span class="st">"DATE"</span>, <span class="st">"DATA_VALUE"</span>, <span class="st">"Q_FLAG"</span>]</span>
@@ -821,7 +821,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> summary, times</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="514ef941" class="cell">
+<div id="606d3bdd" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>REMOTE_TIMING <span class="op">=</span> []</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> run <span class="kw">in</span> (<span class="dv">1</span>, <span class="dv">2</span>):</span>
@@ -832,7 +832,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>timing_summary.to_csv(<span class="st">"timing_summary_remote.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now save every measurement from this notebook into one small file, so the local notebook can read them instead of you copying numbers by hand.</p>
-<div id="1617f709" class="cell">
+<div id="86bc906a" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>measurements <span class="op">=</span> {</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"machine"</span>: REMOTE_MACHINE,</span>

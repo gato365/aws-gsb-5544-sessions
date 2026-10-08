@@ -14,7 +14,7 @@ Each student uses **their own personal AWS account** on the AWS Free plan. Per A
 
 | Session | Topic | Status | Student-facing documents |
 |---|---|---|---|
-| 1 | Data Bigger Than Your Laptop: process NOAA weather data on a remote machine, download a small summary, visualize it locally in Positron, and compare the two machines | **Revised 2026-10-05** around one eight-step remote-to-local workflow. Solution notebooks were executed end to end against the live NOAA bucket on a laptop; **not yet executed inside an AWS account**. See the [changelog](session_1/CHANGELOG.md) | Pre-class reading, topics notebook, two-notebook practice activity, two-notebook lab, optional extensions |
+| 1 | Data Bigger Than Your Laptop: process NOAA weather data on a remote machine, download a small summary, visualize it locally in Positron, and compare the two machines | **Revised 2026-10-05** around one eight-step remote-to-local workflow. Solution notebooks were executed end to end against the live NOAA bucket on a laptop; **not yet executed inside an AWS account**. See the [changelog](session_1/CHANGELOG.md) | Pre-class reading, topics notebook, two-notebook practice activity, two-notebook lab, optional extensions. |
 | 2+ | To be determined | Not started | |
 
 ## The learning objective
@@ -89,8 +89,8 @@ The practice activity's Part B runs **one identical job on both machines**: the 
 |---|---|---|---|
 | 01 · Pre-class reading | Concepts, laptop measurements, account setup | [View](session_1/01_preclass_reading.md) | [Markdown source](https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/01_preclass_reading.md) |
 | 02 · Topics notebook (student) | Short fill-in-the-blank, on SageMaker | [View](session_1/02_topics_of_practice.ipynb) | [Notebook](session_1/02_topics_of_practice.ipynb){download="02_topics_of_practice.ipynb"} |
-| 02a · Remote machine reference | What the course's SageMaker space reports about itself, and how to capture your own | [View](session_1/02a_remote_machine_reference.md) | [Markdown source](https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/02a_remote_machine_reference.md) |
 | 02 · Topics notebook (solutions) | Instructor copy | [View](session_1/02_topics_of_practice_SOLUTIONS.ipynb) | [Notebook](session_1/02_topics_of_practice_SOLUTIONS.ipynb){download="02_topics_of_practice_SOLUTIONS.ipynb"} |
+| 02a · Remote machine reference | What the course's SageMaker space reports about itself, and how to capture your own | [View](session_1/02a_remote_machine_reference.md) | [Markdown source](https://github.com/gato365/aws-gsb-5544-sessions/blob/main/session_1/02a_remote_machine_reference.md) |
 | 03 · Practice, remote notebook (student) | Steps 1 to 6 and the remote half of the timing test, on SageMaker | [View](session_1/03_practice_activity_remote.ipynb) | [Notebook](session_1/03_practice_activity_remote.ipynb){download="03_practice_activity_remote.ipynb"} |
 | 03 · Practice, local notebook (student) | Steps 7 and 8 and the local half of the timing test, in Positron | [View](session_1/03_practice_activity_local.ipynb) | [Notebook](session_1/03_practice_activity_local.ipynb){download="03_practice_activity_local.ipynb"} |
 | 03 · Practice, remote notebook (solutions) | Instructor copy | [View](session_1/03_practice_activity_remote_SOLUTIONS.ipynb) | [Notebook](session_1/03_practice_activity_remote_SOLUTIONS.ipynb){download="03_practice_activity_remote_SOLUTIONS.ipynb"} |

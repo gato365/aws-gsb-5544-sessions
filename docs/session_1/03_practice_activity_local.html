@@ -548,7 +548,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <p>Steps 1 to 6 are done. You are at step 7.</p>
-<div id="123497e6" class="cell">
+<div id="b90c6f65" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q pandas pyarrow s3fs psutil matplotlib      <span class="co"># harmless if already present</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -604,7 +604,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"      Download this file and open it in Positron instead."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Check that the three downloaded files are where this notebook can see them.</p>
-<div id="14cd1759" class="cell">
+<div id="0d66b524" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>NEEDED <span class="op">=</span> [<span class="st">"ca_coop_tmax_monthly_2015_2024.csv"</span>, <span class="st">"timing_summary_remote.csv"</span>, <span class="st">"remote_measurements.json"</span>]</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>missing <span class="op">=</span> [name <span class="cf">for</span> name <span class="kw">in</span> NEEDED <span class="cf">if</span> <span class="kw">not</span> os.path.exists(name)]</span>
@@ -625,7 +625,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="step-7.-open-the-summary-in-positron-and-make-the-chart">Step 7. Open the summary in Positron and make the chart</h2>
 <p><em>You are in: the local notebook, in Positron. Code runs: on your laptop. Data moves: laptop’s disk → laptop’s RAM.</em></p>
 <p>The file you are about to read was computed on another computer from data you never downloaded. Fill in the function that reads a CSV.</p>
-<div id="75753ff7" class="cell">
+<div id="f5ef441b" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>small <span class="op">=</span> pd.____(<span class="st">"ca_coop_tmax_monthly_2015_2024.csv"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>DOWNLOADED_BYTES <span class="op">=</span> os.path.getsize(<span class="st">"ca_coop_tmax_monthly_2015_2024.csv"</span>)</span>
@@ -635,7 +635,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Draw one line per year: month on the x-axis, mean daily high on the y-axis. Label the chart for what it is: the <strong>mean of daily highs across reporting California cooperative-network stations</strong>, not a statewide temperature.</p>
 <p>Fill in the two column names.</p>
-<div id="ae156e38" class="cell">
+<div id="863d969c" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">4.5</span>))</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> year, rows <span class="kw">in</span> small.groupby(<span class="st">"year"</span>):</span>
@@ -653,7 +653,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="two-machines-side-by-side" class="level2">
 <h2 class="anchored" data-anchor-id="two-machines-side-by-side">Two machines, side by side</h2>
 <p><code>machine_report()</code> measures the computer running this cell: your laptop. The remote machine’s numbers come from the file you downloaded. Fill in the function call.</p>
-<div id="2ba277d2" class="cell">
+<div id="5818c214" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>LOCAL_MACHINE <span class="op">=</span> ____()</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -664,7 +664,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="four-sizes-of-the-same-data" class="level2">
 <h2 class="anchored" data-anchor-id="four-sizes-of-the-same-data">Four sizes of the same data</h2>
-<div id="a33a8e3f" class="cell">
+<div id="aa46d74a" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> REMOTE[<span class="st">"workflow"</span>]</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>sizes <span class="op">=</span> pd.DataFrame(</span>
@@ -684,7 +684,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Part B · A fair timing test, local half</h1>
 <p>This is the same <code>timing_job()</code> as in the remote notebook, character for character: one year, the same columns, the same filter, the same transformation, the same aggregation. Do not edit it.</p>
 <p>For this test only, your laptop reads the 2024 slice straight from S3. That is deliberate: both machines must do the same job for the comparison to mean anything. It is a small read. It is <strong>not</strong> the workflow; in the workflow the remote machine did the reading.</p>
-<div id="9577f727" class="cell">
+<div id="eb4cab9c" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>TIMING_YEAR <span class="op">=</span> <span class="dv">2024</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>TIMING_COLUMNS <span class="op">=</span> [<span class="st">"ID"</span>, <span class="st">"DATE"</span>, <span class="st">"DATA_VALUE"</span>, <span class="st">"Q_FLAG"</span>]</span>
@@ -719,7 +719,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> summary, times</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="7213ff66" class="cell">
+<div id="d31bc675" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>LOCAL_TIMING <span class="op">=</span> []</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> run <span class="kw">in</span> (<span class="dv">1</span>, <span class="dv">2</span>):</span>
@@ -728,7 +728,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"run </span><span class="sc">{</span>run<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>times<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>First, check that both machines computed the same thing.</strong> A timing comparison between two different answers is meaningless. Fill in the file that holds the remote machine’s result.</p>
-<div id="1731dc70" class="cell">
+<div id="eeee4224" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>remote_summary <span class="op">=</span> pd.read_csv(____, parse_dates<span class="op">=</span>[<span class="st">"date"</span>])</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -745,7 +745,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>If the result is not equivalent, the usual cause is that NOAA updated the archive between your two runs, or that one notebook’s <code>timing_job()</code> was edited. Rerun both halves close together.</p>
 <p><strong>Then compare the measured times.</strong></p>
-<div id="22179dd5" class="cell">
+<div id="ed9a986c" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: laptop (Positron)</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>timing <span class="op">=</span> pd.DataFrame(LOCAL_TIMING <span class="op">+</span> REMOTE[<span class="st">"timing"</span>]).set_index([<span class="st">"machine"</span>, <span class="st">"run"</span>])</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>timing[<span class="st">"total seconds"</span>] <span class="op">=</span> (timing[<span class="st">"read seconds"</span>] <span class="op">+</span> timing[<span class="st">"process seconds"</span>]).<span class="bu">round</span>(<span class="dv">2</span>)</span>

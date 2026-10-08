@@ -8,7 +8,8 @@ Builds every Session 1 notebook from one source of truth.
   04_lab_local                          local    (inventory-planning lab: visualize and interpret)
   05_athena_extension                   remote   (optional; not part of the required session)
 
-Each is written twice: the student version and a _SOLUTIONS version.
+Each is written twice: the student version and a _SOLUTIONS version, both into this folder.
+  A copy of each _SOLUTIONS notebook is also placed in the instructor's course folder (INSTRUCTOR_COPY).
 
 Conventions
   ⟦...⟧     text that becomes a blank (____) in the student version
@@ -1703,6 +1704,14 @@ R = {REMOTE}
 L = {LOCAL}
 RA = {REMOTE, ATHENA}
 
+import shutil
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+# Solutions are written here, next to the student notebooks (they are part of the course site),
+# and a copy is placed in the instructor's course folder when that folder exists.
+INSTRUCTOR_COPY = Path("/Users/immanuelwilliams/Library/CloudStorage/OneDrive-Personal/Documents/Important_Files/Cal_Poly/01_Class_Material/GSB_5544/gsb5544_instructor_learn_prep/assignments/practice_activities/week_7/aws_content")
+
 for cells, stem, allowed in [
     (topics,      "02_topics_of_practice",       R),
     (prac_remote, "03_practice_activity_remote", R),
@@ -1711,7 +1720,11 @@ for cells, stem, allowed in [
     (lab_local,   "04_lab_local",                L),
     (athena,      "05_athena_extension",         RA),
 ]:
-    build(cells, f"{stem}.ipynb", student=True, allowed=allowed)
-    build(cells, f"{stem}_SOLUTIONS.ipynb", student=False, allowed=allowed)
+    build(cells, str(HERE / f"{stem}.ipynb"), student=True, allowed=allowed)
+    build(cells, str(HERE / f"{stem}_SOLUTIONS.ipynb"), student=False, allowed=allowed)
+    if INSTRUCTOR_COPY.exists():
+        shutil.copy2(HERE / f"{stem}_SOLUTIONS.ipynb", INSTRUCTOR_COPY / f"{stem}_SOLUTIONS.ipynb")
 
-print("built 12 notebooks")
+print(f"built 12 notebooks in {HERE}")
+if INSTRUCTOR_COPY.exists():
+    print(f"copied the 6 solution notebooks to {INSTRUCTOR_COPY}")

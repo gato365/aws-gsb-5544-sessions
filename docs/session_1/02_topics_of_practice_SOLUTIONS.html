@@ -459,7 +459,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Run this notebook in JupyterLab inside your SageMaker space</strong> (reading, section 5, parts D and E), not in Positron. Replace each <code>____</code> and run the cell with Shift+Enter. If a cell stops with <code>NameError: name '____' is not defined</code>, you ran it before filling in its blank; fill the blank and run it again.</p>
 <p>Every code cell starts with a <code># RUNS ON:</code> comment. <strong>That comment is a label for you. It does not move the code anywhere.</strong> A cell runs on whichever computer the notebook’s kernel is on. The setup cell checks where that really is.</p>
 <p>Bring the laptop numbers you recorded in the reading, section 1.</p>
-<div id="988cd1ec" class="cell">
+<div id="e1af6653" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q s3fs pyarrow psutil      <span class="co"># harmless if already present</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -582,7 +582,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Storing is not processing.</strong> Data in S3 does nothing until some computer reads it. The bytes travel to wherever the code runs, and what that code loads must fit in <strong>that</strong> computer’s RAM.</p>
 <p><strong>Disk is not RAM.</strong> Disk keeps files when the machine is off. RAM is the working space of a running program. S3, the remote machine’s disk, and the remote machine’s RAM are three different places.</p>
 <p>Fill in each blank with <code>laptop</code>, <code>SageMaker</code>, or <code>S3</code>.</p>
-<div id="360a9e09" class="cell">
+<div id="6edb1c50" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>where <span class="op">=</span> {</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Stores the NOAA weather files we read today"</span>:             <span class="st">"S3"</span>,</span>
@@ -607,12 +607,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Total RAM</strong> is what is installed. <strong>Available RAM</strong> is what a new program could use right now. Available is the smaller number and the one that matters.</li>
 </ul>
 <p>Fill in the function call, then paste in your laptop’s numbers from the reading.</p>
-<div id="349a60a5" class="cell">
+<div id="cd4285cf" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>remote <span class="op">=</span> machine_report()</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>remote</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="fcf3503a" class="cell">
+<div id="e247b38a" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>laptop <span class="op">=</span> {                                   <span class="co"># &lt;- replace every value with what you recorded in the reading, section 1</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"computer name"</span>:                     <span class="st">"my laptop"</span>,</span>
@@ -628,7 +628,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>compare</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Save this machine’s details as a markdown file.</strong> The cell below writes the remote report as a small <code>.md</code> table next to this notebook. Download it with the rest of your files; it is the record of which machine did today’s work, and the instructor’s copy of it is the <em>Remote machine reference</em> page on the course site.</p>
-<div id="a4f705b7" class="cell">
+<div id="ca8def1b" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime <span class="im">as</span> dt</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -650,7 +650,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(report_text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Check yourself.</strong> Do not assume the rented machine is bigger or faster. Look at your table. Which machine has more available RAM? More logical CPUs? Answer in one comment, using your own numbers.</p>
-<div id="bf5b9269" class="cell">
+<div id="17cde7d4" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: my laptop has 16 GB total and 5.1 GB available with 8 logical CPUs; the remote machine has about 4 GB total with 2 vCPUs. The remote machine is smaller. What it offers is location (next to the data) and that it can be resized, not size.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -660,7 +660,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Reading, sections 3 and 4.</em> A <strong>bucket</strong> is a named container. An <strong>object</strong> is one stored file plus its metadata. A <strong>key</strong> is the object’s full name inside the bucket. A <strong>prefix</strong> is the beginning of a key, which is how S3 imitates folders.</p>
 <p>The <code>s3</code> client in the setup cell is <strong>unsigned</strong>: it sends no credentials. NOAA’s bucket is public, so it answers anyone. You still needed your own AWS account today, but for a different reason: the account is what lets you <strong>rent this computer</strong>. The data is free to read; the computing is yours to pay for.</p>
 <p>Fill in the delimiter that makes S3 group keys like folders, and the metadata field that holds an object’s size.</p>
-<div id="e406880b" class="cell">
+<div id="cd21848d" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> s3.list_objects_v2(Bucket<span class="op">=</span>BUCKET, Delimiter<span class="op">=</span><span class="st">"/"</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Top-level prefixes:"</span>, [p[<span class="st">"Prefix"</span>] <span class="cf">for</span> p <span class="kw">in</span> resp.get(<span class="st">"CommonPrefixes"</span>, [])])</span>
@@ -676,7 +676,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="c.-look-at-the-size-before-you-read">C. Look at the size before you read</h2>
 <p><em>Reading, section 2.</em> The same year exists in the bucket twice: as one large CSV object, and as Parquet files split by year and element. Today we read the Parquet slice for 2024 daily highs (<code>TMAX</code>).</p>
 <p>Fill in the helper that builds the slice’s prefix, and the base that gives binary units.</p>
-<div id="5f44f067" class="cell">
+<div id="9e57e9cb" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>prefix <span class="op">=</span> slice_prefix(<span class="dv">2024</span>, <span class="st">"TMAX"</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>objects, SOURCE_BYTES <span class="op">=</span> prefix_size(prefix)</span>
@@ -694,7 +694,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="d.-read-a-manageable-dataset-into-the-remote-machines-ram">D. Read a manageable dataset into the remote machine’s RAM</h2>
 <p>The bytes now travel from S3 to this SageMaker machine. Nothing reaches your laptop except the text printed below.</p>
 <p>Fill in the setting that makes the read anonymous, and the argument that makes pandas count text columns honestly.</p>
-<div id="a3b36dfa" class="cell">
+<div id="fa11e803" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.perf_counter()</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> pd.read_parquet(</span>
@@ -723,7 +723,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Summarize one station, the Cal Poly station in San Luis Obispo (<code>USC00047851</code>), by month.</p>
 <p>Fill in the quality filter, the unit conversion, and the grouping column.</p>
-<div id="62756a3d" class="cell">
+<div id="e3be8b53" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>STATION <span class="op">=</span> <span class="st">"USC00047851"</span>                        <span class="co"># SAN LUIS OBISPO POLY, CA</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -745,7 +745,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="f.-save-a-small-summary-on-the-remote-disk-and-compare-four-sizes">F. Save a small summary on the remote disk, and compare four sizes</h2>
 <p>The summary is written to <strong>this machine’s disk</strong>, next to this notebook. It is not in S3 and not on your laptop yet. In the practice activity you will download a file like this and chart it in Positron; there is no chart here because the charting belongs on your laptop.</p>
 <p>Fill in the method that writes a CSV and the function that reads a file’s size from disk.</p>
-<div id="a3878d85" class="cell">
+<div id="ef3e04f1" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>OUT <span class="op">=</span> <span class="st">"slo_tmax_2024_monthly.csv"</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>summary.to_csv(OUT, index<span class="op">=</span><span class="va">False</span>)</span>
@@ -761,7 +761,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>sizes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Check yourself.</strong> In one comment: which of those four numbers would also be the size of the file you download to your laptop, and which one disappears when the space stops?</p>
-<div id="4fed9752" class="cell">
+<div id="8592e194" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The exported summary CSV is what I would download; it is the same few hundred bytes on either disk. The loaded DataFrame lives only in RAM and disappears when the space stops. The source files stay in S3 untouched.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>

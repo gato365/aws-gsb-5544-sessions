@@ -560,7 +560,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>No additional AWS services. SageMaker and the public bucket are all you need.</li>
 </ul>
 <p>Sign in, start your <code>gsb5544</code> space, open JupyterLab, upload this notebook, and open it there (practice activity, steps 1 and 2). Then run the setup cell.</p>
-<div id="2eaee730" class="cell">
+<div id="97833b76" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q s3fs pyarrow psutil      <span class="co"># harmless if already present</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -636,7 +636,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"NOTE: this notebook is written to run in your SageMaker space, and this kernel is somewhere else."</span>)</span>
 <span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"      The RUNS ON comments describe the plan. They do not move the code. Open this file in JupyterLab on SageMaker."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="26555679" class="cell">
+<div id="f9e0b850" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>STATIONS <span class="op">=</span> {<span class="st">"San Luis Obispo"</span>: <span class="st">"USC00047851"</span>, <span class="st">"Phoenix"</span>: <span class="st">"USW00023183"</span>}</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>YEARS    <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">2015</span>, <span class="dv">2025</span>))</span>
@@ -645,7 +645,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="l1.-the-machine-you-are-renting" class="level2">
 <h2 class="anchored" data-anchor-id="l1.-the-machine-you-are-renting">L1. The machine you are renting</h2>
 <p>Store <code>machine_report()</code> for this machine as <code>REMOTE_MACHINE</code> and display it.</p>
-<div id="4f871654" class="cell">
+<div id="9b638d8a" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -654,7 +654,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="l2.-size-up-the-job-before-reading-anything">L2. Size up the job before reading anything</h2>
 <p>Use <code>prefix_size()</code> and <code>slice_prefix()</code> to find the size of every slice you need: both elements, all ten years. Print one line per slice and store the total in <code>SOURCE_BYTES</code>. Print the total in readable units next to this machine’s available RAM.</p>
 <p>Then, in the markdown cell: can you tell from these numbers alone whether all of it would fit in RAM at once? What will you do instead?</p>
-<div id="91f8fb8e" class="cell">
+<div id="70324be8" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -709,7 +709,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    storage_options<span class="op">=</span>{<span class="st">"anon"</span>: <span class="va">True</span>},</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Call your function, time it, and print how many rows <code>wx</code> has for each market and element. Store the elapsed seconds in <code>EXTRACT_SECONDS</code> and the DataFrame’s memory use in <code>WX_BYTES</code>.</p>
-<div id="08f538e9" class="cell">
+<div id="a98252bf" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -718,7 +718,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="l4.-hot-days-per-year">L4. Hot days per year</h2>
 <p>For each market and year, count the days with a daily high of <strong>35 °C or higher</strong> (95 °F). Build <code>hot_days</code> with one row per market and year and these columns: <code>market</code>, <code>year</code>, <code>days_reported</code>, <code>hot_days</code>.</p>
 <p><code>days_reported</code> is the number of days that year with a valid <code>TMAX</code>. It is there so that a reader can tell a year with few hot days from a year with few <em>observations</em>.</p>
-<div id="a282fc57" class="cell">
+<div id="c5a1cb58" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -732,7 +732,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Average the kept monthly totals over the years.</li>
 </ol>
 <p>Build <code>monthly_rain</code> with twelve rows per market and these columns: <code>market</code>, <code>month</code>, <code>years_used</code>, <code>avg_monthly_prcp_mm</code> (rounded to 1 decimal).</p>
-<div id="67f0ff9f" class="cell">
+<div id="0de8da86" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -749,7 +749,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>"exported bytes"</code>: the combined size on disk of the two CSV files</li>
 </ul>
 <p>Print the size of each of the three files.</p>
-<div id="d7fa5daf" class="cell">
+<div id="4716f6d0" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -758,7 +758,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="l7.-what-did-this-session-cost">L7. What did this session cost?</h2>
 <p>Estimate the compute cost of this session: hours the space has been running, times the hourly price of its instance type. Use about <strong>$0.05 per hour</strong> for <code>ml.t3.medium</code> in <code>us-east-1</code>, and check the <a href="https://aws.amazon.com/sagemaker/ai/pricing/">SageMaker pricing page</a> if you chose a different instance. Reading NOAA’s public bucket from inside the same region adds no data-transfer charge, and you created nothing in S3.</p>
 <p>The starter below tries to read the space’s start time. If that lookup fails, set <code>hours</code> by hand from the time you clicked <strong>Run space</strong>.</p>
-<div id="2488bb15" class="cell">
+<div id="6d856b17" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RUNS ON: SageMaker (remote)</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime <span class="im">as</span> dt</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
